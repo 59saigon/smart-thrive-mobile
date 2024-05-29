@@ -32,16 +32,16 @@ class _HomePageState extends State<HomePage> {
                 text: 'Home',
               ),
               GButton(
+                icon: Icons.my_library_books,
+                text: 'My courses',
+              ),
+              GButton(
                 icon: Icons.favorite,
-                text: 'Likes',
+                text: 'Wishlist',
               ),
               GButton(
-                icon: Icons.search,
-                text: 'Search',
-              ),
-              GButton(
-                icon: Icons.settings,
-                text: 'Setting',
+                icon: Icons.person,
+                text: 'Profile',
               ),
             ],
           ),
