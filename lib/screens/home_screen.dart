@@ -48,7 +48,7 @@ class Body extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               Text(
-                "Explore Categories",
+                "Explore Package",
                 style: Theme.of(context).textTheme.bodyLarge,
               ),
               TextButton(
@@ -104,8 +104,8 @@ class AppBar extends StatelessWidget {
         ),
         gradient: LinearGradient(
           colors: [
-            Color(0xff887ff2),
-            Color(0xff6849ef),
+            Color(0xffffb606),
+            Color(0xffffb606),
           ],
           begin: Alignment.topLeft,
           end: Alignment.bottomRight,
