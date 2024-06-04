@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:smart_thrive_mobile/constants/size.dart';
 import 'package:smart_thrive_mobile/models/category.dart';
+import 'package:smart_thrive_mobile/screens/course_screen.dart';
 
 class CategoryCard extends StatelessWidget {
   final Category category;
@@ -9,7 +10,11 @@ class CategoryCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-      onTap: () {},
+      onTap: () => Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) => const CourseScreen(),
+          )),
       child: Container(
         padding: const EdgeInsets.all(10),
         decoration: BoxDecoration(
