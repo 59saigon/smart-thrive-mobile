@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:smart_thrive_mobile/constants/color.dart';
 import 'package:smart_thrive_mobile/constants/icons.dart';
 import 'package:smart_thrive_mobile/constants/size.dart';
-import 'package:smart_thrive_mobile/pages/home_screen.dart';
+import 'package:smart_thrive_mobile/screens/home_screen.dart';
 
 class BaseScreen extends StatefulWidget {
   const BaseScreen({Key? key}) : super(key: key);

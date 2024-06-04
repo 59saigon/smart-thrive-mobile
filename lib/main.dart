@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:smart_thrive_mobile/pages/base_screen.dart';
+import 'package:smart_thrive_mobile/screens/base_screen.dart';
 
 void main() {
   runApp(const MyApp());
