@@ -1,6 +1,3 @@
-import 'package:education_app/constants/color.dart';
-import 'package:education_app/models/course.dart';
-import 'package:education_app/screens/details_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:smart_thrive_mobile/widgets/custom_icon_button.dart';
