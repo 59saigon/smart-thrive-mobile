@@ -7,12 +7,13 @@ class CustomIconButton extends StatelessWidget {
   final VoidCallback onTap;
   final Color? color;
   const CustomIconButton(
-      {super.key,
+      {Key? key,
       required this.child,
       required this.height,
       required this.width,
       required this.onTap,
-      this.color = Colors.white});
+      this.color = Colors.white})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {

@@ -1,11 +1,8 @@
 import 'package:education_app/constants/color.dart';
 import 'package:education_app/models/course.dart';
-import 'package:education_app/screens/details_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:smart_thrive_mobile/widgets/custom_icon_button.dart';
-
-import '../widgets/course_container.dart';
 
 class CourseScreen extends StatefulWidget {
   const CourseScreen({Key? key}) : super(key: key);
@@ -50,6 +47,23 @@ class _CourseScreenState extends State<CourseScreen> {
                 ),
                 const SizedBox(
                   height: 15,
+                ),
+                Expanded(
+                  child: ListView.separated(
+                    padding: const EdgeInsets.symmetric(vertical: 20),
+                    separatorBuilder: (_, __) {
+                      return const SizedBox(
+                        height: 10,
+                      );
+                    },
+                    shrinkWrap: true,
+                    itemBuilder: (_, int index) {
+                      return CourseContainer(
+                        course: courses[index],
+                      );
+                    },
+                    itemCount: courses.length,
+                  ),
                 ),
               ],
             ),
