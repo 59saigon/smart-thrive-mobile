@@ -25,7 +25,7 @@ class _DashboardState extends State<Dashboard> {
             padding: EdgeInsets.all(8.0),
             child: CircleAvatar(
               backgroundImage:
-                  AssetImage('assets/avatar.png'), // Your avatar image
+                  AssetImage('assets/icons/avatar.png'), // Your avatar image
             ),
           ),
         ],
