@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:smart_thrive_mobile/widgets/custom_icon_button.dart';
+import 'package:smart_thrive_mobile/widgets/custom_video_player.dart';
 
 class DetailsScreen extends StatefulWidget {
   final String title;
@@ -44,6 +45,10 @@ class _DetailsScreenState extends State<DetailsScreen> {
                     ],
                   ),
                 ),
+                const SizedBox(
+                  height: 25,
+                ),
+                const CustomVideoPlayer(),
               ],
             ),
           ),
