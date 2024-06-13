@@ -2,8 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:smart_thrive_mobile/constants/color.dart';
 import 'package:smart_thrive_mobile/constants/icons.dart';
+import 'package:smart_thrive_mobile/models/lesson.dart';
 import 'package:smart_thrive_mobile/widgets/custom_icon_button.dart';
 import 'package:smart_thrive_mobile/widgets/custom_video_player.dart';
+import 'package:smart_thrive_mobile/widgets/lesson_card.dart';
 
 class DetailsScreen extends StatefulWidget {
   final String title;
@@ -129,11 +131,59 @@ class _DetailsScreenState extends State<DetailsScreen> {
                   index: _selectedTag,
                   changeTab: changeTab,
                 ),
+                _selectedTag == 0 ? const PlayList() : const Description(),
               ],
             ),
           ),
         ),
+        bottomSheet: BottomSheet(
+          onClosing: () {},
+          backgroundColor: Colors.white,
+          enableDrag: false,
+          builder: (context) {
+            return const SizedBox(
+              height: 80,
+              child: EnrollBottomSheet(),
+            );
+          },
+        ),
       ),
+    );
+  }
+}
+
+class PlayList extends StatelessWidget {
+  const PlayList({Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Expanded(
+      child: ListView.separated(
+        separatorBuilder: (_, __) {
+          return const SizedBox(
+            height: 20,
+          );
+        },
+        padding: const EdgeInsets.only(top: 20, bottom: 40),
+        shrinkWrap: true,
+        itemCount: lessonList.length,
+        itemBuilder: (_, index) {
+          return LessonCard(lesson: lessonList[index]);
+        },
+      ),
+    );
+  }
+}
+
+class Description extends StatelessWidget {
+  const Description({Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return const Padding(
+      padding: EdgeInsets.only(top: 20.0),
+      child: Text(
+          "Football, commonly known as soccer in some parts of the world, is one of the most popular and widely played sports globally. It is a team sport that involves two teams of eleven players each, competing to score goals by getting a spherical ball into the opposing team's goal. The game is played on a rectangular field with a goal at each end."),
     );
   }
 }
@@ -188,6 +238,97 @@ class _CustomTabViewState extends State<CustomTabView> {
             .entries
             .map((MapEntry map) => _buildTags(map.key))
             .toList(),
+      ),
+    );
+  }
+}
+
+class EnrollBottomSheet extends StatefulWidget {
+  const EnrollBottomSheet({Key? key}) : super(key: key);
+
+  @override
+  _EnrollBottomSheetState createState() => _EnrollBottomSheetState();
+}
+
+class _EnrollBottomSheetState extends State<EnrollBottomSheet> {
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.symmetric(
+        horizontal: 30.0,
+      ),
+      child: Row(
+        children: [
+          CustomIconButton(
+            onTap: () {},
+            height: 45,
+            width: 45,
+            child: const Icon(
+              Icons.favorite,
+              color: Colors.pink,
+              size: 30,
+            ),
+          ),
+          const SizedBox(
+            width: 20,
+          ),
+          Expanded(
+            child: CustomIconButton(
+              onTap: () {},
+              color: kPrimaryColor,
+              height: 45,
+              width: 45,
+              child: const Text(
+                "Enroll Now",
+                style: TextStyle(
+                  color: Colors.white,
+                  fontSize: 18,
+                ),
+              ),
+            ),
+          )
+        ],
+      ),
+    );
+  }
+}
+
+class CustomIconButton extends StatelessWidget {
+  final Widget child;
+  final double height;
+  final double width;
+  final Color? color;
+  final VoidCallback onTap;
+
+  const CustomIconButton({
+    Key? key,
+    required this.child,
+    required this.height,
+    required this.width,
+    this.color = Colors.white,
+    required this.onTap,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Ink(
+      child: InkWell(
+        borderRadius: BorderRadius.circular(12),
+        child: Center(child: child),
+        onTap: onTap,
+      ),
+      height: height,
+      width: width,
+      decoration: BoxDecoration(
+        color: color,
+        borderRadius: BorderRadius.circular(12),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.black.withOpacity(.1),
+            blurRadius: 2.0,
+            spreadRadius: .05,
+          ), //BoxShadow
+        ],
       ),
     );
   }
