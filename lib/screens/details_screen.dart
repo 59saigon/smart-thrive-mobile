@@ -29,7 +29,7 @@ class _DetailsScreenState extends State<DetailsScreen> {
                     children: [
                       Align(
                         child: Text(
-                          'Flutter',
+                          'FootBall',
                           style: Theme.of(context).textTheme.displayMedium,
                         ),
                       ),
@@ -49,6 +49,26 @@ class _DetailsScreenState extends State<DetailsScreen> {
                   height: 25,
                 ),
                 const CustomVideoPlayer(),
+                const SizedBox(
+                  height: 15,
+                ),
+                const Text(
+                  "FootBall For Children",
+                  style: TextStyle(
+                    fontWeight: FontWeight.w700,
+                    fontSize: 18,
+                  ),
+                ),
+                const SizedBox(
+                  height: 3,
+                ),
+                const Text(
+                  "Created by VietNguyen",
+                  style: TextStyle(
+                    fontWeight: FontWeight.w500,
+                    fontSize: 16,
+                  ),
+                ),
               ],
             ),
           ),
