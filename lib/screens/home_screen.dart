@@ -104,8 +104,8 @@ class AppBar extends StatelessWidget {
         ),
         gradient: LinearGradient(
           colors: [
-            Color(0xff222831),
-            Color(0xff393E46),
+            Color(0xff886ff2),
+            Color(0xff6849ef),
           ],
           begin: Alignment.topLeft,
           end: Alignment.bottomRight,
