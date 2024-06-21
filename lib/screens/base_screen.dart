@@ -2,9 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:smart_thrive_mobile/constants/color.dart';
 import 'package:smart_thrive_mobile/constants/icons.dart';
 import 'package:smart_thrive_mobile/constants/size.dart';
+import 'package:smart_thrive_mobile/screens/upload_course_screen.dart';
 import 'package:smart_thrive_mobile/screens/dashboard.dart';
 import 'package:smart_thrive_mobile/screens/home_screen.dart';
 import 'package:smart_thrive_mobile/screens/my_learning_screen.dart';
+import 'package:smart_thrive_mobile/screens/upload_course_screen.dart';
 
 class BaseScreen extends StatefulWidget {
   const BaseScreen({Key? key}) : super(key: key);
@@ -15,6 +17,8 @@ class BaseScreen extends StatefulWidget {
 
 class _BaseScreenState extends State<BaseScreen> {
   int _selectIndex = 0;
+  bool isAdmin =
+      true; // Replace with your actual logic to determine if the user is an admin/provider
 
   static const List<Widget> _widgetOptions = <Widget>[
     HomeScreen(),
@@ -87,6 +91,18 @@ class _BaseScreenState extends State<BaseScreen> {
           });
         },
       ),
+      floatingActionButton: isAdmin
+          ? FloatingActionButton(
+              onPressed: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => UploadCourseScreen()),
+                );
+              },
+              child: Icon(Icons.add),
+              backgroundColor: kPrimaryColor,
+            )
+          : null,
     );
   }
 }
