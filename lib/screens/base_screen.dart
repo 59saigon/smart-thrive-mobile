@@ -4,6 +4,7 @@ import 'package:smart_thrive_mobile/constants/icons.dart';
 import 'package:smart_thrive_mobile/constants/size.dart';
 import 'package:smart_thrive_mobile/screens/dashboard.dart';
 import 'package:smart_thrive_mobile/screens/home_screen.dart';
+import 'package:smart_thrive_mobile/screens/my_learning_screen.dart';
 
 class BaseScreen extends StatefulWidget {
   const BaseScreen({Key? key}) : super(key: key);
@@ -17,7 +18,7 @@ class _BaseScreenState extends State<BaseScreen> {
 
   static const List<Widget> _widgetOptions = <Widget>[
     HomeScreen(),
-    HomeScreen(),
+    MyLearningScreen(),
     HomeScreen(),
     Dashboard(),
   ];
