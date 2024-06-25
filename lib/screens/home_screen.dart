@@ -2,9 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:smart_thrive_mobile/constants/color.dart';
 import 'package:smart_thrive_mobile/constants/size.dart';
-import 'package:smart_thrive_mobile/models/category.dart';
+import 'package:smart_thrive_mobile/models/package.dart';
 import 'package:smart_thrive_mobile/widgets/circle_button.dart';
-import 'package:smart_thrive_mobile/widgets/category_cart.dart';
+import 'package:smart_thrive_mobile/widgets/package_card.dart';
 import 'package:smart_thrive_mobile/widgets/search_field.dart';
 
 class HomeScreen extends StatefulWidget {
@@ -75,10 +75,10 @@ class Body extends StatelessWidget {
               crossAxisSpacing: 20,
               mainAxisSpacing: 24,
             ),
-            itemCount: categoryList.length,
+            itemCount: packageList.length,
             itemBuilder: (context, index) {
-              return CategoryCard(
-                category: categoryList[index],
+              return PackageCard(
+                package: packageList[index],
               );
             },
           ),

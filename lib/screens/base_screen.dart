@@ -6,7 +6,6 @@ import 'package:smart_thrive_mobile/screens/upload_course_screen.dart';
 import 'package:smart_thrive_mobile/screens/dashboard.dart';
 import 'package:smart_thrive_mobile/screens/home_screen.dart';
 import 'package:smart_thrive_mobile/screens/my_learning_screen.dart';
-import 'package:smart_thrive_mobile/screens/upload_course_screen.dart';
 
 class BaseScreen extends StatefulWidget {
   const BaseScreen({Key? key}) : super(key: key);

@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:smart_thrive_mobile/constants/size.dart';
-import 'package:smart_thrive_mobile/models/category.dart';
+import 'package:smart_thrive_mobile/models/package.dart';
 import 'package:smart_thrive_mobile/screens/course_screen.dart';
 
-class CategoryCard extends StatelessWidget {
-  final Category category;
-  const CategoryCard({Key? key, required this.category}) : super(key: key);
+class PackageCard extends StatelessWidget {
+  final Package package;
+  const PackageCard({Key? key, required this.package}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -34,16 +34,16 @@ class CategoryCard extends StatelessWidget {
             Align(
               alignment: Alignment.topRight,
               child: Image.asset(
-                category.thumbnail, // Corrected spelling here
+                package.thumbnail, // Corrected spelling here
                 height: kPackageCardImageSize,
               ),
             ),
             const SizedBox(
               height: 10,
             ),
-            Text(category.name),
+            Text(package.packageName),
             Text(
-              '${category.noOfCourses} courses',
+              '${package.quantityCourse} courses',
               style: Theme.of(context).textTheme.bodySmall,
             ),
           ],
