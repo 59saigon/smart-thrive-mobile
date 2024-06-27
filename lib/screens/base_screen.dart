@@ -19,9 +19,10 @@ class _BaseScreenState extends State<BaseScreen> {
   bool isAdmin =
       true; // Replace with your actual logic to determine if the user is an admin/provider
 
-  static const List<Widget> _widgetOptions = <Widget>[
+  static List<Widget> _widgetOptions = <Widget>[
     HomeScreen(),
     MyLearningScreen(),
+    SizedBox.shrink(), // Placeholder for the Upload Course screen
     HomeScreen(),
     Dashboard(),
   ];
@@ -61,6 +62,10 @@ class _BaseScreenState extends State<BaseScreen> {
             label: 'My Learning',
           ),
           BottomNavigationBarItem(
+            icon: SizedBox.shrink(), // Placeholder for the FloatingActionButton
+            label: '',
+          ),
+          BottomNavigationBarItem(
             activeIcon: Image.asset(
               icWishlist,
               height: kBottomNavigationBarItemSize,
@@ -85,11 +90,15 @@ class _BaseScreenState extends State<BaseScreen> {
         ],
         currentIndex: _selectIndex,
         onTap: (int index) {
-          setState(() {
-            _selectIndex = index;
-          });
+          if (index != 2) {
+            // Ensure that clicking the placeholder item doesn't change the index
+            setState(() {
+              _selectIndex = index;
+            });
+          }
         },
       ),
+      floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
       floatingActionButton: isAdmin
           ? FloatingActionButton(
               onPressed: () {
