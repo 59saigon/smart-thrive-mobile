@@ -1,26 +1,13 @@
-import 'dart:io';
-
 import 'package:flutter/material.dart';
-import 'package:http/http.dart' as http;
-import 'package:http/io_client.dart';
-import 'dart:convert';
+import 'package:smart_thrive_mobile/services/api_service.dart';
 import 'package:smart_thrive_mobile/components/my_button.dart';
 import 'package:smart_thrive_mobile/components/my_textfield.dart';
 import 'package:smart_thrive_mobile/components/square_tile.dart';
 
 class RegisterPage extends StatelessWidget {
-  RegisterPage({Key? key});
-
   final usernameController = TextEditingController();
   final passwordController = TextEditingController();
   final confirmPasswordController = TextEditingController();
-
-  http.Client createHttpClient() {
-    final ioClient = HttpClient()
-      ..badCertificateCallback =
-          (X509Certificate cert, String host, int port) => true;
-    return IOClient(ioClient);
-  }
 
   void signUserUp(BuildContext context) async {
     final username = usernameController.text;
@@ -46,43 +33,49 @@ class RegisterPage extends StatelessWidget {
       return;
     }
 
-    final response = await http.post(
-      Uri.parse('https://10.0.2.2:7999/api/User/register'),
-      headers: <String, String>{
-        'Content-Type': 'application/json; charset=UTF-8',
-      },
-      body: jsonEncode(<String, dynamic>{
-        'username': username,
-        'password': password,
-        // Add other fields as needed: fullName, email, dob, etc.
-      }),
-    );
+    try {
+      final response = await APIService.registerUser(username, password);
 
-    if (response.statusCode == 200) {
-      // Registration successful
-      showDialog(
-        context: context,
-        builder: (context) {
-          return AlertDialog(
-            title: Text('Success'),
-            content: Text('Registration successful.'),
-            actions: <Widget>[
-              TextButton(
-                onPressed: () => Navigator.of(context).pop(),
-                child: Text('OK'),
-              ),
-            ],
-          );
-        },
-      );
-    } else {
-      // Registration failed
+      if (response['isSuccess'] == true) {
+        showDialog(
+          context: context,
+          builder: (context) {
+            return AlertDialog(
+              title: Text('Success'),
+              content: Text('Registration successful.'),
+              actions: <Widget>[
+                TextButton(
+                  onPressed: () => Navigator.of(context).pop(),
+                  child: Text('OK'),
+                ),
+              ],
+            );
+          },
+        );
+      } else {
+        showDialog(
+          context: context,
+          builder: (context) {
+            return AlertDialog(
+              title: Text('Error'),
+              content: Text(response['message'] ?? 'Registration failed.'),
+              actions: <Widget>[
+                TextButton(
+                  onPressed: () => Navigator.of(context).pop(),
+                  child: Text('OK'),
+                ),
+              ],
+            );
+          },
+        );
+      }
+    } catch (e) {
       showDialog(
         context: context,
         builder: (context) {
           return AlertDialog(
             title: Text('Error'),
-            content: Text('Registration failed. Please try again later.'),
+            content: Text('Failed to register. Please try again later.'),
             actions: <Widget>[
               TextButton(
                 onPressed: () => Navigator.of(context).pop(),
@@ -108,16 +101,11 @@ class RegisterPage extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   const SizedBox(height: 25),
-
-                  // logo
                   const Icon(
                     Icons.lock,
                     size: 100,
                   ),
-
                   const SizedBox(height: 25),
-
-                  // let's create an account
                   Text(
                     'Let\'s create an account',
                     style: TextStyle(
@@ -125,44 +113,29 @@ class RegisterPage extends StatelessWidget {
                       fontSize: 16,
                     ),
                   ),
-
                   const SizedBox(height: 25),
-
-                  // username textfield
                   MyTextField(
                     controller: usernameController,
                     hintText: 'Username',
                     obscureText: false,
                   ),
-
                   const SizedBox(height: 10),
-
-                  // password textfield
                   MyTextField(
                     controller: passwordController,
                     hintText: 'Password',
                     obscureText: true,
                   ),
-
                   const SizedBox(height: 10),
-
-                  // confirm password textfield
                   MyTextField(
                     controller: confirmPasswordController,
                     hintText: 'Confirm Password',
                     obscureText: true,
                   ),
-
                   const SizedBox(height: 10),
-
-                  // sign up button
                   MyButton(
                     onTap: () => signUserUp(context),
                   ),
-
                   const SizedBox(height: 50),
-
-                  // or continue with
                   Row(
                     children: [
                       Expanded(
@@ -186,23 +159,15 @@ class RegisterPage extends StatelessWidget {
                       ),
                     ],
                   ),
-
                   const SizedBox(height: 50),
-
-                  // google sign in buttons (example)
                   const Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      // Google button
                       SquareTile(imagePath: 'lib/images/google.png'),
-
                       SizedBox(width: 25),
                     ],
                   ),
-
                   const SizedBox(height: 50),
-
-                  // Already have an account? Login now
                   Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
