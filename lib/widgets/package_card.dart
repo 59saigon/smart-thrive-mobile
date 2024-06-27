@@ -34,7 +34,7 @@ class PackageCard extends StatelessWidget {
             Align(
               alignment: Alignment.topRight,
               child: Image.asset(
-                package.thumbnail, // Corrected spelling here
+                package.thumbnail,
                 height: kPackageCardImageSize,
               ),
             ),

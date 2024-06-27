@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:smart_thrive_mobile/services/api_service.dart';
 import 'package:smart_thrive_mobile/constants/color.dart';
 import 'package:smart_thrive_mobile/constants/size.dart';
 import 'package:smart_thrive_mobile/models/package.dart';
@@ -15,6 +16,25 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
+  List<Package> packageList = [];
+
+  @override
+  void initState() {
+    super.initState();
+    fetchPackages();
+  }
+
+  Future<void> fetchPackages() async {
+    try {
+      List<Package> packages = await APIService.getPackages();
+      setState(() {
+        packageList = packages;
+      });
+    } catch (e) {
+      print('Failed to fetch packages: $e');
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return AnnotatedRegion<SystemUiOverlayStyle>(
@@ -23,9 +43,9 @@ class _HomeScreenState extends State<HomeScreen> {
         body: SafeArea(
           child: SingleChildScrollView(
             child: Column(
-              children: const [
-                AppBar(),
-                Body(),
+              children: [
+                const AppBar(),
+                Body(packageList: packageList),
               ],
             ),
           ),
@@ -36,7 +56,9 @@ class _HomeScreenState extends State<HomeScreen> {
 }
 
 class Body extends StatelessWidget {
-  const Body({Key? key}) : super(key: key);
+  final List<Package> packageList;
+
+  const Body({Key? key, required this.packageList}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -118,7 +140,7 @@ class AppBar extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Text(
-                'Hello,\nGood Morning',
+                'Welcome to Smart Thrive',
                 style: Theme.of(context).textTheme.titleLarge,
               ),
               CircleButton(
