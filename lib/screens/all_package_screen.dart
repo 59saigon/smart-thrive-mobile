@@ -1,34 +1,34 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:smart_thrive_mobile/models/course.dart';
-import 'package:smart_thrive_mobile/widgets/course_container.dart';
+import 'package:smart_thrive_mobile/models/package.dart';
+import 'package:smart_thrive_mobile/widgets/package_card.dart';
 import 'package:smart_thrive_mobile/widgets/custom_icon_button.dart';
 import 'package:smart_thrive_mobile/services/api_service.dart';
 
-class CourseScreen extends StatefulWidget {
-  const CourseScreen({Key? key}) : super(key: key);
+class AllPackageScreen extends StatefulWidget {
+  const AllPackageScreen({Key? key}) : super(key: key);
 
   @override
-  _CourseScreenState createState() => _CourseScreenState();
+  _AllPackageScreenState createState() => _AllPackageScreenState();
 }
 
-class _CourseScreenState extends State<CourseScreen> {
-  List<Course> courses = [];
+class _AllPackageScreenState extends State<AllPackageScreen> {
+  List<Package> packageList = [];
 
   @override
   void initState() {
     super.initState();
-    fetchCourses();
+    fetchPackages();
   }
 
-  Future<void> fetchCourses() async {
+  Future<void> fetchPackages() async {
     try {
-      List<Course> fetchedCourses = await APIService.getCourses();
+      List<Package> fetchedPackages = await APIService.getPackages();
       setState(() {
-        courses = fetchedCourses;
+        packageList = fetchedPackages;
       });
     } catch (e) {
-      print('Failed to fetch courses: $e');
+      print('Failed to fetch packages: $e');
       // Handle error as needed
     }
   }
@@ -50,7 +50,7 @@ class _CourseScreenState extends State<CourseScreen> {
                     children: [
                       Align(
                         child: Text(
-                          'Courses',
+                          'Packages',
                           style: Theme.of(context).textTheme.bodyLarge,
                         ),
                       ),
@@ -68,17 +68,20 @@ class _CourseScreenState extends State<CourseScreen> {
                 ),
                 const SizedBox(height: 15),
                 Expanded(
-                  child: ListView.separated(
-                    shrinkWrap: true,
-                    itemBuilder: (_, index) {
-                      return CourseContainer(
-                        course: courses[index],
+                  child: GridView.builder(
+                    gridDelegate:
+                        const SliverGridDelegateWithFixedCrossAxisCount(
+                      crossAxisCount: 2,
+                      childAspectRatio: 0.8,
+                      crossAxisSpacing: 20,
+                      mainAxisSpacing: 24,
+                    ),
+                    itemCount: packageList.length,
+                    itemBuilder: (context, index) {
+                      return PackageCard(
+                        package: packageList[index],
                       );
                     },
-                    separatorBuilder: (context, _) {
-                      return const SizedBox(height: 10);
-                    },
-                    itemCount: courses.length,
                   ),
                 ),
               ],

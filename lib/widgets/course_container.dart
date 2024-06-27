@@ -42,7 +42,7 @@ class CourseContainer extends StatelessWidget {
                 children: [
                   Text(course.courseName),
                   Text(
-                    'Description: ${course.description}',
+                    'Subject: ${course.subject}',
                     style: Theme.of(context).textTheme.bodyText2,
                   ),
                   const SizedBox(height: 5),

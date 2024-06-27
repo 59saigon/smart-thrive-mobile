@@ -7,6 +7,7 @@ import 'package:smart_thrive_mobile/models/package.dart';
 import 'package:smart_thrive_mobile/widgets/circle_button.dart';
 import 'package:smart_thrive_mobile/widgets/package_card.dart';
 import 'package:smart_thrive_mobile/widgets/search_field.dart';
+import 'package:smart_thrive_mobile/screens/all_package_screen.dart'; // Import the AllPackageScreen
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({Key? key}) : super(key: key);
@@ -62,6 +63,9 @@ class Body extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    // Display only the first 4 packages
+    List<Package> limitedPackages = packageList.take(4).toList();
+
     return Column(
       children: [
         Padding(
@@ -74,7 +78,13 @@ class Body extends StatelessWidget {
                 style: Theme.of(context).textTheme.bodyLarge,
               ),
               TextButton(
-                onPressed: () {},
+                onPressed: () {
+                  // Navigate to AllPackageScreen
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (context) => AllPackageScreen()),
+                  );
+                },
                 child: Text(
                   "See All",
                   style: Theme.of(context)
@@ -97,10 +107,10 @@ class Body extends StatelessWidget {
               crossAxisSpacing: 20,
               mainAxisSpacing: 24,
             ),
-            itemCount: packageList.length,
+            itemCount: limitedPackages.length,
             itemBuilder: (context, index) {
               return PackageCard(
-                package: packageList[index],
+                package: limitedPackages[index],
               );
             },
           ),
@@ -140,7 +150,7 @@ class AppBar extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Text(
-                'Welcome to Smart Thrive',
+                'What will you learn today?',
                 style: Theme.of(context).textTheme.titleLarge,
               ),
               CircleButton(
