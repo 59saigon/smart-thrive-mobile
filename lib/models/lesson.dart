@@ -43,10 +43,4 @@ List<Lesson> lessonList = [
     isPlaying: false,
     name: "FootBall 5",
   ),
-  Lesson(
-    duration: '90 min',
-    isCompleted: false,
-    isPlaying: false,
-    name: "FootBall 6",
-  )
 ];
