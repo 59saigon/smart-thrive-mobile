@@ -5,17 +5,20 @@ import 'package:smart_thrive_mobile/screens/details_screen.dart';
 
 class CourseContainer extends StatelessWidget {
   final Course course;
-  const CourseContainer({super.key, required this.course});
+
+  const CourseContainer({Key? key, required this.course}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-      onTap: () => Navigator.push(
+      onTap: () {
+        Navigator.push(
           context,
           MaterialPageRoute(
-              builder: (context) => DetailsScreen(
-                    title: course.name,
-                  ))),
+            builder: (context) => DetailsScreen(title: course.courseName),
+          ),
+        );
+      },
       child: Container(
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(10),
@@ -32,29 +35,24 @@ class CourseContainer extends StatelessWidget {
                 height: 60,
               ),
             ),
-            const SizedBox(
-              width: 10,
-            ),
+            const SizedBox(width: 10),
             Expanded(
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text(course.name),
+                  Text(course.courseName),
                   Text(
-                    'Author ${course.author}',
-                    style: Theme.of(context).textTheme.bodySmall,
+                    'Description: ${course.description}',
+                    style: Theme.of(context).textTheme.bodyText2,
                   ),
-                  const SizedBox(
-                    height: 5,
+                  const SizedBox(height: 5),
+                  Text(
+                    'Total Slots: ${course.totalSlot}',
+                    style: Theme.of(context).textTheme.bodyText2,
                   ),
-                  LinearProgressIndicator(
-                    value: course.completedPercentage,
-                    backgroundColor: Colors.black12,
-                    color: kPrimaryColor,
-                  )
                 ],
               ),
-            )
+            ),
           ],
         ),
       ),

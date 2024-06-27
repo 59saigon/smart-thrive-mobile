@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:http/http.dart' as http;
 import 'package:http/io_client.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
+import 'package:smart_thrive_mobile/models/course.dart';
 import 'package:smart_thrive_mobile/models/package.dart';
 
 class APIService {
@@ -108,6 +109,41 @@ class APIService {
     } catch (e) {
       print('Error occurred: $e');
       throw Exception('Failed to load packages');
+    } finally {
+      client.close();
+    }
+  }
+
+  static Future<List<Course>> getCourses() async {
+    final client = createHttpClient();
+    final token = await getToken();
+
+    if (token == null) {
+      throw Exception('No JWT token found');
+    }
+
+    try {
+      final response = await client.get(
+        Uri.parse('$baseUrl/Course/get-all'),
+        headers: <String, String>{
+          'Content-Type': 'application/json; charset=UTF-8',
+          'Authorization': 'Bearer $token',
+        },
+      );
+
+      print('Request URL: ${Uri.parse('$baseUrl/Course/get-all')}');
+      print('Response status code: ${response.statusCode}');
+      print('Response body: ${response.body}');
+
+      if (response.statusCode == 200) {
+        List<dynamic> data = jsonDecode(response.body)['results'];
+        return data.map((json) => Course.fromJson(json)).toList();
+      } else {
+        throw Exception('Failed to load courses');
+      }
+    } catch (e) {
+      print('Error occurred: $e');
+      throw Exception('Failed to load courses');
     } finally {
       client.close();
     }
