@@ -1,7 +1,12 @@
+import 'package:http/http.dart' as http;
+import 'package:http/io_client.dart';
+import 'dart:io';
+import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:smart_thrive_mobile/components/my_button.dart';
 import 'package:smart_thrive_mobile/components/my_textfield.dart';
 import 'package:smart_thrive_mobile/components/square_tile.dart';
+import 'package:smart_thrive_mobile/screens/base_screen.dart';
 
 class LoginPage extends StatelessWidget {
   LoginPage({super.key});
@@ -9,8 +14,86 @@ class LoginPage extends StatelessWidget {
   final usernameController = TextEditingController();
   final passwordController = TextEditingController();
 
-  //sign user in method
-  void signUserIn() {}
+  // Custom HttpClient to allow unsecure connections
+  http.Client createHttpClient() {
+    final ioClient = HttpClient()
+      ..badCertificateCallback =
+          (X509Certificate cert, String host, int port) => true;
+    return IOClient(ioClient);
+  }
+
+  // Sign user in method
+  void signUserIn(BuildContext context) async {
+    final username = usernameController.text;
+    final password = passwordController.text;
+
+    final client = createHttpClient();
+
+    final response = await client.post(
+      Uri.parse(
+          'https://10.0.2.2:7999/api/User/login'), // Use 10.0.2.2 for Android emulator
+      headers: <String, String>{
+        'Content-Type': 'application/json; charset=UTF-8',
+      },
+      body: jsonEncode(<String, String>{
+        'usernameOrEmail': username,
+        'password': password,
+      }),
+    );
+
+    if (response.statusCode == 200) {
+      final responseData = jsonDecode(response.body);
+
+      if (responseData['isSuccess'] == true) {
+        // Extract the JWT token from the response
+        final token = responseData['token'];
+
+        // Store the token securely (e.g., using Flutter Secure Storage)
+        // await storage.write(key: 'jwt_token', value: token);
+
+        // Navigate to BaseScreen
+        Navigator.pushReplacement(
+          context,
+          MaterialPageRoute(builder: (context) => const BaseScreen()),
+        );
+      } else {
+        // Handle login failure
+        showDialog(
+          context: context,
+          builder: (context) {
+            return AlertDialog(
+              title: const Text('Login Failed'),
+              content: Text(
+                  responseData['message'] ?? 'Invalid username or password'),
+              actions: <Widget>[
+                TextButton(
+                  onPressed: () => Navigator.of(context).pop(),
+                  child: const Text('OK'),
+                ),
+              ],
+            );
+          },
+        );
+      }
+    } else {
+      // Handle login failure
+      showDialog(
+        context: context,
+        builder: (context) {
+          return AlertDialog(
+            title: const Text('Login Failed'),
+            content: const Text('Invalid username or password'),
+            actions: <Widget>[
+              TextButton(
+                onPressed: () => Navigator.of(context).pop(),
+                child: const Text('OK'),
+              ),
+            ],
+          );
+        },
+      );
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -21,7 +104,7 @@ class LoginPage extends StatelessWidget {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              SizedBox(height: 50),
+              const SizedBox(height: 50),
 
               // logo
               const Icon(
@@ -77,7 +160,7 @@ class LoginPage extends StatelessWidget {
 
               // sign in button
               MyButton(
-                onTap: signUserIn,
+                onTap: () => signUserIn(context),
               ),
 
               const SizedBox(height: 50),
@@ -119,7 +202,7 @@ class LoginPage extends StatelessWidget {
                   // google button
                   SquareTile(imagePath: 'lib/images/google.png'),
 
-                  const SizedBox(width: 25),
+                  SizedBox(width: 25),
                 ],
               ),
 
