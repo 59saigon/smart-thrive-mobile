@@ -2,8 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:smart_thrive_mobile/constants/color.dart';
 import 'package:smart_thrive_mobile/constants/icons.dart';
 import 'package:smart_thrive_mobile/constants/size.dart';
+import 'package:smart_thrive_mobile/screens/upload_course_screen.dart';
 import 'package:smart_thrive_mobile/screens/dashboard.dart';
 import 'package:smart_thrive_mobile/screens/home_screen.dart';
+import 'package:smart_thrive_mobile/screens/my_learning_screen.dart';
 
 class BaseScreen extends StatefulWidget {
   const BaseScreen({Key? key}) : super(key: key);
@@ -14,10 +16,13 @@ class BaseScreen extends StatefulWidget {
 
 class _BaseScreenState extends State<BaseScreen> {
   int _selectIndex = 0;
+  bool isAdmin =
+      true; // Replace with your actual logic to determine if the user is an admin/provider
 
-  static const List<Widget> _widgetOptions = <Widget>[
+  static List<Widget> _widgetOptions = <Widget>[
     HomeScreen(),
-    HomeScreen(),
+    MyLearningScreen(),
+    SizedBox.shrink(), // Placeholder for the Upload Course screen
     HomeScreen(),
     Dashboard(),
   ];
@@ -31,7 +36,7 @@ class _BaseScreenState extends State<BaseScreen> {
       bottomNavigationBar: BottomNavigationBar(
         type: BottomNavigationBarType.fixed,
         selectedItemColor: kPrimaryColor,
-        backgroundColor: Colors.white,
+        backgroundColor: Color(0xffEEEEEE),
         elevation: 0,
         items: [
           BottomNavigationBarItem(
@@ -55,6 +60,10 @@ class _BaseScreenState extends State<BaseScreen> {
               height: kBottomNavigationBarItemSize,
             ),
             label: 'My Learning',
+          ),
+          BottomNavigationBarItem(
+            icon: SizedBox.shrink(), // Placeholder for the FloatingActionButton
+            label: '',
           ),
           BottomNavigationBarItem(
             activeIcon: Image.asset(
@@ -81,11 +90,27 @@ class _BaseScreenState extends State<BaseScreen> {
         ],
         currentIndex: _selectIndex,
         onTap: (int index) {
-          setState(() {
-            _selectIndex = index;
-          });
+          if (index != 2) {
+            // Ensure that clicking the placeholder item doesn't change the index
+            setState(() {
+              _selectIndex = index;
+            });
+          }
         },
       ),
+      floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
+      floatingActionButton: isAdmin
+          ? FloatingActionButton(
+              onPressed: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => UploadCourseScreen()),
+                );
+              },
+              child: Icon(Icons.add),
+              backgroundColor: kPrimaryColor,
+            )
+          : null,
     );
   }
 }

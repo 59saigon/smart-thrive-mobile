@@ -1,11 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:smart_thrive_mobile/services/api_service.dart';
 import 'package:smart_thrive_mobile/constants/color.dart';
 import 'package:smart_thrive_mobile/constants/size.dart';
-import 'package:smart_thrive_mobile/models/category.dart';
+import 'package:smart_thrive_mobile/models/package.dart';
 import 'package:smart_thrive_mobile/widgets/circle_button.dart';
-import 'package:smart_thrive_mobile/widgets/category_cart.dart';
+import 'package:smart_thrive_mobile/widgets/package_card.dart';
 import 'package:smart_thrive_mobile/widgets/search_field.dart';
+import 'package:smart_thrive_mobile/screens/all_package_screen.dart'; // Import the AllPackageScreen
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({Key? key}) : super(key: key);
@@ -15,6 +17,25 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
+  List<Package> packageList = [];
+
+  @override
+  void initState() {
+    super.initState();
+    fetchPackages();
+  }
+
+  Future<void> fetchPackages() async {
+    try {
+      List<Package> packages = await APIService.getPackages();
+      setState(() {
+        packageList = packages;
+      });
+    } catch (e) {
+      print('Failed to fetch packages: $e');
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return AnnotatedRegion<SystemUiOverlayStyle>(
@@ -23,9 +44,9 @@ class _HomeScreenState extends State<HomeScreen> {
         body: SafeArea(
           child: SingleChildScrollView(
             child: Column(
-              children: const [
-                AppBar(),
-                Body(),
+              children: [
+                const AppBar(),
+                Body(packageList: packageList),
               ],
             ),
           ),
@@ -36,10 +57,15 @@ class _HomeScreenState extends State<HomeScreen> {
 }
 
 class Body extends StatelessWidget {
-  const Body({Key? key}) : super(key: key);
+  final List<Package> packageList;
+
+  const Body({Key? key, required this.packageList}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
+    // Display only the first 4 packages
+    List<Package> limitedPackages = packageList.take(4).toList();
+
     return Column(
       children: [
         Padding(
@@ -52,7 +78,13 @@ class Body extends StatelessWidget {
                 style: Theme.of(context).textTheme.bodyLarge,
               ),
               TextButton(
-                onPressed: () {},
+                onPressed: () {
+                  // Navigate to AllPackageScreen
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (context) => AllPackageScreen()),
+                  );
+                },
                 child: Text(
                   "See All",
                   style: Theme.of(context)
@@ -75,10 +107,10 @@ class Body extends StatelessWidget {
               crossAxisSpacing: 20,
               mainAxisSpacing: 24,
             ),
-            itemCount: categoryList.length,
+            itemCount: limitedPackages.length,
             itemBuilder: (context, index) {
-              return CategoryCard(
-                category: categoryList[index],
+              return PackageCard(
+                package: limitedPackages[index],
               );
             },
           ),
@@ -104,8 +136,8 @@ class AppBar extends StatelessWidget {
         ),
         gradient: LinearGradient(
           colors: [
-            Color(0xffffb606),
-            Color(0xffffb606),
+            Color(0xff886ff2),
+            Color(0xff6849ef),
           ],
           begin: Alignment.topLeft,
           end: Alignment.bottomRight,
@@ -118,7 +150,7 @@ class AppBar extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Text(
-                'Hello,\nGood Morning',
+                'What will you learn today?',
                 style: Theme.of(context).textTheme.titleLarge,
               ),
               CircleButton(

@@ -1,13 +1,31 @@
 class Course {
-  String name;
-  double completedPercentage;
-  String author;
-  String thumnail;
+  String courseName;
+  String description;
+  String thumbnail;
+  String? subject;
+  String? provider;
+  int? totalSlot;
+  double? price;
 
   Course({
-    required this.author,
-    required this.completedPercentage,
-    required this.name,
-    required this.thumnail,
+    required this.courseName,
+    required this.description,
+    required this.thumbnail,
+    this.subject,
+    this.provider,
+    this.totalSlot,
+    this.price,
   });
+
+  factory Course.fromJson(Map<String, dynamic> json) {
+    return Course(
+      courseName: json['courseName'] ?? '',
+      description: json['description'] ?? '',
+      thumbnail: 'assets/icons/water_fun_icon.jpg',
+      subject: json['subject'] ?? '',
+      provider: json['provider'] ?? '',
+      totalSlot: json['totalSlot'] ?? 0,
+      price: (json['price'] ?? 0.0).toDouble(),
+    );
+  }
 }

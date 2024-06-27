@@ -35,7 +35,7 @@ class CategoryCard extends StatelessWidget {
               alignment: Alignment.topRight,
               child: Image.asset(
                 category.thumbnail, // Corrected spelling here
-                height: kCategoryCardImageSize,
+                height: kPackageCardImageSize,
               ),
             ),
             const SizedBox(

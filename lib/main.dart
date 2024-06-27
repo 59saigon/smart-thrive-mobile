@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:smart_thrive_mobile/screens/base_screen.dart';
+import 'package:smart_thrive_mobile/screens/login_screen.dart';
 
 void main() {
   runApp(const MyApp());
@@ -38,7 +39,7 @@ class MyApp extends StatelessWidget {
           ),
         ),
       ),
-      home: const BaseScreen(),
+      home: LoginPage(),
     );
   }
 }
