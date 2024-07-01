@@ -2,25 +2,26 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:smart_thrive_mobile/constants/color.dart';
 import 'package:smart_thrive_mobile/constants/icons.dart';
+import 'package:smart_thrive_mobile/models/course.dart';
 import 'package:smart_thrive_mobile/models/lesson.dart';
 import 'package:smart_thrive_mobile/widgets/custom_icon_button.dart';
 import 'package:smart_thrive_mobile/widgets/custom_video_player.dart';
 import 'package:smart_thrive_mobile/widgets/lesson_card.dart';
 
 class DetailsScreen extends StatefulWidget {
-  final String title;
-  const DetailsScreen({super.key, required this.title});
+  final Course course;
+  const DetailsScreen({Key? key, required this.course}) : super(key: key);
 
   @override
   State<DetailsScreen> createState() => _DetailsScreenState();
 }
 
 class _DetailsScreenState extends State<DetailsScreen> {
-  int _selectedTag = 0;
+  int _selectedTab = 0;
 
   void changeTab(int index) {
     setState(() {
-      _selectedTag = index;
+      _selectedTab = index;
     });
   }
 
@@ -41,8 +42,8 @@ class _DetailsScreenState extends State<DetailsScreen> {
                     children: [
                       Align(
                         child: Text(
-                          'FootBall',
-                          style: Theme.of(context).textTheme.displayMedium,
+                          widget.course.courseName,
+                          style: Theme.of(context).textTheme.bodyLarge,
                         ),
                       ),
                       Positioned(
@@ -57,56 +58,46 @@ class _DetailsScreenState extends State<DetailsScreen> {
                     ],
                   ),
                 ),
-                const SizedBox(
-                  height: 25,
-                ),
+                const SizedBox(height: 25),
                 const CustomVideoPlayer(),
-                const SizedBox(
-                  height: 15,
-                ),
-                const Text(
-                  "FootBall For Children",
-                  style: TextStyle(
+                const SizedBox(height: 15),
+                Text(
+                  'Location: ${widget.course.location ?? "Unknown"}',
+                  style: const TextStyle(
                     fontWeight: FontWeight.w700,
                     fontSize: 18,
                   ),
                 ),
-                const SizedBox(
-                  height: 3,
-                ),
-                const Text(
-                  "Created by VietNguyen",
-                  style: TextStyle(
+                const SizedBox(height: 3),
+                Text(
+                  'Provider: ${widget.course.provider ?? "Unknown"}',
+                  style: const TextStyle(
                     fontWeight: FontWeight.w500,
                     fontSize: 16,
                   ),
                 ),
-                const SizedBox(
-                  height: 3,
-                ),
+                const SizedBox(height: 3),
                 Row(
                   children: [
                     Image.asset(
                       icFeaturedOutlined,
                       height: 20,
                     ),
-                    const Text(
-                      " 4.8",
-                      style: TextStyle(
+                    Text(
+                      ' ${widget.course.totalSlot ?? 0} Slots',
+                      style: const TextStyle(
                         color: Colors.grey,
                         fontWeight: FontWeight.w500,
                         fontSize: 16,
                       ),
                     ),
-                    const SizedBox(
-                      width: 15,
-                    ),
+                    const SizedBox(width: 15),
                     const Icon(
                       Icons.timer,
                       color: Colors.grey,
                     ),
                     const Text(
-                      " 72 Hours",
+                      ' 72 Hours',
                       style: TextStyle(
                         color: Colors.grey,
                         fontWeight: FontWeight.w500,
@@ -114,9 +105,9 @@ class _DetailsScreenState extends State<DetailsScreen> {
                       ),
                     ),
                     const Spacer(),
-                    const Text(
-                      " \$40",
-                      style: TextStyle(
+                    Text(
+                      ' \$${widget.course.price?.toStringAsFixed(2)}',
+                      style: const TextStyle(
                         color: kPrimaryColor,
                         fontWeight: FontWeight.w700,
                         fontSize: 20,
@@ -124,14 +115,14 @@ class _DetailsScreenState extends State<DetailsScreen> {
                     ),
                   ],
                 ),
-                const SizedBox(
-                  height: 15,
-                ),
+                const SizedBox(height: 15),
                 CustomTabView(
-                  index: _selectedTag,
+                  index: _selectedTab,
                   changeTab: changeTab,
                 ),
-                _selectedTag == 0 ? const PlayList() : const Description(),
+                _selectedTab == 0
+                    ? const PlayList()
+                    : CourseDescription(course: widget.course),
               ],
             ),
           ),
@@ -159,31 +150,31 @@ class PlayList extends StatelessWidget {
   Widget build(BuildContext context) {
     return Expanded(
       child: ListView.separated(
-        separatorBuilder: (_, __) {
-          return const SizedBox(
-            height: 20,
-          );
-        },
+        separatorBuilder: (_, __) => const SizedBox(height: 20),
         padding: const EdgeInsets.only(top: 20, bottom: 40),
         shrinkWrap: true,
         itemCount: lessonList.length,
-        itemBuilder: (_, index) {
-          return LessonCard(lesson: lessonList[index]);
-        },
+        itemBuilder: (_, index) => LessonCard(lesson: lessonList[index]),
       ),
     );
   }
 }
 
-class Description extends StatelessWidget {
-  const Description({Key? key}) : super(key: key);
+class CourseDescription extends StatelessWidget {
+  final Course course;
+
+  const CourseDescription({Key? key, required this.course}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    return const Padding(
-      padding: EdgeInsets.only(top: 20.0),
+    return Padding(
+      padding: const EdgeInsets.only(top: 20.0),
       child: Text(
-          "Football, commonly known as soccer in some parts of the world, is one of the most popular and widely played sports globally. It is a team sport that involves two teams of eleven players each, competing to score goals by getting a spherical ball into the opposing team's goal. The game is played on a rectangular field with a goal at each end."),
+        'Description: ${course.description}',
+        style: const TextStyle(
+          fontSize: 16,
+        ),
+      ),
     );
   }
 }
@@ -199,29 +190,7 @@ class CustomTabView extends StatefulWidget {
 }
 
 class _CustomTabViewState extends State<CustomTabView> {
-  final List<String> _tags = ["Playlist (22)", "Description"];
-
-  Widget _buildTags(int index) {
-    return GestureDetector(
-      onTap: () {
-        widget.changeTab(index);
-      },
-      child: Container(
-        padding: EdgeInsets.symmetric(
-            horizontal: MediaQuery.of(context).size.width * .08, vertical: 15),
-        decoration: BoxDecoration(
-          color: widget.index == index ? kPrimaryColor : null,
-          borderRadius: BorderRadius.circular(10),
-        ),
-        child: Text(
-          _tags[index],
-          style: TextStyle(
-            color: widget.index != index ? Colors.black : Colors.white,
-          ),
-        ),
-      ),
-    );
-  }
+  final List<String> _tabs = ['Playlist', 'Description'];
 
   @override
   Widget build(BuildContext context) {
@@ -233,11 +202,30 @@ class _CustomTabViewState extends State<CustomTabView> {
         color: Colors.grey.shade200,
       ),
       child: Row(
-        children: _tags
+        children: _tabs
             .asMap()
             .entries
-            .map((MapEntry map) => _buildTags(map.key))
+            .map((entry) => _buildTab(entry.key, entry.value))
             .toList(),
+      ),
+    );
+  }
+
+  Widget _buildTab(int index, String title) {
+    return GestureDetector(
+      onTap: () => widget.changeTab(index),
+      child: Container(
+        padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+        decoration: BoxDecoration(
+          color: widget.index == index ? kPrimaryColor : null,
+          borderRadius: BorderRadius.circular(10),
+        ),
+        child: Text(
+          title,
+          style: TextStyle(
+            color: widget.index == index ? Colors.white : Colors.black,
+          ),
+        ),
       ),
     );
   }
@@ -254,9 +242,7 @@ class _EnrollBottomSheetState extends State<EnrollBottomSheet> {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.symmetric(
-        horizontal: 30.0,
-      ),
+      padding: const EdgeInsets.symmetric(horizontal: 30.0),
       child: Row(
         children: [
           CustomIconButton(
@@ -269,9 +255,7 @@ class _EnrollBottomSheetState extends State<EnrollBottomSheet> {
               size: 30,
             ),
           ),
-          const SizedBox(
-            width: 20,
-          ),
+          const SizedBox(width: 20),
           Expanded(
             child: CustomIconButton(
               onTap: () {},
@@ -279,14 +263,14 @@ class _EnrollBottomSheetState extends State<EnrollBottomSheet> {
               height: 45,
               width: 45,
               child: const Text(
-                "Enroll Now",
+                'Enroll Now',
                 style: TextStyle(
                   color: Colors.white,
                   fontSize: 18,
                 ),
               ),
             ),
-          )
+          ),
         ],
       ),
     );
@@ -305,7 +289,7 @@ class CustomIconButton extends StatelessWidget {
     required this.child,
     required this.height,
     required this.width,
-    this.color = Colors.white,
+    this.color,
     required this.onTap,
   }) : super(key: key);
 
@@ -320,14 +304,14 @@ class CustomIconButton extends StatelessWidget {
       height: height,
       width: width,
       decoration: BoxDecoration(
-        color: color,
+        color: color ?? Colors.white,
         borderRadius: BorderRadius.circular(12),
         boxShadow: [
           BoxShadow(
             color: Colors.black.withOpacity(.1),
             blurRadius: 2.0,
             spreadRadius: .05,
-          ), //BoxShadow
+          ),
         ],
       ),
     );

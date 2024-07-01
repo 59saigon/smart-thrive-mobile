@@ -6,6 +6,7 @@ class Course {
   String? provider;
   int? totalSlot;
   double? price;
+  String? location;
 
   Course({
     required this.courseName,
@@ -15,6 +16,7 @@ class Course {
     this.provider,
     this.totalSlot,
     this.price,
+    this.location,
   });
 
   factory Course.fromJson(Map<String, dynamic> json) {
@@ -26,6 +28,7 @@ class Course {
       provider: json['provider'] ?? '',
       totalSlot: json['totalSlot'] ?? 0,
       price: (json['price'] ?? 0.0).toDouble(),
+      location: json['location'] ?? '',
     );
   }
 }

@@ -15,7 +15,7 @@ class CourseContainer extends StatelessWidget {
         Navigator.push(
           context,
           MaterialPageRoute(
-            builder: (context) => DetailsScreen(title: course.courseName),
+            builder: (context) => DetailsScreen(course: course),
           ),
         );
       },
