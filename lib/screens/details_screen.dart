@@ -79,8 +79,8 @@ class _DetailsScreenState extends State<DetailsScreen> {
                 Text(
                   'Provider: ${widget.course.provider ?? "Unknown"}',
                   style: const TextStyle(
-                    fontWeight: FontWeight.w500,
-                    fontSize: 16,
+                    fontWeight: FontWeight.w700,
+                    fontSize: 18,
                   ),
                 ),
                 const SizedBox(height: 3),
@@ -128,7 +128,7 @@ class _DetailsScreenState extends State<DetailsScreen> {
                   changeTab: changeTab,
                 ),
                 _selectedTab == 0
-                    ? const PlayList()
+                    ? const Session()
                     : CourseDescription(course: widget.course),
               ],
             ),
@@ -150,8 +150,8 @@ class _DetailsScreenState extends State<DetailsScreen> {
   }
 }
 
-class PlayList extends StatelessWidget {
-  const PlayList({Key? key}) : super(key: key);
+class Session extends StatelessWidget {
+  const Session({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -197,7 +197,7 @@ class CustomTabView extends StatefulWidget {
 }
 
 class _CustomTabViewState extends State<CustomTabView> {
-  final List<String> _tabs = ['Playlist', 'Description'];
+  final List<String> _tabs = ['Session', 'Description'];
 
   @override
   Widget build(BuildContext context) {
@@ -222,7 +222,7 @@ class _CustomTabViewState extends State<CustomTabView> {
     return GestureDetector(
       onTap: () => widget.changeTab(index),
       child: Container(
-        padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+        padding: const EdgeInsets.symmetric(horizontal: 50, vertical: 10),
         decoration: BoxDecoration(
           color: widget.index == index ? kPrimaryColor : null,
           borderRadius: BorderRadius.circular(10),

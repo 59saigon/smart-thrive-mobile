@@ -37,7 +37,7 @@ class CourseCard extends StatelessWidget {
               children: [
                 Expanded(
                   child: Align(
-                    alignment: Alignment.topRight,
+                    alignment: Alignment.topCenter,
                     child: Image.asset(
                       course.thumbnail,
                       height: kPackageCardImageSize,
@@ -47,7 +47,7 @@ class CourseCard extends StatelessWidget {
                 const SizedBox(height: 10),
                 Text(
                   course.courseName,
-                  style: Theme.of(context).textTheme.subtitle1,
+                  style: Theme.of(context).textTheme.titleMedium,
                 ),
                 Text(
                   'Provider: ${course.provider}',
@@ -55,26 +55,26 @@ class CourseCard extends StatelessWidget {
                 ),
               ],
             ),
-            Positioned(
-              bottom: 0,
-              right: 0,
-              child: Container(
-                padding:
-                    const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
-                decoration: BoxDecoration(
-                  color: const Color(0xff8a72f1),
-                  borderRadius: BorderRadius.circular(10),
-                ),
-                child: Text(
-                  '\$${course.price?.toStringAsFixed(0)}',
-                  style: const TextStyle(
-                    fontWeight: FontWeight.bold,
-                    fontSize: 16,
-                    color: Colors.white,
-                  ),
-                ),
-              ),
-            ),
+            // Positioned(
+            //   bottom: 0,
+            //   right: 0,
+            //   child: Container(
+            //     padding:
+            //         const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
+            //     decoration: BoxDecoration(
+            //       color: const Color(0xff8a72f1),
+            //       borderRadius: BorderRadius.circular(10),
+            //     ),
+            //     child: Text(
+            //       '\$${course.price?.toStringAsFixed(0)}',
+            //       style: const TextStyle(
+            //         fontWeight: FontWeight.bold,
+            //         fontSize: 16,
+            //         color: Colors.white,
+            //       ),
+            //     ),
+            //   ),
+            // ),
           ],
         ),
       ),

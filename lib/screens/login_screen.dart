@@ -18,7 +18,7 @@ class LoginPage extends StatelessWidget {
       final response = await APIService.loginUser(username, password);
 
       if (response['isSuccess'] == true) {
-        final token = response['token']; // Handle JWT token as needed
+        final token = response['token'];
 
         Navigator.pushReplacement(
           context,

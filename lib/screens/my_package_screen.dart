@@ -25,8 +25,7 @@ class _MyPackageScreenState extends State<MyPackageScreen> {
 
   Future<void> fetchCourses() async {
     try {
-      List<Course> courses =
-          await APIService.getCourses(); // Replace with your fetch method
+      List<Course> courses = await APIService.getCourses();
       setState(() {
         courseList = courses;
       });
