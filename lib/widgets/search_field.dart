@@ -19,7 +19,7 @@ class SearchTextField extends StatelessWidget {
           size: 26,
         ),
         floatingLabelBehavior: FloatingLabelBehavior.never,
-        labelText: "Search your package",
+        labelText: "Search course",
         labelStyle: const TextStyle(color: Colors.grey),
         filled: true,
         fillColor: Colors.white,

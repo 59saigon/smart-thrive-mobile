@@ -6,7 +6,8 @@ import 'package:smart_thrive_mobile/models/course.dart';
 import 'package:smart_thrive_mobile/models/lesson.dart';
 import 'package:smart_thrive_mobile/widgets/custom_icon_button.dart';
 import 'package:smart_thrive_mobile/widgets/custom_video_player.dart';
-import 'package:smart_thrive_mobile/widgets/lesson_card.dart';
+import 'package:intl/intl.dart';
+import 'package:smart_thrive_mobile/widgets/lesson_card.dart'; // Import for date formatting
 
 class DetailsScreen extends StatefulWidget {
   final Course course;
@@ -27,6 +28,12 @@ class _DetailsScreenState extends State<DetailsScreen> {
 
   @override
   Widget build(BuildContext context) {
+    // Calculate the number of days between start and end date
+    int numberOfDays = widget.course.startDate != null &&
+            widget.course.endDate != null
+        ? widget.course.endDate!.difference(widget.course.startDate!).inDays + 1
+        : 0;
+
     return AnnotatedRegion<SystemUiOverlayStyle>(
       value: SystemUiOverlayStyle.dark,
       child: Scaffold(
@@ -43,7 +50,7 @@ class _DetailsScreenState extends State<DetailsScreen> {
                       Align(
                         child: Text(
                           widget.course.courseName,
-                          style: Theme.of(context).textTheme.bodyLarge,
+                          style: Theme.of(context).textTheme.bodyText1,
                         ),
                       ),
                       Positioned(
@@ -84,7 +91,7 @@ class _DetailsScreenState extends State<DetailsScreen> {
                       height: 20,
                     ),
                     Text(
-                      ' ${widget.course.totalSlot ?? 0} Slots',
+                      ' ${widget.course.session ?? 0} Slots',
                       style: const TextStyle(
                         color: Colors.grey,
                         fontWeight: FontWeight.w500,
@@ -93,12 +100,12 @@ class _DetailsScreenState extends State<DetailsScreen> {
                     ),
                     const SizedBox(width: 15),
                     const Icon(
-                      Icons.timer,
+                      Icons.calendar_today,
                       color: Colors.grey,
                     ),
-                    const Text(
-                      ' 72 Hours',
-                      style: TextStyle(
+                    Text(
+                      ' $numberOfDays Days',
+                      style: const TextStyle(
                         color: Colors.grey,
                         fontWeight: FontWeight.w500,
                         fontSize: 16,
@@ -263,7 +270,7 @@ class _EnrollBottomSheetState extends State<EnrollBottomSheet> {
               height: 45,
               width: 45,
               child: const Text(
-                'Enroll Now',
+                'Add to package',
                 style: TextStyle(
                   color: Colors.white,
                   fontSize: 18,

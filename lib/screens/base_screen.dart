@@ -5,7 +5,7 @@ import 'package:smart_thrive_mobile/constants/size.dart';
 import 'package:smart_thrive_mobile/screens/upload_course_screen.dart';
 import 'package:smart_thrive_mobile/screens/dashboard.dart';
 import 'package:smart_thrive_mobile/screens/home_screen.dart';
-import 'package:smart_thrive_mobile/screens/my_learning_screen.dart';
+import 'package:smart_thrive_mobile/screens/my_package_screen.dart';
 
 class BaseScreen extends StatefulWidget {
   const BaseScreen({Key? key}) : super(key: key);
@@ -21,7 +21,7 @@ class _BaseScreenState extends State<BaseScreen> {
 
   static List<Widget> _widgetOptions = <Widget>[
     HomeScreen(),
-    MyLearningScreen(),
+    MyPackageScreen(),
     SizedBox.shrink(), // Placeholder for the Upload Course screen
     HomeScreen(),
     Dashboard(),
@@ -59,7 +59,7 @@ class _BaseScreenState extends State<BaseScreen> {
               icLearningOutlined,
               height: kBottomNavigationBarItemSize,
             ),
-            label: 'My Learning',
+            label: 'My Package',
           ),
           BottomNavigationBarItem(
             icon: SizedBox.shrink(), // Placeholder for the FloatingActionButton
