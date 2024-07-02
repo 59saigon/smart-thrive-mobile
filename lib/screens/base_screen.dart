@@ -15,102 +15,77 @@ class BaseScreen extends StatefulWidget {
 }
 
 class _BaseScreenState extends State<BaseScreen> {
-  int _selectIndex = 0;
-  bool isAdmin =
-      true; // Replace with your actual logic to determine if the user is an admin/provider
+  int _selectedIndex = 0;
 
-  static List<Widget> _widgetOptions = <Widget>[
+  static const List<Widget> _widgetOptions = <Widget>[
     HomeScreen(),
     MyPackageScreen(),
-    SizedBox.shrink(), // Placeholder for the Upload Course screen
     HomeScreen(),
     Dashboard(),
   ];
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: Center(
-        child: _widgetOptions.elementAt(_selectIndex),
+        child: _widgetOptions.elementAt(_selectedIndex),
       ),
       bottomNavigationBar: BottomNavigationBar(
-        type: BottomNavigationBarType.fixed,
-        selectedItemColor: kPrimaryColor,
-        backgroundColor: Color(0xffEEEEEE),
-        elevation: 0,
-        items: [
-          BottomNavigationBarItem(
-            activeIcon: Image.asset(
-              icFeatured,
-              height: kBottomNavigationBarItemSize,
+          type: BottomNavigationBarType.fixed,
+          selectedItemColor: kPrimaryColor,
+          backgroundColor: Colors.white,
+          elevation: 0,
+          items: [
+            BottomNavigationBarItem(
+              activeIcon: Image.asset(
+                icFeatured,
+                height: kBottomNavigationBarItemSize,
+              ),
+              icon: Image.asset(
+                icFeaturedOutlined,
+                height: kBottomNavigationBarItemSize,
+              ),
+              label: "Courses",
             ),
-            icon: Image.asset(
-              icFeaturedOutlined,
-              height: kBottomNavigationBarItemSize,
+            BottomNavigationBarItem(
+              activeIcon: Image.asset(
+                icLearning,
+                height: kBottomNavigationBarItemSize,
+              ),
+              icon: Image.asset(
+                icLearningOutlined,
+                height: kBottomNavigationBarItemSize,
+              ),
+              label: "My Package",
             ),
-            label: 'Home',
-          ),
-          BottomNavigationBarItem(
-            activeIcon: Image.asset(
-              icLearning,
-              height: kBottomNavigationBarItemSize,
+            BottomNavigationBarItem(
+              activeIcon: Image.asset(
+                icWishlist,
+                height: kBottomNavigationBarItemSize,
+              ),
+              icon: Image.asset(
+                icWishlistOutlined,
+                height: kBottomNavigationBarItemSize,
+              ),
+              label: "Wishlist",
             ),
-            icon: Image.asset(
-              icLearningOutlined,
-              height: kBottomNavigationBarItemSize,
+            BottomNavigationBarItem(
+              activeIcon: Image.asset(
+                icSetting,
+                height: kBottomNavigationBarItemSize,
+              ),
+              icon: Image.asset(
+                icSettingOutlined,
+                height: kBottomNavigationBarItemSize,
+              ),
+              label: "Settings",
             ),
-            label: 'My Package',
-          ),
-          BottomNavigationBarItem(
-            icon: SizedBox.shrink(), // Placeholder for the FloatingActionButton
-            label: '',
-          ),
-          BottomNavigationBarItem(
-            activeIcon: Image.asset(
-              icWishlist,
-              height: kBottomNavigationBarItemSize,
-            ),
-            icon: Image.asset(
-              icWishlistOutlined,
-              height: kBottomNavigationBarItemSize,
-            ),
-            label: 'WishList',
-          ),
-          BottomNavigationBarItem(
-            activeIcon: Image.asset(
-              icSetting,
-              height: kBottomNavigationBarItemSize,
-            ),
-            icon: Image.asset(
-              icSettingOutlined,
-              height: kBottomNavigationBarItemSize,
-            ),
-            label: 'Settings',
-          ),
-        ],
-        currentIndex: _selectIndex,
-        onTap: (int index) {
-          if (index != 2) {
-            // Ensure that clicking the placeholder item doesn't change the index
+          ],
+          currentIndex: _selectedIndex,
+          onTap: (int index) {
             setState(() {
-              _selectIndex = index;
+              _selectedIndex = index;
             });
-          }
-        },
-      ),
-      floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
-      floatingActionButton: isAdmin
-          ? FloatingActionButton(
-              onPressed: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(builder: (context) => UploadCourseScreen()),
-                );
-              },
-              child: Icon(Icons.add),
-              backgroundColor: kPrimaryColor,
-            )
-          : null,
+          }),
     );
   }
 }
