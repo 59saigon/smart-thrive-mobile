@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:smart_thrive_mobile/constants/color.dart';
 import 'package:smart_thrive_mobile/models/package.dart';
 import 'package:smart_thrive_mobile/screens/course_screen.dart';
 import 'package:smart_thrive_mobile/widgets/update_package_dialog.dart';
@@ -44,7 +43,7 @@ class PackageContainer extends StatelessWidget {
                   Text(package.packageName),
                   Text(
                     'Quantity Course: ${package.quantityCourse}',
-                    style: Theme.of(context).textTheme.bodyText2,
+                    style: Theme.of(context).textTheme.bodyMedium,
                   ),
                 ],
               ),

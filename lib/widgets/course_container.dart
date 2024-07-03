@@ -43,12 +43,12 @@ class CourseContainer extends StatelessWidget {
                   Text(course.courseName),
                   Text(
                     'Subject: ${course.subject}',
-                    style: Theme.of(context).textTheme.bodyText2,
+                    style: Theme.of(context).textTheme.bodyMedium,
                   ),
                   const SizedBox(height: 5),
                   Text(
                     'Total Slots: ${course.totalSlot}',
-                    style: Theme.of(context).textTheme.bodyText2,
+                    style: Theme.of(context).textTheme.bodyMedium,
                   ),
                 ],
               ),

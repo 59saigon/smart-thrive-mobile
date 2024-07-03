@@ -6,7 +6,6 @@ import 'package:smart_thrive_mobile/services/api_service.dart';
 import 'package:smart_thrive_mobile/constants/color.dart';
 import 'package:smart_thrive_mobile/widgets/circle_button.dart';
 import 'package:smart_thrive_mobile/widgets/course_card.dart';
-import 'package:smart_thrive_mobile/screens/all_package_screen.dart';
 import 'package:smart_thrive_mobile/widgets/search_field.dart'; // Import the AllPackageScreen
 
 class HomeScreen extends StatefulWidget {
@@ -81,7 +80,8 @@ class Body extends StatelessWidget {
                 onPressed: () {
                   Navigator.push(
                     context,
-                    MaterialPageRoute(builder: (context) => AllCourseScreen()),
+                    MaterialPageRoute(
+                        builder: (context) => const AllCourseScreen()),
                   );
                 },
                 child: Text(

@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:smart_thrive_mobile/constants/color.dart';
 import 'package:smart_thrive_mobile/constants/icons.dart';
 import 'package:smart_thrive_mobile/constants/size.dart';
-import 'package:smart_thrive_mobile/screens/upload_course_screen.dart';
 import 'package:smart_thrive_mobile/screens/dashboard.dart';
 import 'package:smart_thrive_mobile/screens/home_screen.dart';
 import 'package:smart_thrive_mobile/screens/my_package_screen.dart';
@@ -21,16 +20,16 @@ class BaseScreen extends StatefulWidget {
 
 class _BaseScreenState extends State<BaseScreen> {
   int _selectedIndex = 0;
-  late List<Widget> _widgetOptions; // Declare _widgetOptions here
+  late List<Widget> _widgetOptions;
 
   @override
   void initState() {
     super.initState();
     _widgetOptions = [
-      HomeScreen(),
-      MyPackageScreen(studentId: widget.studentId), // Use widget.studentId here
-      HomeScreen(),
-      Dashboard(),
+      const HomeScreen(),
+      MyPackageScreen(studentId: widget.studentId),
+      const HomeScreen(),
+      const Dashboard(),
     ];
   }
 

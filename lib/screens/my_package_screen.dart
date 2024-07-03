@@ -143,7 +143,7 @@ class AppBar extends StatelessWidget {
             children: [
               Text(
                 'Student Package',
-                style: Theme.of(context).textTheme.headline6,
+                style: Theme.of(context).textTheme.titleLarge,
               ),
               CircleButton(
                 icon: Icons.notifications,
