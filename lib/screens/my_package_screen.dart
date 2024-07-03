@@ -9,7 +9,9 @@ import 'package:smart_thrive_mobile/widgets/package_container.dart';
 import 'package:smart_thrive_mobile/widgets/search_field.dart';
 
 class MyPackageScreen extends StatefulWidget {
-  const MyPackageScreen({Key? key}) : super(key: key);
+  final String? studentId;
+
+  const MyPackageScreen({Key? key, this.studentId}) : super(key: key);
 
   @override
   State<MyPackageScreen> createState() => _MyPackageScreenState();
@@ -26,12 +28,15 @@ class _MyPackageScreenState extends State<MyPackageScreen> {
 
   Future<void> fetchPackages() async {
     try {
-      String studentId = '6e153618-1503-401c-84f8-f74da78d4521';
-      List<Package> packages =
-          await APIService.getPackagesByStudentId(studentId);
-      setState(() {
-        packageList = packages;
-      });
+      if (widget.studentId != null) {
+        List<Package> packages =
+            await APIService.getPackagesByStudentId(widget.studentId!);
+        setState(() {
+          packageList = packages;
+        });
+      } else {
+        // Handle case where studentId is null
+      }
     } catch (e) {
       print('Failed to fetch packages: $e');
     }

@@ -5,8 +5,10 @@ import 'package:smart_thrive_mobile/screens/base_screen.dart';
 class StudentSelectionScreen extends StatefulWidget {
   final List<Student> students;
 
-  const StudentSelectionScreen({Key? key, required this.students})
-      : super(key: key);
+  const StudentSelectionScreen({
+    Key? key,
+    required this.students,
+  }) : super(key: key);
 
   @override
   _StudentSelectionScreenState createState() => _StudentSelectionScreenState();
@@ -19,7 +21,8 @@ class _StudentSelectionScreenState extends State<StudentSelectionScreen> {
     if (selectedStudent != null) {
       Navigator.pushReplacement(
         context,
-        MaterialPageRoute(builder: (context) => const BaseScreen()),
+        MaterialPageRoute(
+            builder: (context) => BaseScreen(studentId: selectedStudent!.id)),
       );
     } else {
       // Show a message to select a student
@@ -48,72 +51,68 @@ class _StudentSelectionScreenState extends State<StudentSelectionScreen> {
       body: SafeArea(
         child: Center(
           child: SingleChildScrollView(
-            child: Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 25.0),
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  const SizedBox(height: 50),
-                  const Icon(
-                    Icons.school,
-                    size: 100,
+            padding: const EdgeInsets.symmetric(horizontal: 25.0),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                const SizedBox(height: 50),
+                const Icon(
+                  Icons.school,
+                  size: 100,
+                ),
+                const SizedBox(height: 50),
+                Text(
+                  'Select a student to continue',
+                  style: TextStyle(
+                    color: Colors.grey[700],
+                    fontSize: 16,
                   ),
-                  const SizedBox(height: 50),
-                  Text(
-                    'Select a student to continue',
-                    style: TextStyle(
-                      color: Colors.grey[700],
-                      fontSize: 16,
-                    ),
-                  ),
-                  const SizedBox(height: 25),
-                  // Display students as selectable containers
-                  Column(
-                    children: widget.students.map((student) {
-                      return GestureDetector(
-                        onTap: () {
-                          setState(() {
-                            selectedStudent = student;
-                          });
-                        },
-                        child: Container(
-                          margin: const EdgeInsets.symmetric(vertical: 10),
-                          padding: const EdgeInsets.all(15),
-                          decoration: BoxDecoration(
-                            color: selectedStudent == student
-                                ? Colors
-                                    .blueAccent // Highlight selected student
-                                : Colors.white,
-                            borderRadius: BorderRadius.circular(10),
-                            border: Border.all(
-                              color: Colors.grey.shade300,
-                              width: 1,
-                            ),
-                          ),
-                          child: Row(
-                            children: [
-                              Icon(Icons.person),
-                              const SizedBox(width: 10),
-                              Text(
-                                student.studentName,
-                                style: TextStyle(
-                                  fontSize: 16,
-                                  fontWeight: FontWeight.bold,
-                                ),
-                              ),
-                            ],
+                ),
+                const SizedBox(height: 25),
+                Column(
+                  children: widget.students.map((student) {
+                    return GestureDetector(
+                      onTap: () {
+                        setState(() {
+                          selectedStudent = student;
+                        });
+                      },
+                      child: Container(
+                        margin: const EdgeInsets.symmetric(vertical: 10),
+                        padding: const EdgeInsets.all(15),
+                        decoration: BoxDecoration(
+                          color: selectedStudent == student
+                              ? Colors.blueAccent
+                              : Colors.white,
+                          borderRadius: BorderRadius.circular(10),
+                          border: Border.all(
+                            color: Colors.grey.shade300,
+                            width: 1,
                           ),
                         ),
-                      );
-                    }).toList(),
-                  ),
-                  const SizedBox(height: 25),
-                  ElevatedButton(
-                    onPressed: () => proceedToHome(context),
-                    child: const Text('Continue'),
-                  ),
-                ],
-              ),
+                        child: Row(
+                          children: [
+                            const Icon(Icons.person),
+                            const SizedBox(width: 10),
+                            Text(
+                              student.studentName,
+                              style: const TextStyle(
+                                fontSize: 16,
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                    );
+                  }).toList(),
+                ),
+                const SizedBox(height: 25),
+                ElevatedButton(
+                  onPressed: () => proceedToHome(context),
+                  child: const Text('Continue'),
+                ),
+              ],
             ),
           ),
         ),

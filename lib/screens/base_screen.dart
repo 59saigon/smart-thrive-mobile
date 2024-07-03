@@ -8,7 +8,12 @@ import 'package:smart_thrive_mobile/screens/home_screen.dart';
 import 'package:smart_thrive_mobile/screens/my_package_screen.dart';
 
 class BaseScreen extends StatefulWidget {
-  const BaseScreen({Key? key}) : super(key: key);
+  final String studentId;
+
+  const BaseScreen({
+    Key? key,
+    required this.studentId,
+  }) : super(key: key);
 
   @override
   _BaseScreenState createState() => _BaseScreenState();
@@ -16,13 +21,19 @@ class BaseScreen extends StatefulWidget {
 
 class _BaseScreenState extends State<BaseScreen> {
   int _selectedIndex = 0;
+  late List<Widget> _widgetOptions; // Declare _widgetOptions here
 
-  static const List<Widget> _widgetOptions = <Widget>[
-    HomeScreen(),
-    MyPackageScreen(),
-    HomeScreen(),
-    Dashboard(),
-  ];
+  @override
+  void initState() {
+    super.initState();
+    _widgetOptions = [
+      HomeScreen(),
+      MyPackageScreen(studentId: widget.studentId), // Use widget.studentId here
+      HomeScreen(),
+      Dashboard(),
+    ];
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -30,62 +41,63 @@ class _BaseScreenState extends State<BaseScreen> {
         child: _widgetOptions.elementAt(_selectedIndex),
       ),
       bottomNavigationBar: BottomNavigationBar(
-          type: BottomNavigationBarType.fixed,
-          selectedItemColor: kPrimaryColor,
-          backgroundColor: Colors.white,
-          elevation: 0,
-          items: [
-            BottomNavigationBarItem(
-              activeIcon: Image.asset(
-                icFeatured,
-                height: kBottomNavigationBarItemSize,
-              ),
-              icon: Image.asset(
-                icFeaturedOutlined,
-                height: kBottomNavigationBarItemSize,
-              ),
-              label: "Courses",
+        type: BottomNavigationBarType.fixed,
+        selectedItemColor: kPrimaryColor,
+        backgroundColor: Colors.white,
+        elevation: 0,
+        items: [
+          BottomNavigationBarItem(
+            activeIcon: Image.asset(
+              icFeatured,
+              height: kBottomNavigationBarItemSize,
             ),
-            BottomNavigationBarItem(
-              activeIcon: Image.asset(
-                icLearning,
-                height: kBottomNavigationBarItemSize,
-              ),
-              icon: Image.asset(
-                icLearningOutlined,
-                height: kBottomNavigationBarItemSize,
-              ),
-              label: "My Package",
+            icon: Image.asset(
+              icFeaturedOutlined,
+              height: kBottomNavigationBarItemSize,
             ),
-            BottomNavigationBarItem(
-              activeIcon: Image.asset(
-                icWishlist,
-                height: kBottomNavigationBarItemSize,
-              ),
-              icon: Image.asset(
-                icWishlistOutlined,
-                height: kBottomNavigationBarItemSize,
-              ),
-              label: "Wishlist",
+            label: "Courses",
+          ),
+          BottomNavigationBarItem(
+            activeIcon: Image.asset(
+              icLearning,
+              height: kBottomNavigationBarItemSize,
             ),
-            BottomNavigationBarItem(
-              activeIcon: Image.asset(
-                icSetting,
-                height: kBottomNavigationBarItemSize,
-              ),
-              icon: Image.asset(
-                icSettingOutlined,
-                height: kBottomNavigationBarItemSize,
-              ),
-              label: "Settings",
+            icon: Image.asset(
+              icLearningOutlined,
+              height: kBottomNavigationBarItemSize,
             ),
-          ],
-          currentIndex: _selectedIndex,
-          onTap: (int index) {
-            setState(() {
-              _selectedIndex = index;
-            });
-          }),
+            label: "My Package",
+          ),
+          BottomNavigationBarItem(
+            activeIcon: Image.asset(
+              icWishlist,
+              height: kBottomNavigationBarItemSize,
+            ),
+            icon: Image.asset(
+              icWishlistOutlined,
+              height: kBottomNavigationBarItemSize,
+            ),
+            label: "Wishlist",
+          ),
+          BottomNavigationBarItem(
+            activeIcon: Image.asset(
+              icSetting,
+              height: kBottomNavigationBarItemSize,
+            ),
+            icon: Image.asset(
+              icSettingOutlined,
+              height: kBottomNavigationBarItemSize,
+            ),
+            label: "Settings",
+          ),
+        ],
+        currentIndex: _selectedIndex,
+        onTap: (int index) {
+          setState(() {
+            _selectedIndex = index;
+          });
+        },
+      ),
     );
   }
 }

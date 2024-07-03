@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
 
 class Student {
-  final String userId;
+  final String id;
   final String studentName;
   final String gender;
   final DateTime dob;
 
   Student({
-    required this.userId,
+    required this.id,
     required this.studentName,
     required this.gender,
     required this.dob,
@@ -15,7 +15,7 @@ class Student {
 
   factory Student.fromJson(Map<String, dynamic> json) {
     return Student(
-      userId: json['userId'],
+      id: json['id'],
       studentName: json['studentName'],
       gender: json['gender'],
       dob: DateTime.parse(json['dob']),
