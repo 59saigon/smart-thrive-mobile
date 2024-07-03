@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:smart_thrive_mobile/models/package.dart';
-import 'package:smart_thrive_mobile/screens/all_course_screen.dart';
 import 'package:smart_thrive_mobile/services/api_service.dart';
 import 'package:smart_thrive_mobile/constants/color.dart';
 import 'package:smart_thrive_mobile/widgets/circle_button.dart';
@@ -27,12 +26,14 @@ class _MyPackageScreenState extends State<MyPackageScreen> {
 
   Future<void> fetchPackages() async {
     try {
-      List<Package> package = await APIService.getPackages();
+      String studentId = '6e153618-1503-401c-84f8-f74da78d4521';
+      List<Package> packages =
+          await APIService.getPackagesByStudentId(studentId);
       setState(() {
-        packageList = package;
+        packageList = packages;
       });
     } catch (e) {
-      print('Failed to fetch package: $e');
+      print('Failed to fetch packages: $e');
     }
   }
 

@@ -28,7 +28,6 @@ class _DetailsScreenState extends State<DetailsScreen> {
 
   @override
   Widget build(BuildContext context) {
-    // Calculate the number of days between start and end date
     int numberOfDays = widget.course.startDate != null &&
             widget.course.endDate != null
         ? widget.course.endDate!.difference(widget.course.startDate!).inDays + 1

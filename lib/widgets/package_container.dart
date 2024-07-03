@@ -60,7 +60,7 @@ class PackageContainer extends StatelessWidget {
                         actionButtonText: 'Update',
                         onActionButtonPressed: () {
                           // Handle package update logic here
-                          Navigator.of(context).pop(); // Close the dialog
+                          Navigator.of(context).pop();
                         },
                       );
                     },
