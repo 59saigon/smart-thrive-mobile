@@ -5,9 +5,9 @@ import 'package:smart_thrive_mobile/screens/all_course_screen.dart';
 import 'package:smart_thrive_mobile/services/api_service.dart';
 import 'package:smart_thrive_mobile/constants/color.dart';
 import 'package:smart_thrive_mobile/widgets/circle_button.dart';
-// Import the CourseContainer
+import 'package:smart_thrive_mobile/widgets/create_package_dialog.dart';
 import 'package:smart_thrive_mobile/widgets/package_container.dart';
-import 'package:smart_thrive_mobile/widgets/search_field.dart'; // Import the SearchTextField
+import 'package:smart_thrive_mobile/widgets/search_field.dart';
 
 class MyPackageScreen extends StatefulWidget {
   const MyPackageScreen({Key? key}) : super(key: key);
@@ -57,11 +57,11 @@ class _MyPackageScreenState extends State<MyPackageScreen> {
                       ),
                       GestureDetector(
                         onTap: () {
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) => AllCourseScreen(),
-                            ),
+                          showDialog(
+                            context: context,
+                            builder: (BuildContext context) {
+                              return const CreatePackageDialog();
+                            },
                           );
                         },
                         child: Container(

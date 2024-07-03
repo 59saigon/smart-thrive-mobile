@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:smart_thrive_mobile/constants/color.dart';
 import 'package:smart_thrive_mobile/models/package.dart';
 import 'package:smart_thrive_mobile/screens/course_screen.dart';
+import 'package:smart_thrive_mobile/widgets/update_package_dialog.dart';
 
 class PackageContainer extends StatelessWidget {
   final Package package;
@@ -51,7 +52,19 @@ class PackageContainer extends StatelessWidget {
             PopupMenuButton<String>(
               onSelected: (String result) {
                 if (result == 'update') {
-                  // Handle update action
+                  showDialog(
+                    context: context,
+                    builder: (BuildContext context) {
+                      return UpdatePackageDialog(
+                        title: 'Update Package',
+                        actionButtonText: 'Update',
+                        onActionButtonPressed: () {
+                          // Handle package update logic here
+                          Navigator.of(context).pop(); // Close the dialog
+                        },
+                      );
+                    },
+                  );
                 } else if (result == 'delete') {
                   // Handle delete action
                 }
