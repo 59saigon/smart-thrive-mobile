@@ -213,6 +213,39 @@ class APIService {
     }
   }
 
+  static Future<void> deletePackage(String id) async {
+    final client = createHttpClient();
+    final token = await getToken();
+
+    if (token == null) {
+      throw Exception('No JWT token found');
+    }
+
+    try {
+      final response = await client.put(
+        Uri.parse('$baseUrl/package/delete?id=$id'),
+        headers: <String, String>{
+          'Content-Type': 'application/json; charset=UTF-8',
+          'Authorization': 'Bearer $token',
+        },
+      );
+
+      if (response.statusCode == 200) {
+        final responseData = jsonDecode(response.body);
+        print('Package deleted successfully: $responseData');
+      } else if (response.statusCode == 400) {
+        throw Exception('Bad request: ${response.body}');
+      } else {
+        throw Exception('Failed to delete package: ${response.statusCode}');
+      }
+    } catch (e) {
+      print('Error deleting package: $e');
+      throw Exception('Failed to delete package');
+    } finally {
+      client.close();
+    }
+  }
+
   static Future<List<Course>> getCourses() async {
     final client = createHttpClient();
     final token = await getToken();

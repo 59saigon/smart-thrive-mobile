@@ -2,18 +2,60 @@ import 'package:flutter/material.dart';
 import 'package:smart_thrive_mobile/models/package.dart';
 import 'package:smart_thrive_mobile/screens/course_screen.dart';
 import 'package:smart_thrive_mobile/widgets/update_package_dialog.dart';
+import 'package:smart_thrive_mobile/services/api_service.dart';
 
 class PackageContainer extends StatelessWidget {
   final String studentId;
   final Package package;
   final VoidCallback onUpdateSuccess;
 
-  const PackageContainer(
-      {Key? key,
-      required this.package,
-      required this.studentId,
-      required this.onUpdateSuccess})
-      : super(key: key);
+  const PackageContainer({
+    Key? key,
+    required this.package,
+    required this.studentId,
+    required this.onUpdateSuccess,
+  }) : super(key: key);
+
+  void _deletePackage(BuildContext context) async {
+    bool confirmDelete = await showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: const Text('Confirm Delete'),
+          content: const Text('Are you sure you want to delete this package?'),
+          actions: <Widget>[
+            TextButton(
+              onPressed: () => Navigator.of(context).pop(false),
+              child: const Text('No'),
+            ),
+            TextButton(
+              onPressed: () => Navigator.of(context).pop(true),
+              child: const Text('Yes'),
+            ),
+          ],
+        );
+      },
+    );
+
+    if (confirmDelete == true) {
+      try {
+        await APIService.deletePackage(package.id);
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text('Package deleted successfully'),
+          ),
+        );
+        onUpdateSuccess();
+      } catch (e) {
+        print('Error deleting package: $e');
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text('Failed to delete package'),
+          ),
+        );
+      }
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -50,7 +92,7 @@ class PackageContainer extends StatelessWidget {
                   Text(package.packageName),
                   Text(
                     'Quantity Course: ${package.quantityCourse}',
-                    style: Theme.of(context).textTheme.bodyMedium,
+                    style: Theme.of(context).textTheme.bodyText2,
                   ),
                 ],
               ),
@@ -70,7 +112,10 @@ class PackageContainer extends StatelessWidget {
                       );
                     },
                   );
-                } else if (result == 'delete') {}
+                } else if (result == 'delete') {
+                  _deletePackage(
+                      context); // Call delete method with confirmation
+                }
               },
               itemBuilder: (BuildContext context) => <PopupMenuEntry<String>>[
                 const PopupMenuItem<String>(

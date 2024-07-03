@@ -35,6 +35,10 @@ class _MyPackageScreenState extends State<MyPackageScreen> {
       List<Package> packages =
           await APIService.getPackagesByStudentId(widget.studentId);
       packages.sort((a, b) => b.createdDate.compareTo(a.createdDate));
+
+      // Filter out packages where isDeleted is false
+      packages = packages.where((package) => !package.isDeleted).toList();
+
       setState(() {
         packageList = packages;
       });
@@ -102,12 +106,17 @@ class _MyPackageScreenState extends State<MyPackageScreen> {
                     physics: const NeverScrollableScrollPhysics(),
                     itemCount: packageList.length,
                     itemBuilder: (context, index) {
+                      if (packageList[index].isDeleted) {
+                        return const SizedBox
+                            .shrink(); // Return an empty widget for deleted packages
+                      }
                       return Padding(
                         padding: const EdgeInsets.symmetric(vertical: 10.0),
                         child: PackageContainer(
                           package: packageList[index],
                           studentId: widget.studentId,
-                          onUpdateSuccess: _refreshPackages,
+                          onUpdateSuccess:
+                              _refreshPackages, // Pass the refresh method here
                         ),
                       );
                     },
