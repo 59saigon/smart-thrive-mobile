@@ -4,9 +4,16 @@ import 'package:smart_thrive_mobile/screens/course_screen.dart';
 import 'package:smart_thrive_mobile/widgets/update_package_dialog.dart';
 
 class PackageContainer extends StatelessWidget {
+  final String studentId;
   final Package package;
+  final VoidCallback onUpdateSuccess;
 
-  const PackageContainer({Key? key, required this.package}) : super(key: key);
+  const PackageContainer(
+      {Key? key,
+      required this.package,
+      required this.studentId,
+      required this.onUpdateSuccess})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -55,18 +62,15 @@ class PackageContainer extends StatelessWidget {
                     context: context,
                     builder: (BuildContext context) {
                       return UpdatePackageDialog(
-                        title: 'Update Package',
-                        actionButtonText: 'Update',
-                        onActionButtonPressed: () {
-                          // Handle package update logic here
-                          Navigator.of(context).pop();
-                        },
+                        id: package.id,
+                        packageName: package.packageName,
+                        quantityCourse: package.quantityCourse,
+                        studentId: studentId,
+                        onUpdateSuccess: onUpdateSuccess,
                       );
                     },
                   );
-                } else if (result == 'delete') {
-                  // Handle delete action
-                }
+                } else if (result == 'delete') {}
               },
               itemBuilder: (BuildContext context) => <PopupMenuEntry<String>>[
                 const PopupMenuItem<String>(

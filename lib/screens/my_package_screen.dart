@@ -9,9 +9,9 @@ import 'package:smart_thrive_mobile/widgets/package_container.dart';
 import 'package:smart_thrive_mobile/widgets/search_field.dart';
 
 class MyPackageScreen extends StatefulWidget {
-  final String? studentId;
+  final String studentId;
 
-  const MyPackageScreen({Key? key, this.studentId}) : super(key: key);
+  const MyPackageScreen({Key? key, required this.studentId}) : super(key: key);
 
   @override
   State<MyPackageScreen> createState() => _MyPackageScreenState();
@@ -26,16 +26,18 @@ class _MyPackageScreenState extends State<MyPackageScreen> {
     fetchPackages();
   }
 
+  void _refreshPackages() {
+    fetchPackages();
+  }
+
   Future<void> fetchPackages() async {
     try {
-      if (widget.studentId != null) {
-        List<Package> packages =
-            await APIService.getPackagesByStudentId(widget.studentId!);
-        packages.sort((a, b) => b.createdDate.compareTo(a.createdDate));
-        setState(() {
-          packageList = packages;
-        });
-      } else {}
+      List<Package> packages =
+          await APIService.getPackagesByStudentId(widget.studentId);
+      packages.sort((a, b) => b.createdDate.compareTo(a.createdDate));
+      setState(() {
+        packageList = packages;
+      });
     } catch (e) {
       print('Failed to fetch packages: $e');
     }
@@ -66,7 +68,7 @@ class _MyPackageScreenState extends State<MyPackageScreen> {
                             context: context,
                             builder: (BuildContext context) {
                               return CreatePackageDialog(
-                                studentId: widget.studentId!,
+                                studentId: widget.studentId,
                                 refreshCallback: () {
                                   fetchPackages();
                                 },
@@ -102,7 +104,11 @@ class _MyPackageScreenState extends State<MyPackageScreen> {
                     itemBuilder: (context, index) {
                       return Padding(
                         padding: const EdgeInsets.symmetric(vertical: 10.0),
-                        child: PackageContainer(package: packageList[index]),
+                        child: PackageContainer(
+                          package: packageList[index],
+                          studentId: widget.studentId,
+                          onUpdateSuccess: _refreshPackages,
+                        ),
                       );
                     },
                   ),

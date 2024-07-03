@@ -181,6 +181,38 @@ class APIService {
     }
   }
 
+  static Future<void> updatePackage(Map<String, dynamic> requestBody) async {
+    final client = createHttpClient();
+    final token = await getToken();
+
+    if (token == null) {
+      throw Exception('No JWT token found');
+    }
+
+    try {
+      final response = await client.put(
+        Uri.parse('$baseUrl/package/update'),
+        headers: <String, String>{
+          'Content-Type': 'application/json; charset=UTF-8',
+          'Authorization': 'Bearer $token',
+        },
+        body: jsonEncode(requestBody),
+      );
+
+      if (response.statusCode == 200) {
+        final responseData = jsonDecode(response.body);
+        print('Package updated: $responseData');
+      } else {
+        throw Exception('Failed to update package');
+      }
+    } catch (e) {
+      print('Error updating package: $e');
+      throw Exception('Failed to update package');
+    } finally {
+      client.close();
+    }
+  }
+
   static Future<List<Course>> getCourses() async {
     final client = createHttpClient();
     final token = await getToken();
