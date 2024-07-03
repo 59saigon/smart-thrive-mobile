@@ -31,12 +31,11 @@ class _MyPackageScreenState extends State<MyPackageScreen> {
       if (widget.studentId != null) {
         List<Package> packages =
             await APIService.getPackagesByStudentId(widget.studentId!);
+        packages.sort((a, b) => b.createdDate.compareTo(a.createdDate));
         setState(() {
           packageList = packages;
         });
-      } else {
-        // Handle case where studentId is null
-      }
+      } else {}
     } catch (e) {
       print('Failed to fetch packages: $e');
     }
@@ -66,7 +65,12 @@ class _MyPackageScreenState extends State<MyPackageScreen> {
                           showDialog(
                             context: context,
                             builder: (BuildContext context) {
-                              return const CreatePackageDialog();
+                              return CreatePackageDialog(
+                                studentId: widget.studentId!,
+                                refreshCallback: () {
+                                  fetchPackages();
+                                },
+                              );
                             },
                           );
                         },

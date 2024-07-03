@@ -10,7 +10,7 @@ import 'package:smart_thrive_mobile/widgets/lesson_card.dart'; // Import for dat
 
 class DetailsScreen extends StatefulWidget {
   final Course course;
-  const DetailsScreen({Key? key, required this.course}) : super(key: key);
+  const DetailsScreen({super.key, required this.course});
 
   @override
   State<DetailsScreen> createState() => _DetailsScreenState();

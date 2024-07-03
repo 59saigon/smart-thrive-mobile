@@ -149,6 +149,38 @@ class APIService {
     }
   }
 
+  static Future<void> createPackage(Map<String, dynamic> requestBody) async {
+    final client = createHttpClient();
+    final token = await getToken();
+
+    if (token == null) {
+      throw Exception('No JWT token found');
+    }
+
+    try {
+      final response = await client.post(
+        Uri.parse('$baseUrl/package/add'),
+        headers: <String, String>{
+          'Content-Type': 'application/json; charset=UTF-8',
+          'Authorization': 'Bearer $token',
+        },
+        body: jsonEncode(requestBody),
+      );
+
+      if (response.statusCode == 200) {
+        final responseData = jsonDecode(response.body);
+        print('Package created: $responseData');
+      } else {
+        throw Exception('Failed to create package');
+      }
+    } catch (e) {
+      print('Error creating package: $e');
+      throw Exception('Failed to create package');
+    } finally {
+      client.close();
+    }
+  }
+
   static Future<List<Course>> getCourses() async {
     final client = createHttpClient();
     final token = await getToken();
