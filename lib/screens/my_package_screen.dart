@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:smart_thrive_mobile/models/course.dart';
+import 'package:smart_thrive_mobile/models/package.dart';
+import 'package:smart_thrive_mobile/screens/all_course_screen.dart';
 import 'package:smart_thrive_mobile/services/api_service.dart';
 import 'package:smart_thrive_mobile/constants/color.dart';
 import 'package:smart_thrive_mobile/widgets/circle_button.dart';
-import 'package:smart_thrive_mobile/widgets/course_container.dart'; // Import the CourseContainer
+// Import the CourseContainer
+import 'package:smart_thrive_mobile/widgets/package_container.dart';
 import 'package:smart_thrive_mobile/widgets/search_field.dart'; // Import the SearchTextField
 
 class MyPackageScreen extends StatefulWidget {
@@ -15,22 +17,22 @@ class MyPackageScreen extends StatefulWidget {
 }
 
 class _MyPackageScreenState extends State<MyPackageScreen> {
-  List<Course> courseList = [];
+  List<Package> packageList = [];
 
   @override
   void initState() {
     super.initState();
-    fetchCourses();
+    fetchPackages();
   }
 
-  Future<void> fetchCourses() async {
+  Future<void> fetchPackages() async {
     try {
-      List<Course> courses = await APIService.getCourses();
+      List<Package> package = await APIService.getPackages();
       setState(() {
-        courseList = courses;
+        packageList = package;
       });
     } catch (e) {
-      print('Failed to fetch courses: $e');
+      print('Failed to fetch package: $e');
     }
   }
 
@@ -45,15 +47,52 @@ class _MyPackageScreenState extends State<MyPackageScreen> {
               children: [
                 const AppBar(),
                 Padding(
+                  padding: const EdgeInsets.only(top: 30, left: 20, right: 20),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Text(
+                        "Create new package",
+                        style: Theme.of(context).textTheme.bodyLarge,
+                      ),
+                      GestureDetector(
+                        onTap: () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => AllCourseScreen(),
+                            ),
+                          );
+                        },
+                        child: Container(
+                          padding: const EdgeInsets.symmetric(
+                              vertical: 10, horizontal: 20),
+                          decoration: BoxDecoration(
+                            color: kPrimaryColor,
+                            borderRadius: BorderRadius.circular(20),
+                          ),
+                          child: const Text(
+                            "Create package",
+                            style: TextStyle(
+                              color: Colors.white,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+                Padding(
                   padding: const EdgeInsets.all(20.0),
                   child: ListView.builder(
                     shrinkWrap: true,
                     physics: const NeverScrollableScrollPhysics(),
-                    itemCount: courseList.length,
+                    itemCount: packageList.length,
                     itemBuilder: (context, index) {
                       return Padding(
                         padding: const EdgeInsets.symmetric(vertical: 10.0),
-                        child: CourseContainer(course: courseList[index]),
+                        child: PackageContainer(package: packageList[index]),
                       );
                     },
                   ),
