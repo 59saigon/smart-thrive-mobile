@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:smart_thrive_mobile/models/course.dart';
+import 'package:smart_thrive_mobile/screens/all_course_screen.dart';
 import 'package:smart_thrive_mobile/services/api_service.dart';
 import 'package:smart_thrive_mobile/constants/color.dart';
 import 'package:smart_thrive_mobile/widgets/circle_button.dart';
@@ -80,7 +81,7 @@ class Body extends StatelessWidget {
                 onPressed: () {
                   Navigator.push(
                     context,
-                    MaterialPageRoute(builder: (context) => AllPackageScreen()),
+                    MaterialPageRoute(builder: (context) => AllCourseScreen()),
                   );
                 },
                 child: Text(
