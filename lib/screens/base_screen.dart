@@ -4,14 +4,17 @@ import 'package:smart_thrive_mobile/constants/icons.dart';
 import 'package:smart_thrive_mobile/constants/size.dart';
 import 'package:smart_thrive_mobile/screens/dashboard.dart';
 import 'package:smart_thrive_mobile/screens/home_screen.dart';
+import 'package:smart_thrive_mobile/screens/my_course_screen.dart';
 import 'package:smart_thrive_mobile/screens/my_package_screen.dart';
 
 class BaseScreen extends StatefulWidget {
   final String studentId;
+  final String roleName;
 
   const BaseScreen({
     Key? key,
     required this.studentId,
+    required this.roleName,
   }) : super(key: key);
 
   @override
@@ -25,12 +28,31 @@ class _BaseScreenState extends State<BaseScreen> {
   @override
   void initState() {
     super.initState();
-    _widgetOptions = [
-      const HomeScreen(),
-      MyPackageScreen(studentId: widget.studentId),
-      const HomeScreen(),
-      const Dashboard(),
-    ];
+    _widgetOptions = _buildWidgetOptions();
+  }
+
+  List<Widget> _buildWidgetOptions() {
+    switch (widget.roleName) {
+      case 'Buyer':
+        return [
+          const HomeScreen(),
+          MyPackageScreen(studentId: widget.studentId),
+          const Dashboard(),
+        ];
+      case 'Provider':
+        return [
+          const HomeScreen(),
+          MyPackageScreen(studentId: widget.studentId),
+          MyCourseScreen(studentId: widget.studentId),
+          const Dashboard(),
+        ];
+      default:
+        return [
+          const HomeScreen(),
+          MyPackageScreen(studentId: widget.studentId),
+          const Dashboard(),
+        ];
+    }
   }
 
   @override
@@ -44,7 +66,23 @@ class _BaseScreenState extends State<BaseScreen> {
         selectedItemColor: kPrimaryColor,
         backgroundColor: Colors.white,
         elevation: 0,
-        items: [
+        items: _buildBottomNavigationBarItems(),
+        currentIndex: _selectedIndex,
+        onTap: (int index) {
+          setState(() {
+            _selectedIndex = index;
+          });
+        },
+      ),
+    );
+  }
+
+  List<BottomNavigationBarItem> _buildBottomNavigationBarItems() {
+    switch (widget.roleName) {
+      case 'Buyer':
+      case 'Admin':
+      case 'Staff':
+        return [
           BottomNavigationBarItem(
             activeIcon: Image.asset(
               icFeatured,
@@ -69,14 +107,50 @@ class _BaseScreenState extends State<BaseScreen> {
           ),
           BottomNavigationBarItem(
             activeIcon: Image.asset(
-              icWishlist,
+              icSetting,
               height: kBottomNavigationBarItemSize,
             ),
             icon: Image.asset(
-              icWishlistOutlined,
+              icSettingOutlined,
               height: kBottomNavigationBarItemSize,
             ),
-            label: "Wishlist",
+            label: "Settings",
+          ),
+        ];
+      case 'Provider':
+        return [
+          BottomNavigationBarItem(
+            activeIcon: Image.asset(
+              icFeatured,
+              height: kBottomNavigationBarItemSize,
+            ),
+            icon: Image.asset(
+              icFeaturedOutlined,
+              height: kBottomNavigationBarItemSize,
+            ),
+            label: "Courses",
+          ),
+          BottomNavigationBarItem(
+            activeIcon: Image.asset(
+              icLearning,
+              height: kBottomNavigationBarItemSize,
+            ),
+            icon: Image.asset(
+              icLearningOutlined,
+              height: kBottomNavigationBarItemSize,
+            ),
+            label: "My Package",
+          ),
+          BottomNavigationBarItem(
+            activeIcon: Image.asset(
+              icLearning,
+              height: kBottomNavigationBarItemSize,
+            ),
+            icon: Image.asset(
+              icLearningOutlined,
+              height: kBottomNavigationBarItemSize,
+            ),
+            label: "My Courses",
           ),
           BottomNavigationBarItem(
             activeIcon: Image.asset(
@@ -89,14 +163,43 @@ class _BaseScreenState extends State<BaseScreen> {
             ),
             label: "Settings",
           ),
-        ],
-        currentIndex: _selectedIndex,
-        onTap: (int index) {
-          setState(() {
-            _selectedIndex = index;
-          });
-        },
-      ),
-    );
+        ];
+      default:
+        return [
+          BottomNavigationBarItem(
+            activeIcon: Image.asset(
+              icFeatured,
+              height: kBottomNavigationBarItemSize,
+            ),
+            icon: Image.asset(
+              icFeaturedOutlined,
+              height: kBottomNavigationBarItemSize,
+            ),
+            label: "Courses",
+          ),
+          BottomNavigationBarItem(
+            activeIcon: Image.asset(
+              icLearning,
+              height: kBottomNavigationBarItemSize,
+            ),
+            icon: Image.asset(
+              icLearningOutlined,
+              height: kBottomNavigationBarItemSize,
+            ),
+            label: "My Package",
+          ),
+          BottomNavigationBarItem(
+            activeIcon: Image.asset(
+              icSetting,
+              height: kBottomNavigationBarItemSize,
+            ),
+            icon: Image.asset(
+              icSettingOutlined,
+              height: kBottomNavigationBarItemSize,
+            ),
+            label: "Settings",
+          ),
+        ];
+    }
   }
 }

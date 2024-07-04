@@ -4,10 +4,12 @@ import 'package:smart_thrive_mobile/screens/base_screen.dart';
 
 class StudentSelectionScreen extends StatefulWidget {
   final List<Student> students;
+  final String role;
 
   const StudentSelectionScreen({
     Key? key,
     required this.students,
+    required this.role,
   }) : super(key: key);
 
   @override
@@ -22,10 +24,11 @@ class _StudentSelectionScreenState extends State<StudentSelectionScreen> {
       Navigator.pushReplacement(
         context,
         MaterialPageRoute(
-            builder: (context) => BaseScreen(studentId: selectedStudent!.id)),
+          builder: (context) =>
+              BaseScreen(studentId: selectedStudent!.id, roleName: widget.role),
+        ),
       );
     } else {
-      // Show a message to select a student
       showDialog(
         context: context,
         builder: (context) {

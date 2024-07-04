@@ -18,6 +18,7 @@ class LoginPage extends StatelessWidget {
       final response = await APIService.loginUser(username, password);
 
       if (response['isSuccess'] == true) {
+        final role = response['result']['role']['roleName']; // Get role name
         final List<Student> students = (response['result']['students'] as List)
             .map((studentJson) => Student.fromJson(studentJson))
             .toList();
@@ -25,7 +26,8 @@ class LoginPage extends StatelessWidget {
         Navigator.pushReplacement(
           context,
           MaterialPageRoute(
-              builder: (context) => StudentSelectionScreen(students: students)),
+              builder: (context) =>
+                  StudentSelectionScreen(students: students, role: role)),
         );
       } else {
         showDialog(
