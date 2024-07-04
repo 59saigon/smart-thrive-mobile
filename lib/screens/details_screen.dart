@@ -47,7 +47,7 @@ class _DetailsScreenState extends State<DetailsScreen> {
                     children: [
                       Align(
                         child: Text(
-                          widget.course.courseName,
+                          widget.course.courseName ?? 'Unknown Course',
                           style: Theme.of(context).textTheme.bodyLarge,
                         ),
                       ),
@@ -67,7 +67,7 @@ class _DetailsScreenState extends State<DetailsScreen> {
                 const CustomVideoPlayer(),
                 const SizedBox(height: 15),
                 Text(
-                  'Location: ${widget.course.location ?? "Unknown"}',
+                  'Location: ${widget.course.location?.city ?? "Unknown"}, ${widget.course.location?.district ?? "Unknown"}, ${widget.course.location?.ward ?? "Unknown"}',
                   style: const TextStyle(
                     fontWeight: FontWeight.w700,
                     fontSize: 18,
@@ -75,7 +75,7 @@ class _DetailsScreenState extends State<DetailsScreen> {
                 ),
                 const SizedBox(height: 3),
                 Text(
-                  'Provider: ${widget.course.provider ?? "Unknown"}',
+                  'Provider: ${widget.course.provider?.companyName ?? "Unknown"}',
                   style: const TextStyle(
                     fontWeight: FontWeight.w700,
                     fontSize: 18,
@@ -89,7 +89,7 @@ class _DetailsScreenState extends State<DetailsScreen> {
                       height: 20,
                     ),
                     Text(
-                      ' ${widget.course.session ?? 0} Slots',
+                      ' ${widget.course.totalSlot ?? 0} Slots',
                       style: const TextStyle(
                         color: Colors.grey,
                         fontWeight: FontWeight.w500,
@@ -111,7 +111,7 @@ class _DetailsScreenState extends State<DetailsScreen> {
                     ),
                     const Spacer(),
                     Text(
-                      ' \$${widget.course.price?.toStringAsFixed(2)}',
+                      ' \$${widget.course.price?.toStringAsFixed(2) ?? "0.00"}',
                       style: const TextStyle(
                         color: kPrimaryColor,
                         fontWeight: FontWeight.w700,
@@ -175,7 +175,7 @@ class CourseDescription extends StatelessWidget {
     return Padding(
       padding: const EdgeInsets.only(top: 20.0),
       child: Text(
-        'Description: ${course.description}',
+        'Description: ${course.description ?? "No description available."}',
         style: const TextStyle(
           fontSize: 16,
         ),

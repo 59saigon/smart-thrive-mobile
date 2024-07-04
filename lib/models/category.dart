@@ -1,34 +1,26 @@
+import 'package:smart_thrive_mobile/models/subject.dart';
+
 class Category {
+  final String categoryName;
+  final List<Subject>? subjects;
   String thumbnail;
-  String name;
-  int noOfCourses;
 
   Category({
-    required this.name,
-    required this.noOfCourses,
+    required this.categoryName,
+    this.subjects,
     required this.thumbnail,
   });
-}
 
-List<Category> categoryList = [
-  Category(
-    name: 'Water Fun',
-    noOfCourses: 3,
-    thumbnail: 'assets/icons/water_fun_icon.jpg',
-  ),
-  Category(
-    name: 'Ball Games',
-    noOfCourses: 3,
-    thumbnail: 'assets/icons/ball_games_icon.jpg',
-  ),
-  Category(
-    name: 'Indoor Fun',
-    noOfCourses: 3,
-    thumbnail: 'assets/icons/indoor_fun_icon.jpg',
-  ),
-  Category(
-    name: 'Adventure Sports',
-    noOfCourses: 3,
-    thumbnail: 'assets/icons/adventure_sports_icon.jpg',
-  ),
-];
+  factory Category.fromJson(Map<String, dynamic> json) {
+    var subjectList = json['subjects'] as List?;
+    List<Subject> subjectItems = subjectList != null
+        ? subjectList.map((i) => Subject.fromJson(i)).toList()
+        : [];
+
+    return Category(
+      categoryName: json['categoryName'],
+      subjects: subjectItems,
+      thumbnail: 'assets/icons/design.jpg',
+    );
+  }
+}

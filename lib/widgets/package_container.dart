@@ -41,7 +41,7 @@ class PackageContainer extends StatelessWidget {
       try {
         await APIService.deletePackage(package.id);
         ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
+          const SnackBar(
             content: Text('Package deleted successfully'),
           ),
         );
@@ -49,7 +49,7 @@ class PackageContainer extends StatelessWidget {
       } catch (e) {
         print('Error deleting package: $e');
         ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
+          const SnackBar(
             content: Text('Failed to delete package'),
           ),
         );
@@ -92,7 +92,7 @@ class PackageContainer extends StatelessWidget {
                   Text(package.packageName),
                   Text(
                     'Quantity Course: ${package.quantityCourse}',
-                    style: Theme.of(context).textTheme.bodyText2,
+                    style: Theme.of(context).textTheme.bodyMedium,
                   ),
                 ],
               ),
@@ -113,8 +113,7 @@ class PackageContainer extends StatelessWidget {
                     },
                   );
                 } else if (result == 'delete') {
-                  _deletePackage(
-                      context); // Call delete method with confirmation
+                  _deletePackage(context);
                 }
               },
               itemBuilder: (BuildContext context) => <PopupMenuEntry<String>>[

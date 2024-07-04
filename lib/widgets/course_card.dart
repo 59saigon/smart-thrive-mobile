@@ -46,7 +46,7 @@ class CourseCard extends StatelessWidget {
                 ),
                 const SizedBox(height: 10),
                 Text(
-                  course.courseName,
+                  course.courseName ?? 'No Name',
                   style: Theme.of(context).textTheme.titleMedium,
                 ),
                 Text(

@@ -41,9 +41,9 @@ class CategoryCard extends StatelessWidget {
             const SizedBox(
               height: 10,
             ),
-            Text(category.name),
+            Text(category.categoryName),
             Text(
-              '${category.noOfCourses} courses',
+              '${category.subjects} subject',
               style: Theme.of(context).textTheme.bodySmall,
             ),
           ],

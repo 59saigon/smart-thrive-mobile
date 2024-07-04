@@ -1,46 +1,86 @@
-import 'package:intl/intl.dart'; // Ensure you import the intl package for date formatting
+import 'package:smart_thrive_mobile/models/courseXpackage.dart';
+import 'package:smart_thrive_mobile/models/location.dart';
+import 'package:smart_thrive_mobile/models/provider.dart';
+import 'package:smart_thrive_mobile/models/session.dart';
+import 'package:smart_thrive_mobile/models/subject.dart';
 
 class Course {
-  String courseName;
-  String description;
-  String thumbnail;
-  String? subject;
-  String? provider;
-  String? session;
-  int? totalSlot;
+  String? subjectId;
+  String? providerId;
+  String? locationId;
+  String? code;
+  String? courseName;
+  String? description;
   double? price;
-  String? location;
+  int? quantity;
+  int? soldProduct;
+  int? totalSlot;
+  bool? isApproved;
+  bool? isActive;
   DateTime? startDate;
   DateTime? endDate;
+  Location? location;
+  Subject? subject;
+  Provider? provider;
+  List<Session>? sessions;
+  List<CourseXPackage>? courseXPackages;
+  String thumbnail;
 
   Course({
-    required this.courseName,
-    required this.description,
-    required this.thumbnail,
-    this.subject,
-    this.provider,
-    this.session,
-    this.totalSlot,
+    this.subjectId,
+    this.providerId,
+    this.locationId,
+    this.code,
+    this.courseName,
+    this.description,
     this.price,
-    this.location,
+    this.quantity,
+    this.soldProduct,
+    this.totalSlot,
+    this.isApproved,
+    this.isActive,
     this.startDate,
     this.endDate,
+    this.location,
+    this.subject,
+    this.provider,
+    this.sessions,
+    this.courseXPackages,
+    required this.thumbnail,
   });
 
   factory Course.fromJson(Map<String, dynamic> json) {
     return Course(
-      courseName: json['courseName'] ?? '',
-      description: json['description'] ?? '',
-      thumbnail: 'assets/icons/water_fun_icon.jpg',
-      subject: json['subject'],
-      provider: json['provider'],
-      session: json['session'],
+      subjectId: json['subjectId'],
+      providerId: json['providerId'],
+      locationId: json['locationId'],
+      code: json['code'],
+      courseName: json['courseName'],
+      description: json['description'],
+      price: json['price']?.toDouble(),
+      quantity: json['quantity'],
+      soldProduct: json['soldProduct'],
       totalSlot: json['totalSlot'],
-      price: (json['price'] as num?)?.toDouble(),
-      location: json['location'],
+      isApproved: json['isApproved'],
+      isActive: json['isActive'],
       startDate:
           json['startDate'] != null ? DateTime.parse(json['startDate']) : null,
       endDate: json['endDate'] != null ? DateTime.parse(json['endDate']) : null,
+      location:
+          json['location'] != null ? Location.fromJson(json['location']) : null,
+      subject:
+          json['subject'] != null ? Subject.fromJson(json['subject']) : null,
+      provider:
+          json['provider'] != null ? Provider.fromJson(json['provider']) : null,
+      sessions: json['sessions'] != null
+          ? (json['sessions'] as List).map((i) => Session.fromJson(i)).toList()
+          : null,
+      courseXPackages: json['courseXPackages'] != null
+          ? (json['courseXPackages'] as List)
+              .map((i) => CourseXPackage.fromJson(i))
+              .toList()
+          : null,
+      thumbnail: 'assets/icons/water_fun_icon.jpg',
     );
   }
 }

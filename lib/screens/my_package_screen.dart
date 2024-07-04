@@ -36,7 +36,6 @@ class _MyPackageScreenState extends State<MyPackageScreen> {
           await APIService.getPackagesByStudentId(widget.studentId);
       packages.sort((a, b) => b.createdDate.compareTo(a.createdDate));
 
-      // Filter out packages where isDeleted is false
       packages = packages.where((package) => !package.isDeleted).toList();
 
       setState(() {
