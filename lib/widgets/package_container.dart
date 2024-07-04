@@ -64,7 +64,7 @@ class PackageContainer extends StatelessWidget {
         Navigator.push(
           context,
           MaterialPageRoute(
-            builder: (context) => const CourseScreen(),
+            builder: (context) => CourseScreen(packageId: package.id),
           ),
         );
       },

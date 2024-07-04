@@ -1,11 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:smart_thrive_mobile/constants/size.dart';
 import 'package:smart_thrive_mobile/models/category.dart';
+import 'package:smart_thrive_mobile/models/package.dart';
 import 'package:smart_thrive_mobile/screens/course_screen.dart';
 
 class CategoryCard extends StatelessWidget {
   final Category category;
-  const CategoryCard({Key? key, required this.category}) : super(key: key);
+  final Package package;
+  const CategoryCard({Key? key, required this.category, required this.package})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -13,7 +16,9 @@ class CategoryCard extends StatelessWidget {
       onTap: () => Navigator.push(
           context,
           MaterialPageRoute(
-            builder: (context) => const CourseScreen(),
+            builder: (context) => CourseScreen(
+              packageId: package.id,
+            ),
           )),
       child: Container(
         padding: const EdgeInsets.all(10),

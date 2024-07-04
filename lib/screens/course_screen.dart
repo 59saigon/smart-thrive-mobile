@@ -6,7 +6,8 @@ import 'package:smart_thrive_mobile/widgets/custom_icon_button.dart';
 import 'package:smart_thrive_mobile/services/api_service.dart';
 
 class CourseScreen extends StatefulWidget {
-  const CourseScreen({Key? key}) : super(key: key);
+  final String packageId;
+  const CourseScreen({Key? key, required this.packageId}) : super(key: key);
 
   @override
   _CourseScreenState createState() => _CourseScreenState();
@@ -23,7 +24,8 @@ class _CourseScreenState extends State<CourseScreen> {
 
   Future<void> fetchCourses() async {
     try {
-      List<Course> fetchedCourses = await APIService.getCourses();
+      List<Course> fetchedCourses =
+          await APIService.getCoursesByPackageId(widget.packageId);
       setState(() {
         courses = fetchedCourses;
       });

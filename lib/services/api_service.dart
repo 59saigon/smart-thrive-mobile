@@ -280,4 +280,40 @@ class APIService {
       client.close();
     }
   }
+
+  static Future<List<Course>> getCoursesByPackageId(String packageId) async {
+    final client = createHttpClient();
+    final token = await getToken();
+
+    if (token == null) {
+      throw Exception('No JWT token found');
+    }
+
+    try {
+      final response = await client.get(
+        Uri.parse('$baseUrl/coursexpackage/get-all-by-id-package/$packageId'),
+        headers: <String, String>{
+          'Content-Type': 'application/json; charset=UTF-8',
+          'Authorization': 'Bearer $token',
+        },
+      );
+
+      print(
+          'Request URL: ${Uri.parse('$baseUrl/coursexpackage/get-all-by-id-package/$packageId')}');
+      print('Response status code: ${response.statusCode}');
+      print('Response body: ${response.body}');
+
+      if (response.statusCode == 200) {
+        List<dynamic> data = jsonDecode(response.body)['results'];
+        return data.map((json) => Course.fromJson(json)).toList();
+      } else {
+        throw Exception('Failed to load courses for package');
+      }
+    } catch (e) {
+      print('Error occurred: $e');
+      throw Exception('Failed to load courses for package');
+    } finally {
+      client.close();
+    }
+  }
 }
