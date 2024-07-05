@@ -25,6 +25,10 @@ class APIService {
     await storage.write(key: 'jwt_token', value: token);
   }
 
+  static Future<void> logout() async {
+    await storage.delete(key: 'jwt_token');
+  }
+
   static Future<Map<String, dynamic>> loginUser(
       String username, String password) async {
     final client = createHttpClient();

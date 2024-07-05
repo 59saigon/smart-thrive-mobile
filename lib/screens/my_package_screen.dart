@@ -165,7 +165,7 @@ class AppBar extends StatelessWidget {
               ),
               CircleButton(
                 icon: Icons.notifications,
-                onPressd: () {},
+                onPressed: () {},
               ),
             ],
           ),

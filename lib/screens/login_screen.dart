@@ -150,9 +150,7 @@ class LoginPage extends StatelessWidget {
                   const SizedBox(height: 50),
                   const Row(
                     mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      // Add your other login options here
-                    ],
+                    children: [],
                   ),
                   const SizedBox(height: 50),
                   GestureDetector(

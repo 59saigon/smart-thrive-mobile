@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:smart_thrive_mobile/models/course.dart';
 import 'package:smart_thrive_mobile/screens/all_course_screen.dart';
+import 'package:smart_thrive_mobile/screens/login_screen.dart';
 import 'package:smart_thrive_mobile/services/api_service.dart';
 import 'package:smart_thrive_mobile/constants/color.dart';
 import 'package:smart_thrive_mobile/widgets/circle_button.dart';
@@ -44,7 +45,7 @@ class _HomeScreenState extends State<HomeScreen> {
           child: SingleChildScrollView(
             child: Column(
               children: [
-                const AppBar(),
+                const MyAppBar(),
                 Body(courseList: courseList),
               ],
             ),
@@ -119,8 +120,8 @@ class Body extends StatelessWidget {
   }
 }
 
-class AppBar extends StatelessWidget {
-  const AppBar({Key? key}) : super(key: key);
+class MyAppBar extends StatelessWidget {
+  const MyAppBar({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -153,8 +154,41 @@ class AppBar extends StatelessWidget {
                 style: Theme.of(context).textTheme.titleLarge,
               ),
               CircleButton(
-                icon: Icons.notifications,
-                onPressd: () {},
+                icon: Icons.logout,
+                onPressed: () async {
+                  bool? shouldLogout = await showDialog<bool>(
+                    context: context,
+                    builder: (context) {
+                      return AlertDialog(
+                        title: const Text('Log Out'),
+                        content:
+                            const Text('Are you sure you want to log out?'),
+                        actions: [
+                          TextButton(
+                            onPressed: () {
+                              Navigator.of(context).pop(false);
+                            },
+                            child: const Text('Cancel'),
+                          ),
+                          TextButton(
+                            onPressed: () {
+                              Navigator.of(context).pop(true);
+                            },
+                            child: const Text('Log Out'),
+                          ),
+                        ],
+                      );
+                    },
+                  );
+
+                  if (shouldLogout == true) {
+                    await APIService.logout();
+                    Navigator.pushReplacement(
+                      context,
+                      MaterialPageRoute(builder: (context) => LoginPage()),
+                    );
+                  }
+                },
               ),
             ],
           ),
