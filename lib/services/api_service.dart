@@ -128,7 +128,7 @@ class APIService {
 
     try {
       final response = await client.get(
-        Uri.parse('$baseUrl/Package/get-all-package-by-student-id/$studentId'),
+        Uri.parse('$baseUrl/Package/get-all-by-student-id/$studentId'),
         headers: <String, String>{
           'Content-Type': 'application/json; charset=UTF-8',
           'Authorization': 'Bearer $token',
@@ -295,7 +295,7 @@ class APIService {
 
     try {
       final response = await client.get(
-        Uri.parse('$baseUrl/coursexpackage/get-all-by-id-package/$packageId'),
+        Uri.parse('$baseUrl/coursexpackage/get-all-by-package-id/$packageId'),
         headers: <String, String>{
           'Content-Type': 'application/json; charset=UTF-8',
           'Authorization': 'Bearer $token',

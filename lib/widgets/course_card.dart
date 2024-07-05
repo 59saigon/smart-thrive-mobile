@@ -46,11 +46,11 @@ class CourseCard extends StatelessWidget {
                 ),
                 const SizedBox(height: 10),
                 Text(
-                  course.courseName ?? 'No Name',
+                  course.courseName ?? 'Unknown Course',
                   style: Theme.of(context).textTheme.titleMedium,
                 ),
                 Text(
-                  'Provider: ${course.provider}',
+                  'Provider: ${course.provider?.companyName ?? "Unknown"}',
                   style: Theme.of(context).textTheme.bodySmall,
                 ),
               ],

@@ -39,7 +39,7 @@ class CourseContainer extends StatelessWidget {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text(course.courseName ?? 'No Name'),
+                  Text(course.courseName ?? 'Unknown Course'),
                   Text(
                     'Subject: ${course.subject}',
                     style: Theme.of(context).textTheme.bodyMedium,

@@ -7,6 +7,7 @@ import 'package:smart_thrive_mobile/services/api_service.dart';
 
 class CourseScreen extends StatefulWidget {
   final String packageId;
+
   const CourseScreen({Key? key, required this.packageId}) : super(key: key);
 
   @override

@@ -106,16 +106,14 @@ class _MyPackageScreenState extends State<MyPackageScreen> {
                     itemCount: packageList.length,
                     itemBuilder: (context, index) {
                       if (packageList[index].isDeleted) {
-                        return const SizedBox
-                            .shrink(); // Return an empty widget for deleted packages
+                        return const SizedBox.shrink();
                       }
                       return Padding(
                         padding: const EdgeInsets.symmetric(vertical: 10.0),
                         child: PackageContainer(
                           package: packageList[index],
                           studentId: widget.studentId,
-                          onUpdateSuccess:
-                              _refreshPackages, // Pass the refresh method here
+                          onUpdateSuccess: _refreshPackages,
                         ),
                       );
                     },
