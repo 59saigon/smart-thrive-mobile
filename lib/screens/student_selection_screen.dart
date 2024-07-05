@@ -29,18 +29,35 @@ class _StudentSelectionScreenState extends State<StudentSelectionScreen> {
         ),
       );
     } else {
+      // Handle case where no student is selected
       showDialog(
         context: context,
         builder: (context) {
           return AlertDialog(
             title: const Text('Selection Required'),
-            content: const Text('Please select a student to proceed.'),
-            actions: <Widget>[
-              TextButton(
-                onPressed: () => Navigator.of(context).pop(),
-                child: const Text('OK'),
-              ),
-            ],
+            content: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                const Text('Select a student or continue without selecting.'),
+                const SizedBox(height: 20),
+                ElevatedButton(
+                  onPressed: () {
+                    Navigator.pushReplacement(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) =>
+                            BaseScreen(studentId: '', roleName: widget.role),
+                      ),
+                    );
+                  },
+                  child: const Text('Continue without selecting student'),
+                ),
+                TextButton(
+                  onPressed: () => Navigator.of(context).pop(),
+                  child: const Text('OK'),
+                ),
+              ],
+            ),
           );
         },
       );
