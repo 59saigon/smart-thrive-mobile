@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:smart_thrive_mobile/screens/base_screen.dart';
+import 'package:smart_thrive_mobile/models/student.dart';
 import 'package:smart_thrive_mobile/screens/register_screen.dart';
+import 'package:smart_thrive_mobile/screens/student_selection_screen.dart';
 import 'package:smart_thrive_mobile/services/api_service.dart';
 import 'package:smart_thrive_mobile/components/my_button.dart';
 import 'package:smart_thrive_mobile/components/my_textfield.dart';
-import 'package:smart_thrive_mobile/components/square_tile.dart';
 
 class LoginPage extends StatelessWidget {
   final usernameController = TextEditingController();
@@ -18,11 +18,16 @@ class LoginPage extends StatelessWidget {
       final response = await APIService.loginUser(username, password);
 
       if (response['isSuccess'] == true) {
-        final token = response['token']; // Handle JWT token as needed
+        final role = response['result']['role']['roleName']; // Get role name
+        final List<Student> students = (response['result']['students'] as List)
+            .map((studentJson) => Student.fromJson(studentJson))
+            .toList();
 
         Navigator.pushReplacement(
           context,
-          MaterialPageRoute(builder: (context) => const BaseScreen()),
+          MaterialPageRoute(
+              builder: (context) =>
+                  StudentSelectionScreen(students: students, role: role)),
         );
       } else {
         showDialog(
@@ -145,10 +150,7 @@ class LoginPage extends StatelessWidget {
                   const SizedBox(height: 50),
                   const Row(
                     mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      SquareTile(imagePath: 'lib/images/google.png'),
-                      SizedBox(width: 25),
-                    ],
+                    children: [],
                   ),
                   const SizedBox(height: 50),
                   GestureDetector(

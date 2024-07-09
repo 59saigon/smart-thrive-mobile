@@ -1,21 +1,19 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:smart_thrive_mobile/models/course.dart';
-import 'package:smart_thrive_mobile/widgets/course_container.dart';
+import 'package:smart_thrive_mobile/widgets/course_card.dart';
 import 'package:smart_thrive_mobile/widgets/custom_icon_button.dart';
 import 'package:smart_thrive_mobile/services/api_service.dart';
 
-class CourseScreen extends StatefulWidget {
-  final String packageId;
-
-  const CourseScreen({Key? key, required this.packageId}) : super(key: key);
+class AllCourseScreen extends StatefulWidget {
+  const AllCourseScreen({Key? key}) : super(key: key);
 
   @override
-  _CourseScreenState createState() => _CourseScreenState();
+  _AllCourseScreenState createState() => _AllCourseScreenState();
 }
 
-class _CourseScreenState extends State<CourseScreen> {
-  List<Course> courses = [];
+class _AllCourseScreenState extends State<AllCourseScreen> {
+  List<Course> courseList = [];
 
   @override
   void initState() {
@@ -25,10 +23,9 @@ class _CourseScreenState extends State<CourseScreen> {
 
   Future<void> fetchCourses() async {
     try {
-      List<Course> fetchedCourses =
-          await APIService.getCoursesByPackageId(widget.packageId);
+      List<Course> fetchedCourses = await APIService.getCourses();
       setState(() {
-        courses = fetchedCourses;
+        courseList = fetchedCourses;
       });
     } catch (e) {
       print('Failed to fetch courses: $e');
@@ -53,7 +50,7 @@ class _CourseScreenState extends State<CourseScreen> {
                     children: [
                       Align(
                         child: Text(
-                          'Courses',
+                          'All Courses',
                           style: Theme.of(context).textTheme.bodyLarge,
                         ),
                       ),
@@ -71,17 +68,20 @@ class _CourseScreenState extends State<CourseScreen> {
                 ),
                 const SizedBox(height: 15),
                 Expanded(
-                  child: ListView.separated(
-                    shrinkWrap: true,
-                    itemBuilder: (_, index) {
-                      return CourseContainer(
-                        course: courses[index],
+                  child: GridView.builder(
+                    gridDelegate:
+                        const SliverGridDelegateWithFixedCrossAxisCount(
+                      crossAxisCount: 2,
+                      childAspectRatio: 0.8,
+                      crossAxisSpacing: 20,
+                      mainAxisSpacing: 24,
+                    ),
+                    itemCount: courseList.length,
+                    itemBuilder: (context, index) {
+                      return CourseCard(
+                        course: courseList[index],
                       );
                     },
-                    separatorBuilder: (context, _) {
-                      return const SizedBox(height: 10);
-                    },
-                    itemCount: courses.length,
                   ),
                 ),
               ],

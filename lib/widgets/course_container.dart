@@ -1,12 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:smart_thrive_mobile/constants/color.dart';
 import 'package:smart_thrive_mobile/models/course.dart';
 import 'package:smart_thrive_mobile/screens/details_screen.dart';
 
 class CourseContainer extends StatelessWidget {
   final Course course;
 
-  const CourseContainer({Key? key, required this.course}) : super(key: key);
+  const CourseContainer({super.key, required this.course});
 
   @override
   Widget build(BuildContext context) {
@@ -15,7 +14,7 @@ class CourseContainer extends StatelessWidget {
         Navigator.push(
           context,
           MaterialPageRoute(
-            builder: (context) => DetailsScreen(title: course.courseName),
+            builder: (context) => DetailsScreen(course: course),
           ),
         );
       },
@@ -40,15 +39,15 @@ class CourseContainer extends StatelessWidget {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text(course.courseName),
+                  Text(course.courseName ?? 'Unknown Course'),
                   Text(
                     'Subject: ${course.subject}',
-                    style: Theme.of(context).textTheme.bodyText2,
+                    style: Theme.of(context).textTheme.bodyMedium,
                   ),
                   const SizedBox(height: 5),
                   Text(
                     'Total Slots: ${course.totalSlot}',
-                    style: Theme.of(context).textTheme.bodyText2,
+                    style: Theme.of(context).textTheme.bodyMedium,
                   ),
                 ],
               ),

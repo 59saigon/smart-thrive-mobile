@@ -25,6 +25,10 @@ class APIService {
     await storage.write(key: 'jwt_token', value: token);
   }
 
+  static Future<void> logout() async {
+    await storage.delete(key: 'jwt_token');
+  }
+
   static Future<Map<String, dynamic>> loginUser(
       String username, String password) async {
     final client = createHttpClient();
@@ -114,6 +118,138 @@ class APIService {
     }
   }
 
+  static Future<List<Package>> getPackagesByStudentId(String studentId) async {
+    final client = createHttpClient();
+    final token = await getToken();
+
+    if (token == null) {
+      throw Exception('No JWT token found');
+    }
+
+    try {
+      final response = await client.get(
+        Uri.parse('$baseUrl/Package/get-all-by-student-id/$studentId'),
+        headers: <String, String>{
+          'Content-Type': 'application/json; charset=UTF-8',
+          'Authorization': 'Bearer $token',
+        },
+      );
+
+      if (response.statusCode == 200) {
+        List<dynamic> data = jsonDecode(response.body)['results'];
+        List<Package> packages = data.map((json) {
+          return Package.fromJson(json);
+        }).toList();
+
+        return packages;
+      } else {
+        throw Exception('Failed to load packages for student');
+      }
+    } catch (e) {
+      print('Error occurred: $e');
+      throw Exception('Failed to load packages for student');
+    } finally {
+      client.close();
+    }
+  }
+
+  static Future<void> createPackage(Map<String, dynamic> requestBody) async {
+    final client = createHttpClient();
+    final token = await getToken();
+
+    if (token == null) {
+      throw Exception('No JWT token found');
+    }
+
+    try {
+      final response = await client.post(
+        Uri.parse('$baseUrl/package/add'),
+        headers: <String, String>{
+          'Content-Type': 'application/json; charset=UTF-8',
+          'Authorization': 'Bearer $token',
+        },
+        body: jsonEncode(requestBody),
+      );
+
+      if (response.statusCode == 200) {
+        final responseData = jsonDecode(response.body);
+        print('Package created: $responseData');
+      } else {
+        throw Exception('Failed to create package');
+      }
+    } catch (e) {
+      print('Error creating package: $e');
+      throw Exception('Failed to create package');
+    } finally {
+      client.close();
+    }
+  }
+
+  static Future<void> updatePackage(Map<String, dynamic> requestBody) async {
+    final client = createHttpClient();
+    final token = await getToken();
+
+    if (token == null) {
+      throw Exception('No JWT token found');
+    }
+
+    try {
+      final response = await client.put(
+        Uri.parse('$baseUrl/package/update'),
+        headers: <String, String>{
+          'Content-Type': 'application/json; charset=UTF-8',
+          'Authorization': 'Bearer $token',
+        },
+        body: jsonEncode(requestBody),
+      );
+
+      if (response.statusCode == 200) {
+        final responseData = jsonDecode(response.body);
+        print('Package updated: $responseData');
+      } else {
+        throw Exception('Failed to update package');
+      }
+    } catch (e) {
+      print('Error updating package: $e');
+      throw Exception('Failed to update package');
+    } finally {
+      client.close();
+    }
+  }
+
+  static Future<void> deletePackage(String id) async {
+    final client = createHttpClient();
+    final token = await getToken();
+
+    if (token == null) {
+      throw Exception('No JWT token found');
+    }
+
+    try {
+      final response = await client.put(
+        Uri.parse('$baseUrl/package/delete?id=$id'),
+        headers: <String, String>{
+          'Content-Type': 'application/json; charset=UTF-8',
+          'Authorization': 'Bearer $token',
+        },
+      );
+
+      if (response.statusCode == 200) {
+        final responseData = jsonDecode(response.body);
+        print('Package deleted successfully: $responseData');
+      } else if (response.statusCode == 400) {
+        throw Exception('Bad request: ${response.body}');
+      } else {
+        throw Exception('Failed to delete package: ${response.statusCode}');
+      }
+    } catch (e) {
+      print('Error deleting package: $e');
+      throw Exception('Failed to delete package');
+    } finally {
+      client.close();
+    }
+  }
+
   static Future<List<Course>> getCourses() async {
     final client = createHttpClient();
     final token = await getToken();
@@ -144,6 +280,42 @@ class APIService {
     } catch (e) {
       print('Error occurred: $e');
       throw Exception('Failed to load courses');
+    } finally {
+      client.close();
+    }
+  }
+
+  static Future<List<Course>> getCoursesByPackageId(String packageId) async {
+    final client = createHttpClient();
+    final token = await getToken();
+
+    if (token == null) {
+      throw Exception('No JWT token found');
+    }
+
+    try {
+      final response = await client.get(
+        Uri.parse('$baseUrl/coursexpackage/get-all-by-package-id/$packageId'),
+        headers: <String, String>{
+          'Content-Type': 'application/json; charset=UTF-8',
+          'Authorization': 'Bearer $token',
+        },
+      );
+
+      print(
+          'Request URL: ${Uri.parse('$baseUrl/coursexpackage/get-all-by-id-package/$packageId')}');
+      print('Response status code: ${response.statusCode}');
+      print('Response body: ${response.body}');
+
+      if (response.statusCode == 200) {
+        List<dynamic> data = jsonDecode(response.body)['results'];
+        return data.map((json) => Course.fromJson(json)).toList();
+      } else {
+        throw Exception('Failed to load courses for package');
+      }
+    } catch (e) {
+      print('Error occurred: $e');
+      throw Exception('Failed to load courses for package');
     } finally {
       client.close();
     }

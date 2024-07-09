@@ -2,43 +2,87 @@ import 'package:flutter/material.dart';
 import 'package:smart_thrive_mobile/constants/color.dart';
 import 'package:smart_thrive_mobile/constants/icons.dart';
 import 'package:smart_thrive_mobile/constants/size.dart';
-import 'package:smart_thrive_mobile/screens/upload_course_screen.dart';
 import 'package:smart_thrive_mobile/screens/dashboard.dart';
 import 'package:smart_thrive_mobile/screens/home_screen.dart';
-import 'package:smart_thrive_mobile/screens/my_learning_screen.dart';
+import 'package:smart_thrive_mobile/screens/my_course_screen.dart';
+import 'package:smart_thrive_mobile/screens/my_package_screen.dart';
 
 class BaseScreen extends StatefulWidget {
-  const BaseScreen({Key? key}) : super(key: key);
+  final String studentId;
+  final String roleName;
+
+  const BaseScreen({
+    Key? key,
+    required this.studentId,
+    required this.roleName,
+  }) : super(key: key);
 
   @override
   _BaseScreenState createState() => _BaseScreenState();
 }
 
 class _BaseScreenState extends State<BaseScreen> {
-  int _selectIndex = 0;
-  bool isAdmin =
-      true; // Replace with your actual logic to determine if the user is an admin/provider
+  int _selectedIndex = 0;
+  late List<Widget> _widgetOptions;
 
-  static List<Widget> _widgetOptions = <Widget>[
-    HomeScreen(),
-    MyLearningScreen(),
-    SizedBox.shrink(), // Placeholder for the Upload Course screen
-    HomeScreen(),
-    Dashboard(),
-  ];
+  @override
+  void initState() {
+    super.initState();
+    _widgetOptions = _buildWidgetOptions();
+  }
+
+  List<Widget> _buildWidgetOptions() {
+    switch (widget.roleName) {
+      case 'Buyer':
+        return [
+          const HomeScreen(),
+          MyPackageScreen(studentId: widget.studentId),
+          const Dashboard(),
+        ];
+      case 'Provider':
+        return [
+          const HomeScreen(),
+          MyPackageScreen(studentId: widget.studentId),
+          MyCourseScreen(studentId: widget.studentId),
+          const Dashboard(),
+        ];
+      default:
+        return [
+          const HomeScreen(),
+          MyPackageScreen(studentId: widget.studentId),
+          const Dashboard(),
+        ];
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: Center(
-        child: _widgetOptions.elementAt(_selectIndex),
+        child: _widgetOptions.elementAt(_selectedIndex),
       ),
       bottomNavigationBar: BottomNavigationBar(
         type: BottomNavigationBarType.fixed,
         selectedItemColor: kPrimaryColor,
-        backgroundColor: Color(0xffEEEEEE),
+        backgroundColor: Colors.white,
         elevation: 0,
-        items: [
+        items: _buildBottomNavigationBarItems(),
+        currentIndex: _selectedIndex,
+        onTap: (int index) {
+          setState(() {
+            _selectedIndex = index;
+          });
+        },
+      ),
+    );
+  }
+
+  List<BottomNavigationBarItem> _buildBottomNavigationBarItems() {
+    switch (widget.roleName) {
+      case 'Buyer':
+      case 'Admin':
+      case 'Staff':
+        return [
           BottomNavigationBarItem(
             activeIcon: Image.asset(
               icFeatured,
@@ -48,7 +92,7 @@ class _BaseScreenState extends State<BaseScreen> {
               icFeaturedOutlined,
               height: kBottomNavigationBarItemSize,
             ),
-            label: 'Home',
+            label: "Courses",
           ),
           BottomNavigationBarItem(
             activeIcon: Image.asset(
@@ -59,22 +103,7 @@ class _BaseScreenState extends State<BaseScreen> {
               icLearningOutlined,
               height: kBottomNavigationBarItemSize,
             ),
-            label: 'My Learning',
-          ),
-          BottomNavigationBarItem(
-            icon: SizedBox.shrink(), // Placeholder for the FloatingActionButton
-            label: '',
-          ),
-          BottomNavigationBarItem(
-            activeIcon: Image.asset(
-              icWishlist,
-              height: kBottomNavigationBarItemSize,
-            ),
-            icon: Image.asset(
-              icWishlistOutlined,
-              height: kBottomNavigationBarItemSize,
-            ),
-            label: 'WishList',
+            label: "My Package",
           ),
           BottomNavigationBarItem(
             activeIcon: Image.asset(
@@ -85,32 +114,92 @@ class _BaseScreenState extends State<BaseScreen> {
               icSettingOutlined,
               height: kBottomNavigationBarItemSize,
             ),
-            label: 'Settings',
+            label: "Settings",
           ),
-        ],
-        currentIndex: _selectIndex,
-        onTap: (int index) {
-          if (index != 2) {
-            // Ensure that clicking the placeholder item doesn't change the index
-            setState(() {
-              _selectIndex = index;
-            });
-          }
-        },
-      ),
-      floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
-      floatingActionButton: isAdmin
-          ? FloatingActionButton(
-              onPressed: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(builder: (context) => UploadCourseScreen()),
-                );
-              },
-              child: Icon(Icons.add),
-              backgroundColor: kPrimaryColor,
-            )
-          : null,
-    );
+        ];
+      case 'Provider':
+        return [
+          BottomNavigationBarItem(
+            activeIcon: Image.asset(
+              icFeatured,
+              height: kBottomNavigationBarItemSize,
+            ),
+            icon: Image.asset(
+              icFeaturedOutlined,
+              height: kBottomNavigationBarItemSize,
+            ),
+            label: "Courses",
+          ),
+          BottomNavigationBarItem(
+            activeIcon: Image.asset(
+              icLearning,
+              height: kBottomNavigationBarItemSize,
+            ),
+            icon: Image.asset(
+              icLearningOutlined,
+              height: kBottomNavigationBarItemSize,
+            ),
+            label: "My Package",
+          ),
+          BottomNavigationBarItem(
+            activeIcon: Image.asset(
+              icLearning,
+              height: kBottomNavigationBarItemSize,
+            ),
+            icon: Image.asset(
+              icLearningOutlined,
+              height: kBottomNavigationBarItemSize,
+            ),
+            label: "My Courses",
+          ),
+          BottomNavigationBarItem(
+            activeIcon: Image.asset(
+              icSetting,
+              height: kBottomNavigationBarItemSize,
+            ),
+            icon: Image.asset(
+              icSettingOutlined,
+              height: kBottomNavigationBarItemSize,
+            ),
+            label: "Settings",
+          ),
+        ];
+      default:
+        return [
+          BottomNavigationBarItem(
+            activeIcon: Image.asset(
+              icFeatured,
+              height: kBottomNavigationBarItemSize,
+            ),
+            icon: Image.asset(
+              icFeaturedOutlined,
+              height: kBottomNavigationBarItemSize,
+            ),
+            label: "Courses",
+          ),
+          BottomNavigationBarItem(
+            activeIcon: Image.asset(
+              icLearning,
+              height: kBottomNavigationBarItemSize,
+            ),
+            icon: Image.asset(
+              icLearningOutlined,
+              height: kBottomNavigationBarItemSize,
+            ),
+            label: "My Package",
+          ),
+          BottomNavigationBarItem(
+            activeIcon: Image.asset(
+              icSetting,
+              height: kBottomNavigationBarItemSize,
+            ),
+            icon: Image.asset(
+              icSettingOutlined,
+              height: kBottomNavigationBarItemSize,
+            ),
+            label: "Settings",
+          ),
+        ];
+    }
   }
 }

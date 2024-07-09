@@ -14,7 +14,9 @@ class PackageCard extends StatelessWidget {
       onTap: () => Navigator.push(
         context,
         MaterialPageRoute(
-          builder: (context) => const CourseScreen(),
+          builder: (context) => CourseScreen(
+            packageId: package.id,
+          ),
         ),
       ),
       child: Container(

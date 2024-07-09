@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:smart_thrive_mobile/models/course.dart';
+import 'package:smart_thrive_mobile/screens/all_course_screen.dart';
+import 'package:smart_thrive_mobile/screens/login_screen.dart';
 import 'package:smart_thrive_mobile/services/api_service.dart';
 import 'package:smart_thrive_mobile/constants/color.dart';
-import 'package:smart_thrive_mobile/constants/size.dart';
-import 'package:smart_thrive_mobile/models/package.dart';
 import 'package:smart_thrive_mobile/widgets/circle_button.dart';
-import 'package:smart_thrive_mobile/widgets/package_card.dart';
-import 'package:smart_thrive_mobile/widgets/search_field.dart';
-import 'package:smart_thrive_mobile/screens/all_package_screen.dart'; // Import the AllPackageScreen
+import 'package:smart_thrive_mobile/widgets/course_card.dart';
+import 'package:smart_thrive_mobile/widgets/search_field.dart'; // Import the AllPackageScreen
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({Key? key}) : super(key: key);
@@ -17,22 +17,22 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
-  List<Package> packageList = [];
+  List<Course> courseList = [];
 
   @override
   void initState() {
     super.initState();
-    fetchPackages();
+    fetchCourse();
   }
 
-  Future<void> fetchPackages() async {
+  Future<void> fetchCourse() async {
     try {
-      List<Package> packages = await APIService.getPackages();
+      List<Course> courses = await APIService.getCourses();
       setState(() {
-        packageList = packages;
+        courseList = courses;
       });
     } catch (e) {
-      print('Failed to fetch packages: $e');
+      print('Failed to fetch courses: $e');
     }
   }
 
@@ -45,8 +45,8 @@ class _HomeScreenState extends State<HomeScreen> {
           child: SingleChildScrollView(
             child: Column(
               children: [
-                const AppBar(),
-                Body(packageList: packageList),
+                const MyAppBar(),
+                Body(courseList: courseList),
               ],
             ),
           ),
@@ -57,14 +57,14 @@ class _HomeScreenState extends State<HomeScreen> {
 }
 
 class Body extends StatelessWidget {
-  final List<Package> packageList;
+  final List<Course> courseList;
 
-  const Body({Key? key, required this.packageList}) : super(key: key);
+  const Body({Key? key, required this.courseList}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     // Display only the first 4 packages
-    List<Package> limitedPackages = packageList.take(4).toList();
+    List<Course> limitedCourses = courseList.take(4).toList();
 
     return Column(
       children: [
@@ -74,15 +74,15 @@ class Body extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               Text(
-                "Explore Package",
+                "Explore Courses",
                 style: Theme.of(context).textTheme.bodyLarge,
               ),
               TextButton(
                 onPressed: () {
-                  // Navigate to AllPackageScreen
                   Navigator.push(
                     context,
-                    MaterialPageRoute(builder: (context) => AllPackageScreen()),
+                    MaterialPageRoute(
+                        builder: (context) => const AllCourseScreen()),
                   );
                 },
                 child: Text(
@@ -107,10 +107,10 @@ class Body extends StatelessWidget {
               crossAxisSpacing: 20,
               mainAxisSpacing: 24,
             ),
-            itemCount: limitedPackages.length,
+            itemCount: limitedCourses.length,
             itemBuilder: (context, index) {
-              return PackageCard(
-                package: limitedPackages[index],
+              return CourseCard(
+                course: limitedCourses[index],
               );
             },
           ),
@@ -120,8 +120,8 @@ class Body extends StatelessWidget {
   }
 }
 
-class AppBar extends StatelessWidget {
-  const AppBar({Key? key}) : super(key: key);
+class MyAppBar extends StatelessWidget {
+  const MyAppBar({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -154,8 +154,41 @@ class AppBar extends StatelessWidget {
                 style: Theme.of(context).textTheme.titleLarge,
               ),
               CircleButton(
-                icon: Icons.notifications,
-                onPressd: () {},
+                icon: Icons.logout,
+                onPressed: () async {
+                  bool? shouldLogout = await showDialog<bool>(
+                    context: context,
+                    builder: (context) {
+                      return AlertDialog(
+                        title: const Text('Log Out'),
+                        content:
+                            const Text('Are you sure you want to log out?'),
+                        actions: [
+                          TextButton(
+                            onPressed: () {
+                              Navigator.of(context).pop(false);
+                            },
+                            child: const Text('Cancel'),
+                          ),
+                          TextButton(
+                            onPressed: () {
+                              Navigator.of(context).pop(true);
+                            },
+                            child: const Text('Log Out'),
+                          ),
+                        ],
+                      );
+                    },
+                  );
+
+                  if (shouldLogout == true) {
+                    await APIService.logout();
+                    Navigator.pushReplacement(
+                      context,
+                      MaterialPageRoute(builder: (context) => LoginPage()),
+                    );
+                  }
+                },
               ),
             ],
           ),
