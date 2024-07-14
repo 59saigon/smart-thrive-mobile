@@ -67,7 +67,7 @@ class _DetailsScreenState extends State<DetailsScreen> {
                 const CustomVideoPlayer(),
                 const SizedBox(height: 15),
                 Text(
-                  'Location: ${widget.course.location?.city ?? "Unknown"}, ${widget.course.location?.district ?? "Unknown"}, ${widget.course.location?.ward ?? "Unknown"}',
+                  'Location: ${widget.course.address ?? 'Unknown'}',
                   style: const TextStyle(
                     fontWeight: FontWeight.w700,
                     fontSize: 18,
@@ -89,7 +89,7 @@ class _DetailsScreenState extends State<DetailsScreen> {
                       height: 20,
                     ),
                     Text(
-                      ' ${widget.course.totalSlot ?? 0} Slots',
+                      ' ${widget.course.totalSlots ?? 0} Slots',
                       style: const TextStyle(
                         color: Colors.grey,
                         fontWeight: FontWeight.w500,

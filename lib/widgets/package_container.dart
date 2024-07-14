@@ -106,7 +106,7 @@ class PackageContainer extends StatelessWidget {
                       return UpdatePackageDialog(
                         id: package.id,
                         packageName: package.packageName,
-                        quantityCourse: package.quantityCourse,
+                        quantityCourse: package.quantityCourse ?? 0,
                         studentId: studentId,
                         onUpdateSuccess: onUpdateSuccess,
                       );

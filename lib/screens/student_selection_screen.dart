@@ -115,7 +115,7 @@ class _StudentSelectionScreenState extends State<StudentSelectionScreen> {
                             const Icon(Icons.person),
                             const SizedBox(width: 10),
                             Text(
-                              student.studentName,
+                              student.studentName ?? 'Unknown',
                               style: const TextStyle(
                                 fontSize: 16,
                                 fontWeight: FontWeight.bold,

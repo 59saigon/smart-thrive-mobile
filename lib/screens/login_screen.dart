@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:smart_thrive_mobile/components/square_tile.dart';
 import 'package:smart_thrive_mobile/models/student.dart';
 import 'package:smart_thrive_mobile/screens/register_screen.dart';
 import 'package:smart_thrive_mobile/screens/student_selection_screen.dart';
@@ -147,7 +148,19 @@ class LoginPage extends StatelessWidget {
                       ],
                     ),
                   ),
+
                   const SizedBox(height: 50),
+
+                  // google + apple sign in buttons
+                  const Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      // google button
+                      SquareTile(imagePath: 'lib/images/google.png'),
+                    ],
+                  ),
+
+                  const SizedBox(height: 10),
                   const Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [],
@@ -157,7 +170,8 @@ class LoginPage extends StatelessWidget {
                     onTap: () {
                       Navigator.push(
                         context,
-                        MaterialPageRoute(builder: (context) => RegisterPage()),
+                        MaterialPageRoute(
+                            builder: (context) => RegistrationScreen()),
                       );
                     },
                     child: Row(

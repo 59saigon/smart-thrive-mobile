@@ -46,7 +46,7 @@ class CourseContainer extends StatelessWidget {
                   ),
                   const SizedBox(height: 5),
                   Text(
-                    'Total Slots: ${course.totalSlot}',
+                    'Total Slots: ${course.totalSlots}',
                     style: Theme.of(context).textTheme.bodyMedium,
                   ),
                 ],
