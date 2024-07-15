@@ -14,7 +14,10 @@ class CourseContainer extends StatelessWidget {
         Navigator.push(
           context,
           MaterialPageRoute(
-            builder: (context) => DetailsScreen(course: course),
+            builder: (context) => DetailsScreen(
+              course: course,
+              studentId: '',
+            ),
           ),
         );
       },
@@ -41,12 +44,12 @@ class CourseContainer extends StatelessWidget {
                 children: [
                   Text(course.courseName ?? 'Unknown Course'),
                   Text(
-                    'Subject: ${course.subject}',
+                    'Subject: ${course.subjectId}',
                     style: Theme.of(context).textTheme.bodyMedium,
                   ),
                   const SizedBox(height: 5),
                   Text(
-                    'Total Slots: ${course.totalSlot}',
+                    'Total Slots: ${course.totalSlots}',
                     style: Theme.of(context).textTheme.bodyMedium,
                   ),
                 ],

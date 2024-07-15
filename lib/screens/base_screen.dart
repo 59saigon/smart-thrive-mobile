@@ -35,20 +35,20 @@ class _BaseScreenState extends State<BaseScreen> {
     switch (widget.roleName) {
       case 'Buyer':
         return [
-          const HomeScreen(),
+          HomeScreen(studentId: widget.studentId),
           MyPackageScreen(studentId: widget.studentId),
           const Dashboard(),
         ];
       case 'Provider':
         return [
-          const HomeScreen(),
+          HomeScreen(studentId: widget.studentId),
           MyPackageScreen(studentId: widget.studentId),
           MyCourseScreen(studentId: widget.studentId),
           const Dashboard(),
         ];
       default:
         return [
-          const HomeScreen(),
+          HomeScreen(studentId: widget.studentId),
           MyPackageScreen(studentId: widget.studentId),
           const Dashboard(),
         ];

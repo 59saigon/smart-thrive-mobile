@@ -15,32 +15,32 @@ class Lesson {
 List<Lesson> lessonList = [
   Lesson(
     duration: '90 min',
-    isCompleted: true,
-    isPlaying: true,
-    name: "FootBall 1",
+    isCompleted: false,
+    isPlaying: false,
+    name: "Lesson 1",
   ),
   Lesson(
     duration: '90 min',
     isCompleted: false,
     isPlaying: false,
-    name: "FootBall 2",
+    name: "Lesson 2",
   ),
   Lesson(
     duration: '90 min',
     isCompleted: false,
     isPlaying: false,
-    name: "FootBall 3",
+    name: "Lesson 3",
   ),
   Lesson(
     duration: '90 min',
     isCompleted: false,
     isPlaying: false,
-    name: "FootBall 4",
+    name: "Lesson 4",
   ),
   Lesson(
     duration: '90 min',
     isCompleted: false,
     isPlaying: false,
-    name: "FootBall 5",
+    name: "Lesson 5",
   ),
 ];

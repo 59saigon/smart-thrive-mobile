@@ -7,10 +7,12 @@ import 'package:smart_thrive_mobile/services/api_service.dart';
 import 'package:smart_thrive_mobile/constants/color.dart';
 import 'package:smart_thrive_mobile/widgets/circle_button.dart';
 import 'package:smart_thrive_mobile/widgets/course_card.dart';
-import 'package:smart_thrive_mobile/widgets/search_field.dart'; // Import the AllPackageScreen
+import 'package:smart_thrive_mobile/widgets/search_field.dart';
 
 class HomeScreen extends StatefulWidget {
-  const HomeScreen({Key? key}) : super(key: key);
+  final String studentId;
+
+  const HomeScreen({Key? key, required this.studentId}) : super(key: key);
 
   @override
   State<HomeScreen> createState() => _HomeScreenState();
@@ -46,7 +48,10 @@ class _HomeScreenState extends State<HomeScreen> {
             child: Column(
               children: [
                 const MyAppBar(),
-                Body(courseList: courseList),
+                Body(
+                  courseList: courseList,
+                  studentId: widget.studentId,
+                ),
               ],
             ),
           ),
@@ -58,12 +63,13 @@ class _HomeScreenState extends State<HomeScreen> {
 
 class Body extends StatelessWidget {
   final List<Course> courseList;
+  final String studentId;
 
-  const Body({Key? key, required this.courseList}) : super(key: key);
+  const Body({Key? key, required this.courseList, required this.studentId})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    // Display only the first 4 packages
     List<Course> limitedCourses = courseList.take(4).toList();
 
     return Column(
@@ -82,7 +88,9 @@ class Body extends StatelessWidget {
                   Navigator.push(
                     context,
                     MaterialPageRoute(
-                        builder: (context) => const AllCourseScreen()),
+                      builder: (context) =>
+                          AllCourseScreen(studentId: studentId),
+                    ),
                   );
                 },
                 child: Text(
@@ -111,6 +119,7 @@ class Body extends StatelessWidget {
             itemBuilder: (context, index) {
               return CourseCard(
                 course: limitedCourses[index],
+                studentId: studentId,
               );
             },
           ),

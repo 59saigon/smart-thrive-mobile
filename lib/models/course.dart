@@ -5,6 +5,7 @@ import 'package:smart_thrive_mobile/models/session.dart';
 import 'package:smart_thrive_mobile/models/subject.dart';
 
 class Course {
+  String id;
   String? subjectId;
   String? providerId;
   String? locationId;
@@ -14,19 +15,20 @@ class Course {
   double? price;
   int? quantity;
   int? soldProduct;
-  int? totalSlot;
+  int? totalSlots;
   bool? isApproved;
   bool? isActive;
   DateTime? startDate;
   DateTime? endDate;
-  Location? location;
-  Subject? subject;
-  Provider? provider;
+  String? address;
+  //Subject? subject;
+  //Provider? provider;
   List<Session>? sessions;
   List<CourseXPackage>? courseXPackages;
   String thumbnail;
 
   Course({
+    required this.id,
     this.subjectId,
     this.providerId,
     this.locationId,
@@ -36,14 +38,14 @@ class Course {
     this.price,
     this.quantity,
     this.soldProduct,
-    this.totalSlot,
+    this.totalSlots,
     this.isApproved,
     this.isActive,
     this.startDate,
     this.endDate,
-    this.location,
-    this.subject,
-    this.provider,
+    this.address,
+    //this.subject,
+    //this.provider,
     this.sessions,
     this.courseXPackages,
     required this.thumbnail,
@@ -51,6 +53,7 @@ class Course {
 
   factory Course.fromJson(Map<String, dynamic> json) {
     return Course(
+      id: json['id'] ?? '',
       subjectId: json['subjectId'],
       providerId: json['providerId'],
       locationId: json['locationId'],
@@ -60,18 +63,17 @@ class Course {
       price: json['price']?.toDouble(),
       quantity: json['quantity'],
       soldProduct: json['soldProduct'],
-      totalSlot: json['totalSlot'],
+      totalSlots: json['totalSlots'],
       isApproved: json['isApproved'],
       isActive: json['isActive'],
+      address: json['address'],
       startDate:
           json['startDate'] != null ? DateTime.parse(json['startDate']) : null,
       endDate: json['endDate'] != null ? DateTime.parse(json['endDate']) : null,
-      location:
-          json['location'] != null ? Location.fromJson(json['location']) : null,
-      subject:
-          json['subject'] != null ? Subject.fromJson(json['subject']) : null,
-      provider:
-          json['provider'] != null ? Provider.fromJson(json['provider']) : null,
+      // subject:
+      //     json['subject'] != null ? Subject.fromJson(json['subject']) : null,
+      // provider:
+      //     json['provider'] != null ? Provider.fromJson(json['provider']) : null,
       sessions: json['sessions'] != null
           ? (json['sessions'] as List).map((i) => Session.fromJson(i)).toList()
           : null,

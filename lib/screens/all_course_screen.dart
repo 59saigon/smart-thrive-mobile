@@ -6,7 +6,10 @@ import 'package:smart_thrive_mobile/widgets/custom_icon_button.dart';
 import 'package:smart_thrive_mobile/services/api_service.dart';
 
 class AllCourseScreen extends StatefulWidget {
-  const AllCourseScreen({Key? key}) : super(key: key);
+  final String studentId; // Add studentId parameter
+
+  const AllCourseScreen({Key? key, required this.studentId})
+      : super(key: key); // Include studentId in constructor
 
   @override
   _AllCourseScreenState createState() => _AllCourseScreenState();
@@ -80,6 +83,8 @@ class _AllCourseScreenState extends State<AllCourseScreen> {
                     itemBuilder: (context, index) {
                       return CourseCard(
                         course: courseList[index],
+                        studentId:
+                            widget.studentId, // Pass studentId to CourseCard
                       );
                     },
                   ),

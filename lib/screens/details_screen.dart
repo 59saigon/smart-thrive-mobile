@@ -4,13 +4,20 @@ import 'package:smart_thrive_mobile/constants/color.dart';
 import 'package:smart_thrive_mobile/constants/icons.dart';
 import 'package:smart_thrive_mobile/models/course.dart';
 import 'package:smart_thrive_mobile/models/lesson.dart';
+import 'package:smart_thrive_mobile/models/package.dart';
+import 'package:smart_thrive_mobile/services/api_service.dart';
 import 'package:smart_thrive_mobile/widgets/custom_video_player.dart';
-import 'package:intl/intl.dart';
-import 'package:smart_thrive_mobile/widgets/lesson_card.dart'; // Import for date formatting
+import 'package:smart_thrive_mobile/widgets/lesson_card.dart';
 
 class DetailsScreen extends StatefulWidget {
   final Course course;
-  const DetailsScreen({super.key, required this.course});
+  final String studentId;
+
+  const DetailsScreen({
+    Key? key,
+    required this.course,
+    required this.studentId,
+  }) : super(key: key);
 
   @override
   State<DetailsScreen> createState() => _DetailsScreenState();
@@ -23,6 +30,101 @@ class _DetailsScreenState extends State<DetailsScreen> {
     setState(() {
       _selectedTab = index;
     });
+  }
+
+  Future<void> _showPackageBottomSheet(BuildContext context) async {
+    List<Package> packageList = [];
+    try {
+      packageList = await APIService.getPackagesByStudentId(widget.studentId);
+      packageList.sort((a, b) => b.createdDate.compareTo(a.createdDate));
+      packageList = packageList.where((package) => !package.isDeleted).toList();
+    } catch (e) {
+      print('Failed to fetch packages: $e');
+    }
+
+    showModalBottomSheet(
+      context: context,
+      isScrollControlled: true,
+      builder: (context) => DraggableScrollableSheet(
+        expand: false,
+        builder: (context, scrollController) => Padding(
+          padding: const EdgeInsets.all(20.0),
+          child: ListView.builder(
+            controller: scrollController,
+            itemCount: packageList.length,
+            itemBuilder: (context, index) {
+              if (packageList[index].isDeleted) {
+                return const SizedBox.shrink();
+              }
+              return Padding(
+                padding: const EdgeInsets.symmetric(vertical: 10.0),
+                child: ListTile(
+                  onTap: () =>
+                      _confirmAddCourseToPackage(context, packageList[index]),
+                  title: Text(packageList[index].packageName),
+                  subtitle: Text(
+                      'Quantity Course: ${packageList[index].quantityCourse}'),
+                  leading: ClipRRect(
+                    borderRadius: BorderRadius.circular(10),
+                    child: Image.asset(
+                      packageList[index].thumbnail,
+                      height: 60,
+                    ),
+                  ),
+                ),
+              );
+            },
+          ),
+        ),
+      ),
+    );
+  }
+
+  Future<void> _confirmAddCourseToPackage(
+      BuildContext context, Package package) async {
+    bool confirmAdd = await showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: const Text('Confirm Add Course'),
+          content: Text(
+            'Do you want to add "${widget.course.courseName}" to "${package.packageName}"?',
+          ),
+          actions: <Widget>[
+            TextButton(
+              onPressed: () => Navigator.of(context).pop(false),
+              child: const Text('No'),
+            ),
+            TextButton(
+              onPressed: () async {
+                Navigator.of(context).pop(true);
+                try {
+                  await APIService.addCourseToPackage(
+                      widget.course.id, package.id);
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    const SnackBar(
+                      content: Text('Course added to package successfully'),
+                    ),
+                  );
+                } catch (e) {
+                  print('Error adding course to package: $e');
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    const SnackBar(
+                      content: Text('Failed to add course to package'),
+                    ),
+                  );
+                }
+              },
+              child: const Text('Yes'),
+            ),
+          ],
+        );
+      },
+    );
+
+    if (confirmAdd == true) {
+      // Handle add course to package confirmation
+    }
   }
 
   @override
@@ -48,16 +150,14 @@ class _DetailsScreenState extends State<DetailsScreen> {
                       Align(
                         child: Text(
                           widget.course.courseName ?? 'Unknown Course',
-                          style: Theme.of(context).textTheme.bodyLarge,
+                          style: Theme.of(context).textTheme.bodyText1,
                         ),
                       ),
                       Positioned(
                         left: 0,
-                        child: CustomIconButton(
-                          child: const Icon(Icons.arrow_back),
-                          height: 35,
-                          width: 35,
-                          onTap: () => Navigator.pop(context),
+                        child: IconButton(
+                          icon: const Icon(Icons.arrow_back),
+                          onPressed: () => Navigator.pop(context),
                         ),
                       )
                     ],
@@ -67,7 +167,7 @@ class _DetailsScreenState extends State<DetailsScreen> {
                 const CustomVideoPlayer(),
                 const SizedBox(height: 15),
                 Text(
-                  'Location: ${widget.course.location?.city ?? "Unknown"}, ${widget.course.location?.district ?? "Unknown"}, ${widget.course.location?.ward ?? "Unknown"}',
+                  widget.course.address ?? 'Unknown address',
                   style: const TextStyle(
                     fontWeight: FontWeight.w700,
                     fontSize: 18,
@@ -75,7 +175,7 @@ class _DetailsScreenState extends State<DetailsScreen> {
                 ),
                 const SizedBox(height: 3),
                 Text(
-                  'Provider: ${widget.course.provider?.companyName ?? "Unknown"}',
+                  widget.course.providerId ?? 'Unknown provider',
                   style: const TextStyle(
                     fontWeight: FontWeight.w700,
                     fontSize: 18,
@@ -89,7 +189,7 @@ class _DetailsScreenState extends State<DetailsScreen> {
                       height: 20,
                     ),
                     Text(
-                      ' ${widget.course.totalSlot ?? 0} Slots',
+                      ' ${widget.course.totalSlots ?? 0} Slots',
                       style: const TextStyle(
                         color: Colors.grey,
                         fontWeight: FontWeight.w500,
@@ -137,9 +237,11 @@ class _DetailsScreenState extends State<DetailsScreen> {
           backgroundColor: Colors.white,
           enableDrag: false,
           builder: (context) {
-            return const SizedBox(
+            return SizedBox(
               height: 80,
-              child: EnrollBottomSheet(),
+              child: EnrollBottomSheet(
+                onAddToPackage: () => _showPackageBottomSheet(context),
+              ),
             );
           },
         ),
@@ -187,8 +289,12 @@ class CourseDescription extends StatelessWidget {
 class CustomTabView extends StatefulWidget {
   final Function(int) changeTab;
   final int index;
-  const CustomTabView({Key? key, required this.changeTab, required this.index})
-      : super(key: key);
+
+  const CustomTabView({
+    Key? key,
+    required this.changeTab,
+    required this.index,
+  }) : super(key: key);
 
   @override
   State<CustomTabView> createState() => _CustomTabViewState();
@@ -236,14 +342,14 @@ class _CustomTabViewState extends State<CustomTabView> {
   }
 }
 
-class EnrollBottomSheet extends StatefulWidget {
-  const EnrollBottomSheet({Key? key}) : super(key: key);
+class EnrollBottomSheet extends StatelessWidget {
+  final VoidCallback onAddToPackage;
 
-  @override
-  _EnrollBottomSheetState createState() => _EnrollBottomSheetState();
-}
+  const EnrollBottomSheet({
+    Key? key,
+    required this.onAddToPackage,
+  }) : super(key: key);
 
-class _EnrollBottomSheetState extends State<EnrollBottomSheet> {
   @override
   Widget build(BuildContext context) {
     return Padding(
@@ -263,7 +369,7 @@ class _EnrollBottomSheetState extends State<EnrollBottomSheet> {
           const SizedBox(width: 20),
           Expanded(
             child: CustomIconButton(
-              onTap: () {},
+              onTap: onAddToPackage,
               color: kPrimaryColor,
               height: 45,
               width: 45,

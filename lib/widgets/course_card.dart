@@ -5,8 +5,10 @@ import 'package:smart_thrive_mobile/screens/details_screen.dart';
 
 class CourseCard extends StatelessWidget {
   final Course course;
+  final String studentId;
 
-  const CourseCard({Key? key, required this.course}) : super(key: key);
+  const CourseCard({Key? key, required this.course, required this.studentId})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -14,7 +16,8 @@ class CourseCard extends StatelessWidget {
       onTap: () => Navigator.push(
         context,
         MaterialPageRoute(
-          builder: (context) => DetailsScreen(course: course),
+          builder: (context) =>
+              DetailsScreen(course: course, studentId: studentId),
         ),
       ),
       child: Container(
@@ -50,31 +53,11 @@ class CourseCard extends StatelessWidget {
                   style: Theme.of(context).textTheme.titleMedium,
                 ),
                 Text(
-                  'Provider: ${course.provider?.companyName ?? "Unknown"}',
+                  'Code: ${course.code ?? "Unknown"}',
                   style: Theme.of(context).textTheme.bodySmall,
                 ),
               ],
             ),
-            // Positioned(
-            //   bottom: 0,
-            //   right: 0,
-            //   child: Container(
-            //     padding:
-            //         const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
-            //     decoration: BoxDecoration(
-            //       color: const Color(0xff8a72f1),
-            //       borderRadius: BorderRadius.circular(10),
-            //     ),
-            //     child: Text(
-            //       '\$${course.price?.toStringAsFixed(0)}',
-            //       style: const TextStyle(
-            //         fontWeight: FontWeight.bold,
-            //         fontSize: 16,
-            //         color: Colors.white,
-            //       ),
-            //     ),
-            //   ),
-            // ),
           ],
         ),
       ),

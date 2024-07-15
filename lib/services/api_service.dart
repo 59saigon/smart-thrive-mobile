@@ -320,4 +320,39 @@ class APIService {
       client.close();
     }
   }
+
+  static Future<Map<String, dynamic>> addCourseToPackage(
+      String courseId, String packageId) async {
+    final client = createHttpClient();
+    final token = await getToken();
+
+    if (token == null) {
+      throw Exception('No JWT token found');
+    }
+
+    try {
+      final response = await client.post(
+        Uri.parse('$baseUrl/coursexpackage/add'),
+        headers: <String, String>{
+          'Content-Type': 'application/json; charset=UTF-8',
+          'Authorization': 'Bearer $token',
+        },
+        body: jsonEncode(<String, String>{
+          'courseId': courseId,
+          'packageId': packageId,
+        }),
+      );
+
+      if (response.statusCode == 200) {
+        return jsonDecode(response.body);
+      } else {
+        throw Exception('Failed to add course to package');
+      }
+    } catch (e) {
+      print('Error occurred: $e');
+      throw Exception('Failed to add course to package');
+    } finally {
+      client.close();
+    }
+  }
 }
