@@ -49,7 +49,7 @@ class PackageCard extends StatelessWidget {
                 const SizedBox(height: 10),
                 Text(
                   package.packageName,
-                  style: Theme.of(context).textTheme.subtitle1,
+                  style: Theme.of(context).textTheme.bodyMedium,
                 ),
                 Text(
                   '${package.quantityCourse} courses',

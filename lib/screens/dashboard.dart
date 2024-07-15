@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:smart_thrive_mobile/screens/userstatistic_screen.dart';
 
 class Dashboard extends StatefulWidget {
   const Dashboard({Key? key}) : super(key: key);
@@ -43,7 +44,7 @@ class _DashboardState extends State<Dashboard> {
                 Navigator.push(
                   context,
                   MaterialPageRoute(
-                      builder: (context) => const UserStatisticPage()),
+                      builder: (context) => const UserStatisticScreen()),
                 );
               },
             ),
@@ -61,19 +62,6 @@ class _DashboardState extends State<Dashboard> {
                   context,
                   MaterialPageRoute(
                       builder: (context) => const CourseStatisticPage()),
-                );
-              },
-            ),
-            const SizedBox(height: 16.0),
-            StatisticCard(
-              icon: Icons.class_,
-              title: 'Class statistic',
-              details: const ['Number of class:', 'Type of class:'],
-              onTap: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                      builder: (context) => const ClassStatisticPage()),
                 );
               },
             ),
@@ -134,22 +122,6 @@ class StatisticCard extends StatelessWidget {
   }
 }
 
-class UserStatisticPage extends StatelessWidget {
-  const UserStatisticPage({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: const Text('User Statistic'),
-      ),
-      body: const Center(
-        child: Text('User Statistic Page'),
-      ),
-    );
-  }
-}
-
 class CourseStatisticPage extends StatelessWidget {
   const CourseStatisticPage({super.key});
 
@@ -161,22 +133,6 @@ class CourseStatisticPage extends StatelessWidget {
       ),
       body: const Center(
         child: Text('Course Statistic Page'),
-      ),
-    );
-  }
-}
-
-class ClassStatisticPage extends StatelessWidget {
-  const ClassStatisticPage({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: const Text('Class Statistic'),
-      ),
-      body: const Center(
-        child: Text('Class Statistic Page'),
       ),
     );
   }

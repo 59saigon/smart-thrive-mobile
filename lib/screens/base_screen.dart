@@ -6,6 +6,7 @@ import 'package:smart_thrive_mobile/screens/dashboard.dart';
 import 'package:smart_thrive_mobile/screens/home_screen.dart';
 import 'package:smart_thrive_mobile/screens/my_course_screen.dart';
 import 'package:smart_thrive_mobile/screens/my_package_screen.dart';
+import 'package:smart_thrive_mobile/screens/settings_screen.dart';
 
 class BaseScreen extends StatefulWidget {
   final String studentId;
@@ -37,20 +38,20 @@ class _BaseScreenState extends State<BaseScreen> {
         return [
           const HomeScreen(),
           MyPackageScreen(studentId: widget.studentId),
-          const Dashboard(),
+          const Settings(),
         ];
       case 'Provider':
         return [
           const HomeScreen(),
           MyPackageScreen(studentId: widget.studentId),
           MyCourseScreen(studentId: widget.studentId),
-          const Dashboard(),
+          const Settings(),
         ];
       default:
         return [
           const HomeScreen(),
           MyPackageScreen(studentId: widget.studentId),
-          const Dashboard(),
+          const Settings(),
         ];
     }
   }
