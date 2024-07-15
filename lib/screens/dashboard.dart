@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:smart_thrive_mobile/screens/coursestatistic_screen.dart';
 import 'package:smart_thrive_mobile/screens/userstatistic_screen.dart';
 
 class Dashboard extends StatefulWidget {
@@ -61,7 +62,7 @@ class _DashboardState extends State<Dashboard> {
                 Navigator.push(
                   context,
                   MaterialPageRoute(
-                      builder: (context) => const CourseStatisticPage()),
+                      builder: (context) => CourseStatisticScreen()),
                 );
               },
             ),
@@ -117,22 +118,6 @@ class StatisticCard extends StatelessWidget {
             ],
           ),
         ),
-      ),
-    );
-  }
-}
-
-class CourseStatisticPage extends StatelessWidget {
-  const CourseStatisticPage({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: const Text('Course Statistic'),
-      ),
-      body: const Center(
-        child: Text('Course Statistic Page'),
       ),
     );
   }
