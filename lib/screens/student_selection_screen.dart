@@ -7,10 +7,10 @@ class StudentSelectionScreen extends StatefulWidget {
   final String role;
 
   const StudentSelectionScreen({
-    Key? key,
+    super.key,
     required this.students,
     required this.role,
-  }) : super(key: key);
+  });
 
   @override
   _StudentSelectionScreenState createState() => _StudentSelectionScreenState();

@@ -6,7 +6,7 @@ import 'package:smart_thrive_mobile/widgets/custom_icon_button.dart';
 import 'package:smart_thrive_mobile/services/api_service.dart';
 
 class AllCourseScreen extends StatefulWidget {
-  const AllCourseScreen({Key? key}) : super(key: key);
+  const AllCourseScreen({super.key});
 
   @override
   _AllCourseScreenState createState() => _AllCourseScreenState();
@@ -57,10 +57,10 @@ class _AllCourseScreenState extends State<AllCourseScreen> {
                       Positioned(
                         left: 0,
                         child: CustomIconButton(
-                          child: const Icon(Icons.arrow_back),
                           height: 35,
                           width: 35,
                           onTap: () => Navigator.pop(context),
+                          child: const Icon(Icons.arrow_back),
                         ),
                       ),
                     ],

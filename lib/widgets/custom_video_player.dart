@@ -4,8 +4,8 @@ import 'package:youtube_player_flutter/youtube_player_flutter.dart';
 
 class CustomVideoPlayer extends StatefulWidget {
   const CustomVideoPlayer({
-    Key? key,
-  }) : super(key: key);
+    super.key,
+  });
 
   @override
   State<CustomVideoPlayer> createState() => _CustomVideoPlayerState();
@@ -20,7 +20,7 @@ class _CustomVideoPlayerState extends State<CustomVideoPlayer> {
     super.initState();
     _controller = YoutubePlayerController(
       initialVideoId: 'abPmZCZZrFA', // Extracted from the URL
-      flags: YoutubePlayerFlags(
+      flags: const YoutubePlayerFlags(
         autoPlay: false,
         mute: false,
       ),

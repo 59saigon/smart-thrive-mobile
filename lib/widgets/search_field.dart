@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:smart_thrive_mobile/constants/color.dart';
 
 class SearchTextField extends StatelessWidget {
-  const SearchTextField({Key? key}) : super(key: key);
+  const SearchTextField({super.key});
 
   @override
   Widget build(BuildContext context) {

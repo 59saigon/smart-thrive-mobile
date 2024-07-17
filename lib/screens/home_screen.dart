@@ -10,7 +10,7 @@ import 'package:smart_thrive_mobile/widgets/course_card.dart';
 import 'package:smart_thrive_mobile/widgets/search_field.dart'; // Import the AllPackageScreen
 
 class HomeScreen extends StatefulWidget {
-  const HomeScreen({Key? key}) : super(key: key);
+  const HomeScreen({super.key});
 
   @override
   State<HomeScreen> createState() => _HomeScreenState();
@@ -59,7 +59,7 @@ class _HomeScreenState extends State<HomeScreen> {
 class Body extends StatelessWidget {
   final List<Course> courseList;
 
-  const Body({Key? key, required this.courseList}) : super(key: key);
+  const Body({super.key, required this.courseList});
 
   @override
   Widget build(BuildContext context) {
@@ -121,7 +121,7 @@ class Body extends StatelessWidget {
 }
 
 class MyAppBar extends StatelessWidget {
-  const MyAppBar({Key? key}) : super(key: key);
+  const MyAppBar({super.key});
 
   @override
   Widget build(BuildContext context) {

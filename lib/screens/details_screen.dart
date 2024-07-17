@@ -5,7 +5,6 @@ import 'package:smart_thrive_mobile/constants/icons.dart';
 import 'package:smart_thrive_mobile/models/course.dart';
 import 'package:smart_thrive_mobile/models/lesson.dart';
 import 'package:smart_thrive_mobile/widgets/custom_video_player.dart';
-import 'package:intl/intl.dart';
 import 'package:smart_thrive_mobile/widgets/lesson_card.dart'; // Import for date formatting
 
 class DetailsScreen extends StatefulWidget {
@@ -54,10 +53,10 @@ class _DetailsScreenState extends State<DetailsScreen> {
                       Positioned(
                         left: 0,
                         child: CustomIconButton(
-                          child: const Icon(Icons.arrow_back),
                           height: 35,
                           width: 35,
                           onTap: () => Navigator.pop(context),
+                          child: const Icon(Icons.arrow_back),
                         ),
                       )
                     ],
@@ -149,7 +148,7 @@ class _DetailsScreenState extends State<DetailsScreen> {
 }
 
 class Session extends StatelessWidget {
-  const Session({Key? key}) : super(key: key);
+  const Session({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -168,7 +167,7 @@ class Session extends StatelessWidget {
 class CourseDescription extends StatelessWidget {
   final Course course;
 
-  const CourseDescription({Key? key, required this.course}) : super(key: key);
+  const CourseDescription({super.key, required this.course});
 
   @override
   Widget build(BuildContext context) {
@@ -187,8 +186,7 @@ class CourseDescription extends StatelessWidget {
 class CustomTabView extends StatefulWidget {
   final Function(int) changeTab;
   final int index;
-  const CustomTabView({Key? key, required this.changeTab, required this.index})
-      : super(key: key);
+  const CustomTabView({super.key, required this.changeTab, required this.index});
 
   @override
   State<CustomTabView> createState() => _CustomTabViewState();
@@ -237,7 +235,7 @@ class _CustomTabViewState extends State<CustomTabView> {
 }
 
 class EnrollBottomSheet extends StatefulWidget {
-  const EnrollBottomSheet({Key? key}) : super(key: key);
+  const EnrollBottomSheet({super.key});
 
   @override
   _EnrollBottomSheetState createState() => _EnrollBottomSheetState();
@@ -290,22 +288,17 @@ class CustomIconButton extends StatelessWidget {
   final VoidCallback onTap;
 
   const CustomIconButton({
-    Key? key,
+    super.key,
     required this.child,
     required this.height,
     required this.width,
     this.color,
     required this.onTap,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {
     return Ink(
-      child: InkWell(
-        borderRadius: BorderRadius.circular(12),
-        child: Center(child: child),
-        onTap: onTap,
-      ),
       height: height,
       width: width,
       decoration: BoxDecoration(
@@ -318,6 +311,11 @@ class CustomIconButton extends StatelessWidget {
             spreadRadius: .05,
           ),
         ],
+      ),
+      child: InkWell(
+        borderRadius: BorderRadius.circular(12),
+        onTap: onTap,
+        child: Center(child: child),
       ),
     );
   }

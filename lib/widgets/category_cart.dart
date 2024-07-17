@@ -7,8 +7,7 @@ import 'package:smart_thrive_mobile/screens/course_screen.dart';
 class CategoryCard extends StatelessWidget {
   final Category category;
   final Package package;
-  const CategoryCard({Key? key, required this.category, required this.package})
-      : super(key: key);
+  const CategoryCard({super.key, required this.category, required this.package});
 
   @override
   Widget build(BuildContext context) {

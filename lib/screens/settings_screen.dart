@@ -36,7 +36,7 @@ class _SettingsState extends State<Settings> {
               onTap: () {
                 Navigator.push(
                   context,
-                  MaterialPageRoute(builder: (context) => Profile()),
+                  MaterialPageRoute(builder: (context) => const ProfileScreen()),
                 );
               },
             ),
@@ -46,7 +46,7 @@ class _SettingsState extends State<Settings> {
               onTap: () {
                 Navigator.push(
                   context,
-                  MaterialPageRoute(builder: (context) => History()),
+                  MaterialPageRoute(builder: (context) => const History()),
                 );
               },
             ),
@@ -56,7 +56,7 @@ class _SettingsState extends State<Settings> {
               onTap: () {
                 Navigator.push(
                   context,
-                  MaterialPageRoute(builder: (context) => Dashboard()),
+                  MaterialPageRoute(builder: (context) => const Dashboard()),
                 );
               },
             ),
@@ -66,7 +66,7 @@ class _SettingsState extends State<Settings> {
               onTap: () {
                 Navigator.push(
                   context,
-                  MaterialPageRoute(builder: (context) => HelpSupport()),
+                  MaterialPageRoute(builder: (context) => const HelpSupport()),
                 );
               },
             ),
@@ -76,7 +76,7 @@ class _SettingsState extends State<Settings> {
               onTap: () {
                 Navigator.push(
                   context,
-                  MaterialPageRoute(builder: (context) => PrivacyPolicy()),
+                  MaterialPageRoute(builder: (context) => const PrivacyPolicy()),
                 );
               },
             ),

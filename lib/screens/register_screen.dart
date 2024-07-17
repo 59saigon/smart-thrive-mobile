@@ -9,6 +9,8 @@ class RegisterPage extends StatelessWidget {
   final passwordController = TextEditingController();
   final confirmPasswordController = TextEditingController();
 
+  RegisterPage({super.key});
+
   void signUserUp(BuildContext context) async {
     final username = usernameController.text;
     final password = passwordController.text;
@@ -19,12 +21,12 @@ class RegisterPage extends StatelessWidget {
         context: context,
         builder: (context) {
           return AlertDialog(
-            title: Text('Error'),
-            content: Text('Passwords do not match.'),
+            title: const Text('Error'),
+            content: const Text('Passwords do not match.'),
             actions: <Widget>[
               TextButton(
                 onPressed: () => Navigator.of(context).pop(),
-                child: Text('OK'),
+                child: const Text('OK'),
               ),
             ],
           );
@@ -41,12 +43,12 @@ class RegisterPage extends StatelessWidget {
           context: context,
           builder: (context) {
             return AlertDialog(
-              title: Text('Success'),
-              content: Text('Registration successful.'),
+              title: const Text('Success'),
+              content: const Text('Registration successful.'),
               actions: <Widget>[
                 TextButton(
                   onPressed: () => Navigator.of(context).pop(),
-                  child: Text('OK'),
+                  child: const Text('OK'),
                 ),
               ],
             );
@@ -57,12 +59,12 @@ class RegisterPage extends StatelessWidget {
           context: context,
           builder: (context) {
             return AlertDialog(
-              title: Text('Error'),
+              title: const Text('Error'),
               content: Text(response['message'] ?? 'Registration failed.'),
               actions: <Widget>[
                 TextButton(
                   onPressed: () => Navigator.of(context).pop(),
-                  child: Text('OK'),
+                  child: const Text('OK'),
                 ),
               ],
             );
@@ -74,12 +76,12 @@ class RegisterPage extends StatelessWidget {
         context: context,
         builder: (context) {
           return AlertDialog(
-            title: Text('Error'),
-            content: Text('Failed to register. Please try again later.'),
+            title: const Text('Error'),
+            content: const Text('Failed to register. Please try again later.'),
             actions: <Widget>[
               TextButton(
                 onPressed: () => Navigator.of(context).pop(),
-                child: Text('OK'),
+                child: const Text('OK'),
               ),
             ],
           );

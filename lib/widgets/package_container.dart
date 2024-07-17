@@ -10,11 +10,11 @@ class PackageContainer extends StatelessWidget {
   final VoidCallback onUpdateSuccess;
 
   const PackageContainer({
-    Key? key,
+    super.key,
     required this.package,
     required this.studentId,
     required this.onUpdateSuccess,
-  }) : super(key: key);
+  });
 
   void _deletePackage(BuildContext context) async {
     bool confirmDelete = await showDialog(

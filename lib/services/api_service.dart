@@ -356,4 +356,70 @@ class APIService {
       client.close();
     }
   }
+
+  static Future<User> getUserByEmail(String email) async {
+    final client = createHttpClient();
+    final token = await getToken();
+
+    if (token == null) {
+      throw Exception('No JWT token found');
+    }
+
+    try {
+      final response = await client.get(
+        Uri.parse('$baseUrl/User/get-by-email'),
+        headers: <String, String>{
+          'Content-Type': 'application/json; charset=UTF-8',
+          'Authorization': 'Bearer $token',
+        },
+      );
+      print('Request URL: ${Uri.parse('$baseUrl/User/get-by-email')}');
+      print('Response status code: ${response.statusCode}');
+      print('Response body: ${response.body}');
+
+      if (response.statusCode == 200) {
+        Map<String, dynamic> data = jsonDecode(response.body)['results'];
+        return User.fromJson(data);
+      } else {
+        throw Exception('Failed to load users by email');
+      }
+    } catch (e) {
+      print('Error occurred: $e');
+      throw Exception('Failed to load users by email');
+    } finally {
+      client.close();
+    }
+  }
+
+  static Future<void> updateUser(Map<String, dynamic> requestBody) async {
+    final client = createHttpClient();
+    final token = await getToken();
+
+    if (token == null) {
+      throw Exception('No JWT token found');
+    }
+
+    try {
+      final response = await client.put(
+        Uri.parse('$baseUrl/User/update'),
+        headers: <String, String>{
+          'Content-Type': 'application/json; charset=UTF-8',
+          'Authorization': 'Bearer $token',
+        },
+        body: jsonEncode(requestBody),
+      );
+
+      if (response.statusCode == 200) {
+        final responseData = jsonDecode(response.body);
+        print('User updated: $responseData');
+      } else {
+        throw Exception('Failed to update user');
+      }
+    } catch (e) {
+      print('Error updating user: $e');
+      throw Exception('Failed to update user');
+    } finally {
+      client.close();
+    }
+  }
 }

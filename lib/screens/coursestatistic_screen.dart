@@ -3,6 +3,8 @@ import 'package:smart_thrive_mobile/models/course.dart';
 import 'package:smart_thrive_mobile/services/api_service.dart';
 
 class CourseStatisticScreen extends StatefulWidget {
+  const CourseStatisticScreen({super.key});
+
   @override
   _CourseStatisticScreenState createState() => _CourseStatisticScreenState();
 }
@@ -32,14 +34,14 @@ class _CourseStatisticScreenState extends State<CourseStatisticScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Course Statistic'),
+        title: const Text('Course Statistic'),
       ),
       body: ListView.builder(
         itemCount: courseList.length,
         itemBuilder: (context, index) {
           final course = courseList[index];
           return Card(
-            margin: EdgeInsets.all(8.0),
+            margin: const EdgeInsets.all(8.0),
             child: ListTile(
               title: Text('${course.courseName}'),
               subtitle: Column(

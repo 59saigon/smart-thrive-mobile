@@ -6,7 +6,7 @@ import 'package:smart_thrive_mobile/screens/course_screen.dart';
 class PackageCard extends StatelessWidget {
   final Package package;
 
-  const PackageCard({Key? key, required this.package}) : super(key: key);
+  const PackageCard({super.key, required this.package});
 
   @override
   Widget build(BuildContext context) {
@@ -61,14 +61,14 @@ class PackageCard extends StatelessWidget {
               bottom: 0,
               right: 0,
               child: Container(
-                padding: EdgeInsets.symmetric(horizontal: 10, vertical: 5),
+                padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
                 decoration: BoxDecoration(
-                  color: Color(0xff8a72f1), // Purple color
+                  color: const Color(0xff8a72f1), // Purple color
                   borderRadius: BorderRadius.circular(10),
                 ),
                 child: Text(
                   '\$${package.totalPrice.toStringAsFixed(0)}',
-                  style: TextStyle(
+                  style: const TextStyle(
                     fontWeight: FontWeight.bold,
                     fontSize: 16,
                     color: Colors.white, // Text color

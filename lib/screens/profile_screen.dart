@@ -1,97 +1,113 @@
 import 'package:flutter/material.dart';
-import 'package:smart_thrive_mobile/models/profiledetail.dart';
+import 'package:smart_thrive_mobile/models/shared_preferences.dart';
+import 'package:smart_thrive_mobile/models/user.dart';
 import 'package:smart_thrive_mobile/screens/editprofile_screen.dart';
+import 'package:smart_thrive_mobile/services/api_service.dart';
 
-class Profile extends StatefulWidget {
-  const Profile({super.key});
+class ProfileScreen extends StatefulWidget {
+  const ProfileScreen({super.key});
 
   @override
-  State<Profile> createState() => _ProfileState();
+  _ProfileScreenState createState() => _ProfileScreenState();
 }
 
-class _ProfileState extends State<Profile> {
+class _ProfileScreenState extends State<ProfileScreen> {
+  late Future<User> _user;
+
+  @override
+  void initState() {
+    super.initState();
+    _loadUserProfile();
+  }
+
+  Future<void> _loadUserProfile() async {
+    String? userEmail = await getUserEmail();
+    if (userEmail != null) {
+      setState(() {
+        _user = APIService.getUserByEmail(userEmail);
+      });
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        centerTitle: true,
-        leading: IconButton(
-          icon: const Icon(Icons.arrow_back),
-          onPressed: () {
-            Navigator.pop(context);
-          },
-        ),
         title: const Text('Profile'),
       ),
-      body: SingleChildScrollView(
-        child: Padding(
-          padding: const EdgeInsets.all(16.0),
-          child: Column(
-            children: [
-              Center(
-                child: Column(
-                  children: [
-                    const CircleAvatar(
-                      radius: 50,
-                      backgroundImage: AssetImage(
-                          'assets/icons/avatar.png'), // Your avatar image
-                    ),
-                    const SizedBox(height: 8),
-                    TextButton(
-                      onPressed: () {
-                        // Handle edit profile image
-                      },
-                      child: const Text(
-                        'Edit profile image',
-                        style: TextStyle(color: Colors.blue),
-                      ),
-                    ),
-                  ],
-                ),
+      body: FutureBuilder<User>(
+        future: _user,
+        builder: (context, snapshot) {
+          if (snapshot.connectionState == ConnectionState.waiting) {
+            return const Center(child: CircularProgressIndicator());
+          } else if (snapshot.hasError) {
+            return const Center(child: Text('Error loading profile'));
+          } else if (snapshot.hasData) {
+            final user = snapshot.data!;
+            return Padding(
+              padding: const EdgeInsets.all(16.0),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  ProfileField(label: 'Username', value: '${user.username}'),
+                  ProfileField(label: 'Fullname', value: user.fullName),
+                  ProfileField(label: 'Email', value: user.email),
+                  ProfileField(label: 'DOB', value: '${user.dob}'),
+                  ProfileField(label: 'Address', value: '${user.address}'),
+                  ProfileField(label: 'Gender', value: '${user.gender}'),
+                  ProfileField(label: 'Phone', value: '${user.phone}'),
+                  const SizedBox(height: 20),
+                  ElevatedButton(
+                    onPressed: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => EditProfileScreen(user: user),
+                        ),
+                      );
+                    },
+                    child: const Text('Edit Profile'),
+                  ),
+                ],
               ),
-              const SizedBox(height: 16),
-              ProfileDetail(
-                  title: 'Name', value: 'Nguyễn Hoàng Sơn', onTap: () {}),
-              ProfileDetail(
-                  title: 'Username', value: 'hoangsonkeke', onTap: () {}),
-              ProfileDetail(
-                  title: 'Email', value: 'besonnhabe@gmail.com', onTap: () {}),
-              ProfileDetail(
-                title: 'Links',
-                value:
-                    'https://web.facebook.com/zhson.20\nhttps://github.com/59saigon',
-                onTap: () {},
-                isMultiline: true,
-              ),
-              const SizedBox(height: 8),
-              TextButton(
-                onPressed: () {
-                  // Handle add link
-                },
-                child: const Text(
-                  '+ Add link',
-                  style: TextStyle(color: Colors.blue),
-                ),
-              ),
-              ProfileDetail(
-                title: 'Bio',
-                value: 'Tui là bé sơn nhà bè nè keke',
-                onTap: () {},
-                isMultiline: true,
-              ),
-              const SizedBox(height: 16),
-              ElevatedButton(
-                onPressed: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(builder: (context) => EditProfilePage()),
-                  );
-                },
-                child: const Text('Edit Profile'),
-              ),
-            ],
+            );
+          } else {
+            return const Center(child: Text('No profile data found'));
+          }
+        },
+      ),
+    );
+  }
+}
+
+class ProfileField extends StatelessWidget {
+  final String label;
+  final String value;
+
+  const ProfileField({
+    super.key,
+    required this.label,
+    required this.value,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.only(bottom: 8.0),
+      child: Row(
+        children: [
+          Expanded(
+            flex: 2,
+            child: Text(
+              label,
+              style: const TextStyle(fontWeight: FontWeight.bold),
+            ),
           ),
-        ),
+          Expanded(
+            flex: 3,
+            child: Text(value),
+          ),
+        ],
       ),
     );
   }

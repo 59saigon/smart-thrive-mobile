@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:smart_thrive_mobile/constants/color.dart';
 import 'package:smart_thrive_mobile/constants/icons.dart';
 import 'package:smart_thrive_mobile/constants/size.dart';
-import 'package:smart_thrive_mobile/screens/dashboard.dart';
 import 'package:smart_thrive_mobile/screens/home_screen.dart';
 import 'package:smart_thrive_mobile/screens/my_course_screen.dart';
 import 'package:smart_thrive_mobile/screens/my_package_screen.dart';
@@ -13,10 +12,10 @@ class BaseScreen extends StatefulWidget {
   final String roleName;
 
   const BaseScreen({
-    Key? key,
+    super.key,
     required this.studentId,
     required this.roleName,
-  }) : super(key: key);
+  });
 
   @override
   _BaseScreenState createState() => _BaseScreenState();

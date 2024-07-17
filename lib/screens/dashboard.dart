@@ -3,7 +3,7 @@ import 'package:smart_thrive_mobile/screens/coursestatistic_screen.dart';
 import 'package:smart_thrive_mobile/screens/userstatistic_screen.dart';
 
 class Dashboard extends StatefulWidget {
-  const Dashboard({Key? key}) : super(key: key);
+  const Dashboard({super.key});
 
   @override
   State<Dashboard> createState() => _DashboardState();
@@ -39,8 +39,8 @@ class _DashboardState extends State<Dashboard> {
           children: [
             StatisticCard(
               icon: Icons.person,
-              title: 'User statistic',
-              details: const ['Buyer:', 'Provider:', 'Student:'],
+              title: 'User',
+              details: const [],
               onTap: () {
                 Navigator.push(
                   context,
@@ -52,17 +52,13 @@ class _DashboardState extends State<Dashboard> {
             const SizedBox(height: 16.0),
             StatisticCard(
               icon: Icons.library_books,
-              title: 'Course statistic',
-              details: const [
-                'Activated course:',
-                'Deactivated course:',
-                'New course arrive in:'
-              ],
+              title: 'Course',
+              details: const [],
               onTap: () {
                 Navigator.push(
                   context,
                   MaterialPageRoute(
-                      builder: (context) => CourseStatisticScreen()),
+                      builder: (context) => const CourseStatisticScreen()),
                 );
               },
             ),
@@ -111,7 +107,7 @@ class StatisticCard extends StatelessWidget {
                       style: const TextStyle(
                           fontSize: 18.0, fontWeight: FontWeight.bold),
                     ),
-                    ...details.map((detail) => Text(detail)).toList(),
+                    ...details.map((detail) => Text(detail)),
                   ],
                 ),
               ),

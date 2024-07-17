@@ -10,13 +10,13 @@ class UpdatePackageDialog extends StatefulWidget {
   final VoidCallback onUpdateSuccess;
 
   const UpdatePackageDialog({
-    Key? key,
+    super.key,
     required this.id,
     required this.packageName,
     required this.quantityCourse,
     required this.onUpdateSuccess,
     required this.studentId,
-  }) : super(key: key);
+  });
 
   @override
   _UpdatePackageDialogState createState() => _UpdatePackageDialogState();
@@ -49,7 +49,7 @@ class _UpdatePackageDialogState extends State<UpdatePackageDialog> {
         "packageName": _packageNameController.text,
         "startDate": DateFormat('yyyy-MM-ddTHH:mm:ss').format(DateTime.now()),
         "endDate": DateFormat('yyyy-MM-ddTHH:mm:ss')
-            .format(DateTime.now().add(Duration(days: 30))),
+            .format(DateTime.now().add(const Duration(days: 30))),
         "quantityCourse": int.parse(_quantityCourseController.text),
         "totalPrice": 0,
         "isActive": true,
@@ -103,7 +103,7 @@ class _UpdatePackageDialogState extends State<UpdatePackageDialog> {
   @override
   Widget build(BuildContext context) {
     return AlertDialog(
-      title: Text('Update Package'),
+      title: const Text('Update Package'),
       content: Column(
         mainAxisSize: MainAxisSize.min,
         children: [

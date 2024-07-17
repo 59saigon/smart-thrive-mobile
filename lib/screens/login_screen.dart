@@ -10,6 +10,8 @@ class LoginPage extends StatelessWidget {
   final usernameController = TextEditingController();
   final passwordController = TextEditingController();
 
+  LoginPage({super.key});
+
   void signUserIn(BuildContext context) async {
     final username = usernameController.text;
     final password = passwordController.text;

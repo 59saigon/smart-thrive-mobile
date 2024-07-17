@@ -8,7 +8,7 @@ import 'package:smart_thrive_mobile/services/api_service.dart';
 class CourseScreen extends StatefulWidget {
   final String packageId;
 
-  const CourseScreen({Key? key, required this.packageId}) : super(key: key);
+  const CourseScreen({super.key, required this.packageId});
 
   @override
   _CourseScreenState createState() => _CourseScreenState();
@@ -60,10 +60,10 @@ class _CourseScreenState extends State<CourseScreen> {
                       Positioned(
                         left: 0,
                         child: CustomIconButton(
-                          child: const Icon(Icons.arrow_back),
                           height: 35,
                           width: 35,
                           onTap: () => Navigator.pop(context),
+                          child: const Icon(Icons.arrow_back),
                         ),
                       ),
                     ],

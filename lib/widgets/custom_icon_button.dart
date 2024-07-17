@@ -7,22 +7,16 @@ class CustomIconButton extends StatelessWidget {
   final VoidCallback onTap;
   final Color? color;
   const CustomIconButton(
-      {Key? key,
+      {super.key,
       required this.child,
       required this.height,
       required this.width,
       required this.onTap,
-      this.color = Colors.white})
-      : super(key: key);
+      this.color = Colors.white});
 
   @override
   Widget build(BuildContext context) {
     return Ink(
-      child: InkWell(
-        borderRadius: BorderRadius.circular(12),
-        child: Center(child: child),
-        onTap: onTap,
-      ),
       height: height,
       width: width,
       decoration: BoxDecoration(
@@ -35,6 +29,11 @@ class CustomIconButton extends StatelessWidget {
               spreadRadius: .05,
             )
           ]),
+      child: InkWell(
+        borderRadius: BorderRadius.circular(12),
+        onTap: onTap,
+        child: Center(child: child),
+      ),
     );
   }
 }

@@ -8,8 +8,7 @@ class CreatePackageDialog extends StatefulWidget {
   final VoidCallback refreshCallback;
 
   const CreatePackageDialog(
-      {Key? key, required this.studentId, required this.refreshCallback})
-      : super(key: key);
+      {super.key, required this.studentId, required this.refreshCallback});
 
   @override
   _CreatePackageDialogState createState() => _CreatePackageDialogState();
@@ -74,7 +73,7 @@ class _CreatePackageDialogState extends State<CreatePackageDialog> {
         "quantityCourse": int.parse(_quantityCourseController.text),
         "startDate": DateFormat('yyyy-MM-ddTHH:mm:ss').format(DateTime.now()),
         "endDate": DateFormat('yyyy-MM-ddTHH:mm:ss')
-            .format(DateTime.now().add(Duration(days: 30))),
+            .format(DateTime.now().add(const Duration(days: 30))),
         "totalPrice": 0,
         "isActive": true,
         "createdBy": "string",

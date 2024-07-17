@@ -11,7 +11,7 @@ import 'package:smart_thrive_mobile/widgets/search_field.dart';
 class MyCourseScreen extends StatefulWidget {
   final String studentId;
 
-  const MyCourseScreen({Key? key, required this.studentId}) : super(key: key);
+  const MyCourseScreen({super.key, required this.studentId});
 
   @override
   State<MyCourseScreen> createState() => _MyCourseScreenState();
@@ -131,7 +131,7 @@ class _MyCourseScreenState extends State<MyCourseScreen> {
 }
 
 class AppBar extends StatelessWidget {
-  const AppBar({Key? key}) : super(key: key);
+  const AppBar({super.key});
 
   @override
   Widget build(BuildContext context) {

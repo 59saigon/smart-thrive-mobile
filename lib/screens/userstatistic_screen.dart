@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:smart_thrive_mobile/models/user.dart';
-import 'dart:convert';
 import 'package:smart_thrive_mobile/services/api_service.dart';
-import 'package:http/http.dart' as http;
 
 class UserStatisticScreen extends StatefulWidget {
   const UserStatisticScreen({super.key});
@@ -44,7 +42,7 @@ class _UserStatisticScreenState extends State<UserStatisticScreen> {
           return Card(
             margin: const EdgeInsets.all(8.0),
             child: ListTile(
-              title: Text('${user.fullName}'),
+              title: Text(user.fullName),
               subtitle: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
