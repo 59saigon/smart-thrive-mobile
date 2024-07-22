@@ -62,7 +62,7 @@ class _MyPackageScreenState extends State<MyPackageScreen> {
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       Text(
-                        "Create new package",
+                        "Create package",
                         style: Theme.of(context).textTheme.bodyLarge,
                       ),
                       GestureDetector(

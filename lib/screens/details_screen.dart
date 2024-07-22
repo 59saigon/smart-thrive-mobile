@@ -101,11 +101,7 @@ class _DetailsScreenState extends State<DetailsScreen> {
                 try {
                   await APIService.addCourseToPackage(
                       widget.course.id, package.id);
-                  ScaffoldMessenger.of(context).showSnackBar(
-                    const SnackBar(
-                      content: Text('Course added to package successfully'),
-                    ),
-                  );
+                  _showSuccessDialog(context);
                 } catch (e) {
                   print('Error adding course to package: $e');
                   ScaffoldMessenger.of(context).showSnackBar(
@@ -125,6 +121,26 @@ class _DetailsScreenState extends State<DetailsScreen> {
     if (confirmAdd == true) {
       // Handle add course to package confirmation
     }
+  }
+
+  void _showSuccessDialog(BuildContext context) {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: const Text('Success'),
+          content: const Text('Course added to package successfully!'),
+          actions: <Widget>[
+            TextButton(
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+              child: const Text('OK'),
+            ),
+          ],
+        );
+      },
+    );
   }
 
   @override
@@ -150,7 +166,7 @@ class _DetailsScreenState extends State<DetailsScreen> {
                       Align(
                         child: Text(
                           widget.course.courseName ?? 'Unknown Course',
-                          style: Theme.of(context).textTheme.bodyText1,
+                          style: Theme.of(context).textTheme.bodyLarge,
                         ),
                       ),
                       Positioned(
@@ -326,7 +342,7 @@ class _CustomTabViewState extends State<CustomTabView> {
     return GestureDetector(
       onTap: () => widget.changeTab(index),
       child: Container(
-        padding: const EdgeInsets.symmetric(horizontal: 50, vertical: 10),
+        padding: const EdgeInsets.symmetric(horizontal: 35, vertical: 10),
         decoration: BoxDecoration(
           color: widget.index == index ? kPrimaryColor : null,
           borderRadius: BorderRadius.circular(10),

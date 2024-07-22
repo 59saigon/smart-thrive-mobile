@@ -40,11 +40,7 @@ class PackageContainer extends StatelessWidget {
     if (confirmDelete == true) {
       try {
         await APIService.deletePackage(package.id);
-        ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(
-            content: Text('Package deleted successfully'),
-          ),
-        );
+        _showSuccessDialog(context);
         onUpdateSuccess();
       } catch (e) {
         print('Error deleting package: $e');
@@ -55,6 +51,26 @@ class PackageContainer extends StatelessWidget {
         );
       }
     }
+  }
+
+  void _showSuccessDialog(BuildContext context) {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: const Text('Success'),
+          content: const Text('Package deleted successfully!'),
+          actions: <Widget>[
+            TextButton(
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+              child: const Text('OK'),
+            ),
+          ],
+        );
+      },
+    );
   }
 
   @override

@@ -61,15 +61,29 @@ class _UpdatePackageDialogState extends State<UpdatePackageDialog> {
       });
       widget.onUpdateSuccess();
       Navigator.of(context).pop();
-      _showSuccessMessage();
+      _showSuccessDialog(context); // Show success dialog
     } catch (e) {
       print('Failed to update package: $e');
     }
   }
 
-  void _showSuccessMessage() {
-    ScaffoldMessenger.of(context).showSnackBar(
-      const SnackBar(content: Text('Package updated successfully')),
+  void _showSuccessDialog(BuildContext context) {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: const Text('Success'),
+          content: const Text('Package updated successfully!'),
+          actions: <Widget>[
+            TextButton(
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+              child: const Text('OK'),
+            ),
+          ],
+        );
+      },
     );
   }
 

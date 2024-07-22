@@ -19,7 +19,7 @@ class _CustomVideoPlayerState extends State<CustomVideoPlayer> {
   void initState() {
     super.initState();
     _controller = YoutubePlayerController(
-      initialVideoId: 'abPmZCZZrFA', // Extracted from the URL
+      initialVideoId: 's8XpnY7gP2E', // Extracted from the URL
       flags: YoutubePlayerFlags(
         autoPlay: false,
         mute: false,

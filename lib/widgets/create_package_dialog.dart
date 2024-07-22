@@ -89,8 +89,30 @@ class _CreatePackageDialogState extends State<CreatePackageDialog> {
       Navigator.of(context).pop();
 
       widget.refreshCallback();
+
+      _showSuccessDialog(context); // Show success dialog
     } catch (e) {
       print('Failed to create package: $e');
     }
+  }
+
+  void _showSuccessDialog(BuildContext context) {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: const Text('Success'),
+          content: const Text('Package created successfully!'),
+          actions: <Widget>[
+            TextButton(
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+              child: const Text('OK'),
+            ),
+          ],
+        );
+      },
+    );
   }
 }

@@ -10,12 +10,15 @@ class LoginPage extends StatelessWidget {
   final usernameController = TextEditingController();
   final passwordController = TextEditingController();
 
+  LoginPage({super.key});
+
   void signUserIn(BuildContext context) async {
     final username = usernameController.text;
     final password = passwordController.text;
 
     try {
       final response = await APIService.loginUser(username, password);
+      print(response);
 
       if (response['isSuccess'] == true) {
         final role = response['result']['role']['roleName']; // Get role name

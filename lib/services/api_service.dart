@@ -5,10 +5,13 @@ import 'package:http/io_client.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:smart_thrive_mobile/models/course.dart';
 import 'package:smart_thrive_mobile/models/package.dart';
+import 'package:smart_thrive_mobile/models/user.dart';
 
 class APIService {
-  static const String baseUrl = 'https://10.0.2.2:7999/api'; // Android emulator
+  static const String baseUrl =
+      'https://stirring-terrier-moderately.ngrok-free.app/api'; // Android emulator
   static const storage = FlutterSecureStorage();
+  static const Duration requestTimeout = Duration(seconds: 30);
 
   static http.Client createHttpClient() {
     final ioClient = HttpClient()
@@ -32,24 +35,30 @@ class APIService {
   static Future<Map<String, dynamic>> loginUser(
       String username, String password) async {
     final client = createHttpClient();
+    print('chay');
+    print(username);
+    print(password);
 
     try {
-      final response = await client.post(
-        Uri.parse('$baseUrl/User/login'),
-        headers: <String, String>{
-          'Content-Type': 'application/json; charset=UTF-8',
-        },
-        body: jsonEncode(<String, String>{
-          'usernameOrEmail': username,
-          'password': password,
-        }),
-      );
-
+      final response = await client
+          .post(
+            Uri.parse('$baseUrl/User/login'),
+            headers: <String, String>{
+              'Content-Type': 'application/json; charset=UTF-8',
+            },
+            body: jsonEncode(<String, String>{
+              'usernameOrEmail': username,
+              'password': password,
+            }),
+          )
+          .timeout(requestTimeout);
+      print(response.statusCode);
       if (response.statusCode == 200) {
         final responseData = jsonDecode(response.body);
         await saveToken(responseData['token']);
         return responseData;
       } else {
+        print('loi');
         throw Exception('Failed to login');
       }
     } finally {
@@ -351,6 +360,107 @@ class APIService {
     } catch (e) {
       print('Error occurred: $e');
       throw Exception('Failed to add course to package');
+    } finally {
+      client.close();
+    }
+  }
+
+  static Future<List<User>> getUsers() async {
+    final client = createHttpClient();
+    final token = await getToken();
+
+    if (token == null) {
+      throw Exception('No JWT token found');
+    }
+
+    try {
+      final response = await client.get(
+        Uri.parse('$baseUrl/User/get-all'),
+        headers: <String, String>{
+          'Content-Type': 'application/json; charset=UTF-8',
+          'Authorization': 'Bearer $token',
+        },
+      );
+
+      print('Request URL: ${Uri.parse('$baseUrl/User/get-all')}');
+      print('Response status code: ${response.statusCode}');
+      print('Response body: ${response.body}');
+
+      if (response.statusCode == 200) {
+        List<dynamic> data = jsonDecode(response.body)['results'];
+        return data.map((json) => User.fromJson(json)).toList();
+      } else {
+        throw Exception('Failed to load users');
+      }
+    } catch (e) {
+      print('Error occurred: $e');
+      throw Exception('Failed to load users');
+    } finally {
+      client.close();
+    }
+  }
+
+  static Future<User> getUserByEmail(String email) async {
+    final client = createHttpClient();
+    final token = await getToken();
+
+    if (token == null) {
+      throw Exception('No JWT token found');
+    }
+
+    try {
+      final response = await client.get(
+        Uri.parse('$baseUrl/User/get-by-email'),
+        headers: <String, String>{
+          'Content-Type': 'application/json; charset=UTF-8',
+          'Authorization': 'Bearer $token',
+        },
+      );
+      print('Request URL: ${Uri.parse('$baseUrl/User/get-by-email')}');
+      print('Response status code: ${response.statusCode}');
+      print('Response body: ${response.body}');
+
+      if (response.statusCode == 200) {
+        Map<String, dynamic> data = jsonDecode(response.body)['results'];
+        return User.fromJson(data);
+      } else {
+        throw Exception('Failed to load users by email');
+      }
+    } catch (e) {
+      print('Error occurred: $e');
+      throw Exception('Failed to load users by email');
+    } finally {
+      client.close();
+    }
+  }
+
+  static Future<void> updateUser(Map<String, dynamic> requestBody) async {
+    final client = createHttpClient();
+    final token = await getToken();
+
+    if (token == null) {
+      throw Exception('No JWT token found');
+    }
+
+    try {
+      final response = await client.put(
+        Uri.parse('$baseUrl/User/update'),
+        headers: <String, String>{
+          'Content-Type': 'application/json; charset=UTF-8',
+          'Authorization': 'Bearer $token',
+        },
+        body: jsonEncode(requestBody),
+      );
+
+      if (response.statusCode == 200) {
+        final responseData = jsonDecode(response.body);
+        print('User updated: $responseData');
+      } else {
+        throw Exception('Failed to update user');
+      }
+    } catch (e) {
+      print('Error updating user: $e');
+      throw Exception('Failed to update user');
     } finally {
       client.close();
     }
